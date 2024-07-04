@@ -4,6 +4,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
+# include <stdlib.h>
 
 typedef struct s_cmd
 {
