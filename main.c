@@ -1,14 +1,13 @@
-#include <stdio.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "minishell.h"
+
 
 int main()
 {
     while(1)
     {
 
-        char *input = readline("mini-shell>  ");
+        char *input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
         printf("command works : %s\n", input);
     }
 }
