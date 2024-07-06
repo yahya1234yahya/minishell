@@ -6,7 +6,7 @@ all: $(NAME)
 # %.o: %.c $(HEADER)
 # 	cc -c  $< -o $@ -Wall -Wextra -Werror
 $(NAME): $(OBJS)
-	cc  -Wall -Wextra -Werror $(SRCS) -o $(NAME) -lreadline
+	cc  $(SRCS) -o $(NAME) -lreadline
 	make clean
 clean:
 	rm -f $(OBJS)
