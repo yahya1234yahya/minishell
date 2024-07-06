@@ -1,5 +1,5 @@
 NAME = minishell
-SRCS = main.c parsing.c ft_strtok.c
+SRCS = main.c parsing.c ft_strtok.c check_complete.c ft_strjoin.c
 OBJS = $(SRCS:.c=.o)
 HEADER = minishell.h
 all: $(NAME)
