@@ -40,10 +40,17 @@ void parse(t_cmd *cmd, char *input) {
         if (strcmp(next_word, "|") == 0) {
             cmd->pipe = 1;
             cmd->next = (t_cmd *)malloc(sizeof(t_cmd));
-            parse(cmd->next, ft_strtok(NULL, ""));
+            if ((next_word = ft_strtok(NULL, " ")) == 0)
+             {
+                char *input = readline("\033[31mcontinue\033[0m \033[34m>\033[0m ");
+                parse(cmd->next, input);
+             }
+            else
+                parse(cmd->next, ft_strtok(NULL, ""));
             break;
         } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0) {
             cmd->redirection = 1;
+
         } else {
             if (cmd->args == NULL) {
                 cmd->args = strdup(next_word);
