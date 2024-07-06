@@ -17,7 +17,7 @@ typedef struct s_cmd
 } t_cmd;
 
 char *ft_strtok(char *str, const char *delim);
-void parse(t_cmd *cmd, char *input);
+void parse(t_cmd *cmd, char *input, int rec);
 
 
 
