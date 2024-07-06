@@ -19,15 +19,20 @@ int is_valid_command(const char *cmd) {
     return 0;
 }
 
-void parse(t_cmd *cmd, char *input) {
+void parse(t_cmd *cmd, char *input, int rec) {
+   
     cmd->cmd = NULL;
     cmd->args = NULL;
     cmd->pipe = 0;
     cmd->redirection = 0;
     cmd->next = NULL;
+    char *next_word = NULL;
 
     input = skip_whitespace(input);
-    char *next_word = ft_strtok(input, " ");
+    if (rec == 0)
+        next_word = ft_strtok(input, " ");
+    else    
+        next_word = input;
     if (!next_word) return;
 
     if (!is_valid_command(next_word)) {
@@ -43,10 +48,10 @@ void parse(t_cmd *cmd, char *input) {
             if ((next_word = ft_strtok(NULL, " ")) == 0)
              {
                 char *input = readline("\033[31mcontinue\033[0m \033[34m>\033[0m ");
-                parse(cmd->next, input);
+                parse(cmd->next, input, 0);
              }
             else
-                parse(cmd->next, ft_strtok(NULL, ""));
+                parse(cmd->next, next_word, 1);
             break;
         } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0) {
             cmd->redirection = 1;
