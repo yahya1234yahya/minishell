@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/07 19:20:35 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:27:45 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,6 @@ void decider(t_cmd *cmd, char **envp)
 		ft_echo(cmd);
 	if (!ft_strcmp("pwd", cmd->cmd))
 		ft_pwd(envp);
+	if (!ft_strcmp("exit", cmd->cmd))
+		exit(0);
 }
