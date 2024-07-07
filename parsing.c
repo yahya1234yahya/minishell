@@ -41,6 +41,7 @@ void parse(t_cmd *cmd, char *input, int rec) {
     }
 
     cmd->cmd = strdup(next_word);
+    cmd->fd_redirect = 1;
     while ((next_word = ft_strtok(NULL, " ")) != NULL) {
         if (strcmp(next_word, "|") == 0) {
             cmd->pipe = 1;
@@ -48,9 +49,22 @@ void parse(t_cmd *cmd, char *input, int rec) {
             next_word = ft_strtok(NULL, " ");
             parse(cmd->next, next_word, 1);
             break;
+
         } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0) {
             cmd->redirection = 1;
-            // next_word = ft_strtok(NULL, " ");
+            next_word = ft_strtok(NULL, " ");
+            if (next_word == NULL) {
+                printf("\033[33merror: expected filename after redirection \033[0m\n\n");
+                return;
+            }
+            int flags = 0;
+                flags = O_WRONLY | O_CREAT | O_APPEND;
+            cmd->fd_redirect = open(next_word, flags, 0644);
+            if (cmd->fd_redirect == -1) {
+                printf("\033[33merror: can't open file \033[0m\n\n");
+                return;
+            }
+            write(cmd->fd_redirect, cmd->args, strlen(cmd->args));
 
         } else {
             if (cmd->args == NULL) 
