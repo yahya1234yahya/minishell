@@ -29,6 +29,7 @@ int main() {
         parse(&cmd, input, 0);
         print_commands(&cmd);
         add_history(input);
+		decider(&cmd);
     }
     return 0;
 }
