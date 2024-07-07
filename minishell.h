@@ -33,7 +33,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 //execution
 int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
-void	decider(t_cmd *cmd);
+void	decider(t_cmd *cmd, char **envp);
+void	ft_pwd(char **envp);
 
 //tools
 char	**ft_split(char *s, char c);

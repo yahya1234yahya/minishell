@@ -1,7 +1,7 @@
 NAME = minishell
 SRCS = main.c parsing.c ft_strtok.c check_complete.c \
-ft_strjoin.c  tools/split.c execution/decider.c \
-execution/echo.c tools/minilibft.c
+ft_strjoin.c  execution/pwd.c execution/decider.c \
+execution/echo.c tools/minilibft.c tools/split.c
 OBJS = $(SRCS:.c=.o)
 HEADER = minishell.h
 all: $(NAME)
