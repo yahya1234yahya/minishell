@@ -12,7 +12,8 @@ typedef struct s_cmd
 	char	*cmd;
 	char	*args;
 	int		pipe;
-	int		redirection;  //we give each element a token
+	int		redirection;
+	int		fd_redirect;
 	struct 	s_cmd *next;
 } t_cmd;
 
