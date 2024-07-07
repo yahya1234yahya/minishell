@@ -50,11 +50,16 @@ void parse(t_cmd *cmd, char *input, int rec) {
             break;
         } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0) {
             cmd->redirection = 1;
+            // next_word = ft_strtok(NULL, " ");
 
         } else {
-            if (cmd->args == NULL) {
+            if (cmd->args == NULL) 
                 cmd->args = strdup(next_word);
+            else
+            {
+                cmd->args = ft_strjoin(cmd->args, " ");
+                cmd->args = ft_strjoin(cmd->args, next_word);
+            }
         }
     }
-}
 }
