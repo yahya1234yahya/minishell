@@ -13,7 +13,8 @@ void print_commands(t_cmd *head) {
     }
 }
 
-int main() {
+int main(int argc, char **argv, char **envp)
+{
     t_cmd cmd;
     t_cmd head;
     while (1) {
@@ -27,9 +28,9 @@ int main() {
             input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
         }
         parse(&cmd, input, 0);
-        print_commands(&cmd);
+        // print_commands(&cmd);
         add_history(input);
-		decider(&cmd);
+		decider(&cmd, envp);
     }
     return 0;
 }
