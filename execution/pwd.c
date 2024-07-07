@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:14:04 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/07 19:15:39 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:30:48 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void ft_pwd(char **envp)
 	char *str;
 	
 	i = 0;
+	chdir("../");
 	while (envp[i])
 	{
 		if (ft_strstr(envp[i], "PWD"))
