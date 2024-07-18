@@ -30,6 +30,8 @@ void notbuilt(t_cmd *cmd)
 	fixed = (char **)malloc(sizeof(char *) * (i + 2));
 	fixed[0] = cmd->cmd;
 	j = 1;
+	printf("\n\nd ---> %d\n", i);
+	printf("\n\nfixed0 ---> %s\n", fixed[0]);
 
 	
 }
