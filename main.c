@@ -78,7 +78,7 @@ int main(int argc, char **argv, char **envp)
         add_history(input);
         // printf("2  %s\n",input);
 
-		decider(&cmd, envp);
+		// decider(&cmd, envp);
     }
     return 0;
 }
