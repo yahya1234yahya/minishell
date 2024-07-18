@@ -35,6 +35,7 @@ int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	decider(t_cmd *cmd, char **envp);
 void	ft_pwd(char **envp);
+void	notbuilt(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);
