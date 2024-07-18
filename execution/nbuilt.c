@@ -24,15 +24,12 @@ void notbuilt(t_cmd *cmd)
 {
 	int i;
 	int j;
-	char *fixed;
+	char **fixed;
 
 	i = calculateargs(cmd);
-	fixed = (char *)malloc(sizeof(char *) * (i + 2));
+	fixed = (char **)malloc(sizeof(char *) * (i + 2));
 	fixed[0] = cmd->cmd;
 	j = 1;
-	while (j < i + 1)
-	{
-		strcpy(fixed[j], cmd->args[j + 1]);
-	}
+
 	
 }
