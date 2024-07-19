@@ -11,7 +11,7 @@
 # include <stdbool.h> 
 # include <unistd.h>
 # include <sys/types.h>
-// #include <libc.h>
+#include <libc.h>
 #include <ctype.h>
 // # include <sys/wait.h>
 
