@@ -1,29 +1,30 @@
 
 #include "minishell.h"
 
-char *expand_variables(char *input) {
+char *expand_variables(char *input)
+{
     char *expanded = malloc(strlen(input) + 1);
-    if (!expanded) {
+    if (!expanded)
+	{
         perror("malloc");
         exit(1);
     }
     strcpy(expanded, input);
 
     char *pos = expanded;
-    while ((pos = strchr(pos, '$')) != NULL) {
+    while ((pos = strchr(pos, '$')) != NULL)
+	{
         char *start = pos;
         pos++;
         char varname[256];
         int i = 0;
-        while (*pos && (isalnum(*pos) || *pos == '_')) {
+        while (*pos && (isalnum(*pos) || *pos == '_'))
             varname[i++] = *pos++;
-        }
         varname[i] = '\0';
 
         char *value = getenv(varname);
-        if (!value) {
+        if (!value)
             value = "";
-        }
 
         int new_len = strlen(expanded) - strlen(varname) - 1 + strlen(value);
         char *new_expanded = malloc(new_len + 1);
@@ -63,9 +64,9 @@ int main(int argc, char **argv, char **envp)
     t_cmd head;
     while (1) {
         char *input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
-        // printf("1  %s\n",input);
-        input = expand_variables(input);
         add_history(input);
+        input = expand_variables(input);
+        // printf("1  %s\n",input);
         if(!input[0])
             continue;
         while(check_complete(input) == 0)
@@ -75,9 +76,7 @@ int main(int argc, char **argv, char **envp)
         }
         parse(&cmd, input, 0);
         print_commands(&cmd);
-        add_history(input);
         // printf("2  %s\n",input);
-
 		decider(&cmd, envp);
     }
     return 0;
