@@ -17,7 +17,8 @@ int is_valid_command(t_cmd *cmd, char *word)
         exit(1);
     }
     char *dir = strtok(path_dup, ":");
-    while (dir) {
+    while (dir)
+    {
         char full_path[1024];
         snprintf(full_path, sizeof(full_path), "%s/%s", dir, word);
         if (access(full_path, X_OK) == 0) {
@@ -32,7 +33,8 @@ int is_valid_command(t_cmd *cmd, char *word)
     return 0;
 }
 
-void parse(t_cmd *cmd, char *input, int rec) {
+void parse(t_cmd *cmd, char *input, int rec)
+{
    
     cmd->cmd = NULL;
     cmd->args = NULL;
@@ -79,7 +81,8 @@ void parse(t_cmd *cmd, char *input, int rec) {
             }
             write(cmd->fd_redirect, cmd->args, strlen(cmd->args));
 
-        } else {
+        } else
+        {
             if (cmd->args == NULL) 
                 cmd->args = strdup(next_word);
             else
