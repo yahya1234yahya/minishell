@@ -27,7 +27,7 @@ typedef struct s_cmd
 } t_cmd;
 
 char	*ft_strtok(char *str, const char *delim);
-void	parse(t_cmd *cmd, char *input, int rec);
+int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
 char	*ft_strjoin(char const *s1, char const *s2);
 

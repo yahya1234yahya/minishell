@@ -47,8 +47,6 @@ void notbuilt(t_cmd *cmd)
 	char **fixed;
 	char **splited;
 
-
-
 	if (cmd->args != NULL)
 	{
 		i = calculateargs(cmd);

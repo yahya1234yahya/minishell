@@ -3,40 +3,43 @@
 
 char *expand_variables(char *input)
 {
-    char *expanded = malloc(strlen(input) + 1);
+    char	*expanded;
+    char	*pos;
+    char	*start;
+    int		i;
+    char	varname[256];
+    char	*value;
+    int		new_len;
+    char	*new_expanded;
+	
+	expanded = malloc(strlen(input) + 1);
     if (!expanded)
 	{
         perror("malloc");
         exit(1);
     }
     strcpy(expanded, input);
-
-    char *pos = expanded;
+	pos = expanded;
     while ((pos = strchr(pos, '$')) != NULL)
 	{
-        char *start = pos;
+		start = pos;
         pos++;
-        char varname[256];
-        int i = 0;
+		i = 0;
         while (*pos && (isalnum(*pos) || *pos == '_'))
             varname[i++] = *pos++;
         varname[i] = '\0';
 
-        char *value = getenv(varname);
+		value = getenv(varname);
         if (!value)
             value = "";
-
-        int new_len = strlen(expanded) - strlen(varname) - 1 + strlen(value);
-        char *new_expanded = malloc(new_len + 1);
-        if (!new_expanded) {
+		new_len = strlen(expanded) - strlen(varname) - 1 + strlen(value);
+		new_expanded = malloc(new_len + 1);
+        if (!new_expanded) 
             exit(1);
-        }
-
         strncpy(new_expanded, expanded, start - expanded);
         new_expanded[start - expanded] = '\0';
         strcat(new_expanded, value);
         strcat(new_expanded, pos);
-
         free(expanded);
         expanded = new_expanded;
         pos = expanded + (start - expanded) + strlen(value);
@@ -61,20 +64,24 @@ void print_commands(t_cmd *head) {
 
 int main(int argc, char **argv, char **envp)
 {
-    t_cmd cmd;
-    t_cmd head;
-    while (1) {
-        char *input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
+    t_cmd	cmd;
+    t_cmd	head;
+    char	*input;
+    
+	while (1)
+	{
+		input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
         add_history(input);
         input = expand_variables(input);
         if(!input[0])
-            continue;
+            continue ;
         while(check_complete(input) == 0)
         {
             input = ft_strjoin(input, " ");
             input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
         }
-        parse(&cmd, input, 0);
+        if(parse(&cmd, input, 0) == 0)
+			exit(1);
         // print_commands(&cmd);
 		decider(&cmd, envp);
     }
