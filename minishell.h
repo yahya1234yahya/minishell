@@ -23,6 +23,7 @@ typedef struct s_cmd
 	int		redirection;
 	int		fd_redirect;
 	struct 	s_cmd *next;
+	char 	*path;
 } t_cmd;
 
 char	*ft_strtok(char *str, const char *delim);

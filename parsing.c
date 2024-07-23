@@ -5,17 +5,30 @@ char *skip_whitespace(char *str) {
     return str;
 }
 
-int is_valid_command(const char *cmd) {
-    char *valid_commands[] = {
-        "echo", "cd", "pwd", "export", "unset", "env", "exit", "ls", "clear", NULL
-    };
-    int i = 0;
-    while (valid_commands[i] != NULL) {
-        if (strcmp(cmd, valid_commands[i]) == 0) {
+int is_valid_command(t_cmd *cmd, char *word)
+{
+    char *path_env = getenv("PATH");
+    if (!path_env) {
+        return 0;
+    }
+    char *path_dup = strdup(path_env);
+    if (!path_dup) {
+        perror("strdup");
+        exit(1);
+    }
+    char *dir = strtok(path_dup, ":");
+    while (dir) {
+        char full_path[1024];
+        snprintf(full_path, sizeof(full_path), "%s/%s", dir, word);
+        if (access(full_path, X_OK) == 0) {
+            cmd->path = strdup(full_path); 
+            free(path_dup);
             return 1;
         }
-        i++;
+        dir = strtok(NULL, ":");
     }
+
+    free(path_dup);
     return 0;
 }
 
@@ -35,9 +48,9 @@ void parse(t_cmd *cmd, char *input, int rec) {
         next_word = input;
     if (!next_word) return;
 
-    if (!is_valid_command(next_word)) {
+    if (!is_valid_command(cmd, next_word)) {
         printf("\033[33merror: %s is not a command\033[0m\n\n", next_word);
-        return;
+        return ;
     }
 
     cmd->cmd = strdup(next_word);
