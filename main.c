@@ -53,6 +53,7 @@ void print_commands(t_cmd *head) {
         printf("Arguments: %s\n", current->args ? current->args : "(none)");
         printf("Pipe: %d\n", current->pipe);
         printf("Redirection: %d\n", current->redirection);
+        printf("path: %s\n", current->path);
         printf("----------------\n");
         current = current->next;
     }
@@ -66,7 +67,6 @@ int main(int argc, char **argv, char **envp)
         char *input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
         add_history(input);
         input = expand_variables(input);
-        // printf("1  %s\n",input);
         if(!input[0])
             continue;
         while(check_complete(input) == 0)
@@ -75,8 +75,7 @@ int main(int argc, char **argv, char **envp)
             input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
         }
         parse(&cmd, input, 0);
-        print_commands(&cmd);
-        // printf("2  %s\n",input);
+        // print_commands(&cmd);
 		decider(&cmd, envp);
     }
     return 0;

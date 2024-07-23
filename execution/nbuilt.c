@@ -54,7 +54,7 @@ void notbuilt(t_cmd *cmd)
 		i = calculateargs(cmd);
 		fixed = (char **)malloc(sizeof(char *) * (i + 2));
 		splited = ft_split(cmd->args, ' ');
-		fixed = prepend_array(splited, ft_strjoin("/bin/", cmd->cmd));
+		fixed = prepend_array(splited, cmd->path);
 		if (access(fixed[0], X_OK) == 0)
 		{
 			pid = fork();
