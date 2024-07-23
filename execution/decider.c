@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   decider.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/22 02:50:33 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/23 23:10:22 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void decider(t_cmd *cmd, char **envp)
 		}
 		ft_echo(cmd);
 	}
+	// if (!ft_strcmp("clear", cmd->cmd))
+	// {
+	// 	system("clear");
+	// }
 	else if(!ft_strcmp("exit", cmd->cmd))
 		exit(0);
 	else
