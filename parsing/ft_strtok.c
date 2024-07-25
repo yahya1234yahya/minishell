@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 char *ft_strtok(char *str, const char *delim) {
     static char *next_token = NULL;

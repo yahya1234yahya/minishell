@@ -1,5 +1,4 @@
-#include "minishell.h"
-#include <string.h>
+#include "../minishell.h"
 
 char *skip_whitespace(char *str)
 {
