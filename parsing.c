@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <string.h>
 
 char *skip_whitespace(char *str)
 {
@@ -53,7 +54,7 @@ int parse(t_cmd *cmd, char *input, int rec)
         next_word = input;
     if (!next_word) return (0);
 
-    if (!is_valid_command(cmd, next_word))
+    if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word))
 	{
         printf("\033[33merror: %s is not a command\033[0m\n\n", next_word);
         return (0);

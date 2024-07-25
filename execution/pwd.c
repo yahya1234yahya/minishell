@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:14:04 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/07 19:30:48 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 01:54:28 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,19 @@ static char	*ft_strstr(const char	*haystack, const char	*needle)
 	return (NULL);
 }
 
-void ft_pwd(char **envp)
+void ft_pwd(char **env)
 {
 	int i;
-	char *str;
-	
+	char *pwd;
+
 	i = 0;
-	chdir("../");
-	while (envp[i])
+	while(env[i])
 	{
-		if (ft_strstr(envp[i], "PWD"))
-			break ;
+		if(ft_strstr(env[i],"PWD"))
+			break;
 		i++;
 	}
-	str = ft_strstr(envp[i], "PWD");
-	i = 4;
-	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
-	write(1, "\n", 1);
-}
+	pwd = ft_split(env[i],'=')[1];
+	printf("%s\n",pwd);
+};
+
