@@ -39,6 +39,7 @@ char	*ft_strtok(char *str, const char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
 char	*ft_strjoin(char const *s1, char const *s2);
+t_env	*envsearch(t_env *env, char *name);
 
 //execution
 int		execute(t_cmd *cmd);
