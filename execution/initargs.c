@@ -14,8 +14,8 @@ t_cmd	*init_cmd(void)
 	new_cmd->args = NULL;
 	new_cmd->pipe = 0;
 	new_cmd->redirection = 0;
+	new_cmd->fd_redirect = 1;
 	new_cmd->path = NULL;
 	new_cmd->next = NULL;
-	new_cmd->fd_redirect = 1;
 	return (new_cmd);
 };

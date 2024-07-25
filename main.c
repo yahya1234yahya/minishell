@@ -1,5 +1,6 @@
 
 #include "minishell.h"
+#include <stdio.h>
 
 char *expand_variables(char *input)
 {
@@ -87,8 +88,8 @@ int main(int argc, char **argv, char **envp)
         {
 			continue ;
         }
-        
-		decider(cmd, envp, cmd->env);
+        // print_commands(cmd);
+		decider(cmd, envp);
         free(cmd->args);
         cmd->args = NULL;
     }

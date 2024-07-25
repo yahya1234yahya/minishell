@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:42:32 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 21:33:57 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:58:05 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int echohelper(t_cmd *cmd)
 
 void ft_echo(t_cmd *cmd)
 {
+
     int option;
     int i;
 	int	j;
@@ -74,5 +75,5 @@ void ft_echo(t_cmd *cmd)
     }
     write(cmd->fd_redirect, &cmd->args[i], strlen(&cmd->args[i]));
 	if (!option)
-        write(1, "\n", 1);
+        write(cmd->fd_redirect, "\n", 1);
 }

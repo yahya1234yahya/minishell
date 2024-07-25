@@ -6,11 +6,12 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:14:04 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 01:54:28 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:45:55 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
 
 static char	*ft_strstr(const char	*haystack, const char	*needle)
 {
@@ -34,21 +35,15 @@ static char	*ft_strstr(const char	*haystack, const char	*needle)
 		i++;
 	}
 	return (NULL);
-}
-
-void ft_pwd(char **env)
-{
-	int i;
-	char *pwd;
-
-	i = 0;
-	while(env[i])
-	{
-		if(ft_strstr(env[i],"PWD"))
-			break;
-		i++;
-	}
-	pwd = ft_split(env[i],'=')[1];
-	printf("%s\n",pwd);
 };
+
+void	ft_pwd(t_env *env)
+{
+	t_env *wd;
+	char **cwd;
+
+	wd = envsearch(env, "PWD");
+	cwd = ft_split(wd->name, '=');
+	printf("%s\n", cwd[1]);
+}
 

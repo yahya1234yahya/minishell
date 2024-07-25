@@ -44,12 +44,13 @@ char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 
 //execution
+int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
-void	decider(t_cmd *cmd, char **envp, t_env *env);
-void	ft_pwd(char **envp);
+void	decider(t_cmd *cmd, char **envp);
+void	ft_pwd(t_env *env);
 void	notbuilt(t_cmd *cmd, char **envp);
 t_env 	*initenv(char **envp);
-void 	changedir(char *path, t_env *env);
+void 	changedir(t_cmd *cmd);
 t_cmd	*init_cmd(void);
 void	printenv(t_env *env);
 t_env	*envset(t_env *env, char *name, char *value);
