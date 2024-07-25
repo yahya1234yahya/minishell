@@ -10,7 +10,6 @@ char *skip_whitespace(char *str)
 int is_valid_command(t_cmd *cmd, char *word)
 {
     char *path_env = getenv("PATH");
-	printf("path_env: %s\n", path_env);
     if (!path_env) {
         return 0;
     }

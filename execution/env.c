@@ -1,62 +1,82 @@
 #include "../minishell.h"
 
-void	printenv(char **env)
+static t_env	*ft_lstnew(void *content)
 {
-	int i;
+	t_env	*node;
 
-	i = 0;
-	while(env[i])
-		printf("%s\n",env[i++]);
-}
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	node->name = content;
+	node->next = NULL;
+	return (node);
+};
 
-char **initenv(char **envp)
+static void	ft_lstadd_back(t_env **lst, t_env *new)
 {
-	char	**newenv;
+	t_env	*last;
+
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	last = *lst;
+	while (last->next)
+		last = last->next;
+	last->next = new;
+};
+
+void printenv(t_env *env)
+{
+	t_env	*current;
+
+	current = env;
+	while (current)
+	{
+		printf("%s\n", current->name);
+		current = current->next;
+	}
+};
+
+t_env	*envset(t_env *env, char *name, char *value)
+{
+	t_env	*current;
+	char	*new;
 	int		i;
 
 	i = 0;
-	while(envp[i])
-		i++;
-	newenv = (char **)malloc((i + 1) * sizeof(char *));
-	if(!newenv)
+	current = env;
+	while (current)
 	{
-		perror("malloc");
-		exit(1);
+		if (ft_strnstr(current->name, name, ft_strlen(name)))
+		{
+			new = ft_strjoin(name, "=");
+			new = ft_strjoin(new, value);
+			// free(current->name);
+			current->name = new;
+			return (env);
+		}
+		current = current->next;
 	}
-	i = 0;
-	while(envp[i])
-	{
-		newenv[i] = strdup(envp[i]);
-		i++;
-	}
-	newenv[i] = NULL;
-	return (newenv);
+	return (env);
 };
 
-int envset(char **env, char *var, char *value)
+t_env	*initenv(char **envp)
 {
-	int i;
-	char *newvar;
+	t_env	*env;
+	t_env	*current;
+	int		i;
 
+	env = NULL;
 	i = 0;
-	while(env[i])
+	while (envp[i])
 	{
-		if(strnstr(env[i],var,strlen(var)))
-		{
-			newvar = malloc(strlen(var) + strlen(value) + 2);
-			if(!newvar)
-			{
-				perror("malloc");
-				exit(1);
-			}
-			strcpy(newvar,var);
-			strcat(newvar,"=");
-			strcat(newvar,value);
-			free(env[i]);
-			env[i] = newvar;
-			return (0);
-		}
+		current = ft_lstnew(envp[i]);
+		if (!current)
+			return (NULL);
+		ft_lstadd_back(&env, current);
 		i++;
 	}
-	return (1);
-}
+	return (env);
+};
