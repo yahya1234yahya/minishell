@@ -42,6 +42,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 t_env	*envsearch(t_env *env, char *name);
 char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
+int		is_all_space(char *input);
 
 //execution
 int		execute(t_cmd *cmd);

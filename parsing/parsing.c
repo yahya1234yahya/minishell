@@ -45,6 +45,12 @@ int parse(t_cmd *cmd, char *input, int rec)
     if (rec == 0)
     {
         input = remove_quotes(input);
+        if (input == NULL)
+        {
+             printf("\033[33merror:  command not found\033[0m\n");
+            return (0);
+        }
+
         next_word = ft_strtok(input, " ");
     }
     else    
@@ -53,7 +59,7 @@ int parse(t_cmd *cmd, char *input, int rec)
 
     if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word))
 	{
-        printf("\033[33merror: %s is not a command\033[0m\n\n", next_word);
+        printf("\033[33merror: %s is not a command\033[0m\n", next_word);
         return (0);
     }
     cmd->cmd = strdup(next_word);
