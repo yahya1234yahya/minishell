@@ -36,7 +36,7 @@ int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	decider(t_cmd *cmd, char **envp);
 void	ft_pwd(char **envp);
-void	notbuilt(t_cmd *cmd);
+void	notbuilt(t_cmd *cmd, char **envp);
 char 	**initenv(char **envp);
 void 	changedir(char *path, char **env);
 void	printenv(char **env);
