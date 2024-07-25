@@ -68,7 +68,7 @@ int main(int argc, char **argv, char **envp)
     t_cmd	*cmd;
     t_cmd	head;
     char	*input;
-    char	**env;
+    t_env	*env;
 
 	cmd = init_cmd();
 	env = initenv(envp);
@@ -86,8 +86,8 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, 0) == 0)
 			exit(1);
-        print_commands(cmd);
-		decider(cmd, env);
+        // print_commands(cmd);
+		decider(cmd, envp, env);
     }
     return 0;
 }

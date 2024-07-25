@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:46:39 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/24 23:51:36 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:16:11 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,14 @@ char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 		i++;
 	}
 	return (NULL);
+};
+
+size_t ft_strlen(const char *s)
+{
+	size_t i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 };

@@ -6,13 +6,13 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 02:19:42 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:34:12 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void decider(t_cmd *cmd, char **envp)
+void decider(t_cmd *cmd, char **envp, t_env *env)
 {
 	if (!ft_strcmp("echo", cmd->cmd))
 	{
@@ -23,16 +23,16 @@ void decider(t_cmd *cmd, char **envp)
 		}
 		ft_echo(cmd);
 	}
-	else if (!ft_strcmp("cd", cmd->cmd))  // hadi ghi test
-		changedir(cmd->args, envp);
+	else if (!ft_strcmp("cd", cmd->cmd))
+		changedir(cmd->args, env);
 	else if (!ft_strcmp("env", cmd->cmd))
-		printenv(envp);
+		printenv(env);
 	else if (!ft_strcmp("exit", cmd->cmd))
 		exit(0);
-	// if (!ft_strcmp("clear", cmd->cmd))
-	// 	system("clear");
 	else
 		notbuilt(cmd, envp);
+	// if (!ft_strcmp("clear", cmd->cmd))
+	// 	system("clear");
 	// else if(!ft_strcmp("exit", cmd->cmd))
 	// 	exit(0);
 	// if (!ft_strcmp("pwd", cmd->cmd))   //wa9ela fiha mochkill

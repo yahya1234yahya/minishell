@@ -26,6 +26,12 @@ typedef struct s_cmd
 	char 	*path;
 } t_cmd;
 
+typedef struct s_env
+{
+	char			*name;
+	struct s_env	*next;
+}	t_env;
+
 char	*ft_strtok(char *str, const char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
@@ -34,21 +40,21 @@ char	*ft_strjoin(char const *s1, char const *s2);
 //execution
 int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
-void	decider(t_cmd *cmd, char **envp);
+void	decider(t_cmd *cmd, char **envp, t_env *env);
 void	ft_pwd(char **envp);
 void	notbuilt(t_cmd *cmd, char **envp);
-char 	**initenv(char **envp);
-void 	changedir(char *path, char **env);
-void	printenv(char **env);
+t_env 	*initenv(char **envp);
+void 	changedir(char *path, t_env *env);
 t_cmd	*init_cmd(void);
-int envset(char **env, char *var, char *value);
+void	printenv(t_env *env);
+t_env	*envset(t_env *env, char *name, char *value);
 
 //tools
 char	**ft_split(char *s, char c);
 int		ft_strcmp(const char	*s1, const char	*s2);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strnstr(char	*haystack, char	*needle, size_t	len);
-
+size_t ft_strlen(const char *s);
 // echo with -n option
 // cd with relative or absolute path
 // pwd with no options

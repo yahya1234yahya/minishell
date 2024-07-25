@@ -1,21 +1,22 @@
 #include "../minishell.h"
+#include <unistd.h>
 
-void changedir(char *path, char **env)
+void changedir(char *path, t_env *env)
 {
-	char **oldpwd;
-	int i;
+	char *oldpwd;
 
-	i = 0;
-	while(env[i])
+	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
 	{
-		if(strnstr(env[i],"PWD",3))
-			break;
-		i++;
-	}
-	oldpwd = ft_split(env[i],'=');
-	envset(env,"OLDPWD",oldpwd[1]);
-	chdir(path);
-	envset(env,"PWD",path);
-
+		perror("getcwd");
+		exit(1);
+	};
+	if (chdir(path) == -1)
+	{
+		perror("chdir");
+		return ;
+	};
+	envset(env, "OLDPWD", oldpwd);
+	envset(env, "PWD", path);
 };
 
