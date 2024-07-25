@@ -9,9 +9,9 @@ char *skip_whitespace(char *str)
 
 int is_valid_command(t_cmd *cmd, char *word)
 {
-    char *path_env = getenv("PATH");
+    char *path_env = envsearch(cmd->env, "PATH")->name;
     if (!path_env) {
-        return 0;
+        exit (0);
     }
     char *path_dup = strdup(path_env);
     if (!path_dup) {
@@ -41,11 +41,6 @@ int parse(t_cmd *cmd, char *input, int rec)
     char *next_word;
     int flags;
     
-	cmd->cmd = NULL;
-    cmd->args = NULL;
-    cmd->pipe = 0;
-    cmd->redirection = 0;
-    cmd->next = NULL;
 	next_word = NULL;
     input = skip_whitespace(input);
     if (rec == 0)
@@ -86,8 +81,6 @@ int parse(t_cmd *cmd, char *input, int rec)
                 printf("\033[33merror: can't open file \033[0m\n\n");
                 return (0);
             }
-            write(cmd->fd_redirect, cmd->args, strlen(cmd->args));
-
         } else
         {
             if (cmd->args == NULL) 

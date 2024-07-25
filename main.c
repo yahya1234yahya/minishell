@@ -69,8 +69,7 @@ int main(int argc, char **argv, char **envp)
     t_cmd	head;
     char	*input;
 
-
-	cmd = init_cmd();
+    cmd = init_cmd();
 	cmd->env = initenv(envp);
 	while (1)
 	{
@@ -85,9 +84,11 @@ int main(int argc, char **argv, char **envp)
             input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
         }
         if(parse(cmd, input, 0) == 0)
-			exit(1);
-        // print_commands(cmd);
+			continue ;
+        print_commands(cmd);
 		decider(cmd, envp, cmd->env);
+        free(cmd->args);
+        cmd->args = NULL;
     }
     return 0;
 }
