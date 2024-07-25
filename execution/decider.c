@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 21:53:57 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:31:14 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void decider(t_cmd *cmd, char **envp, t_env *env)
 {
-	printf("HELLO FROM DECIDER\n");
 	if (!ft_strcmp("echo", cmd->cmd))
 	{
 		if (cmd->args == NULL)
