@@ -15,6 +15,12 @@
 #include <ctype.h>
 // # include <sys/wait.h>
 
+typedef struct s_env
+{
+	char			*name;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_cmd
 {
 	char	*cmd;
@@ -22,15 +28,12 @@ typedef struct s_cmd
 	int		pipe;
 	int		redirection;
 	int		fd_redirect;
-	struct 	s_cmd *next;
 	char 	*path;
+	t_env	*env;
+	struct 	s_cmd *next;
 } t_cmd;
 
-typedef struct s_env
-{
-	char			*name;
-	struct s_env	*next;
-}	t_env;
+
 
 char	*ft_strtok(char *str, const char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);

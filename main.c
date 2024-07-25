@@ -68,10 +68,10 @@ int main(int argc, char **argv, char **envp)
     t_cmd	*cmd;
     t_cmd	head;
     char	*input;
-    t_env	*env;
+
 
 	cmd = init_cmd();
-	env = initenv(envp);
+	cmd->env = initenv(envp);
 	while (1)
 	{
 		input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
@@ -87,7 +87,7 @@ int main(int argc, char **argv, char **envp)
         if(parse(cmd, input, 0) == 0)
 			exit(1);
         // print_commands(cmd);
-		decider(cmd, envp, env);
+		decider(cmd, envp, cmd->env);
     }
     return 0;
 }
