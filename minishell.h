@@ -40,9 +40,10 @@ int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
 char	*ft_strjoin(char const *s1, char const *s2);
 t_env	*envsearch(t_env *env, char *name);
+char    *remove_quotes(char *input);
+void 	print_commands(t_cmd *head);
 
 //execution
-int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	decider(t_cmd *cmd, char **envp, t_env *env);
 void	ft_pwd(char **envp);

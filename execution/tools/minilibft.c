@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:46:39 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 21:48:11 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:10:20 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 };
+
 
 char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 {

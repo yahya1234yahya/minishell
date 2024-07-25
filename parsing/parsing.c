@@ -43,7 +43,10 @@ int parse(t_cmd *cmd, char *input, int rec)
 	next_word = NULL;
     input = skip_whitespace(input);
     if (rec == 0)
+    {
+        input = remove_quotes(input);
         next_word = ft_strtok(input, " ");
+    }
     else    
         next_word = input;
     if (!next_word) return (0);

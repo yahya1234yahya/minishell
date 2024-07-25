@@ -78,14 +78,16 @@ int main(int argc, char **argv, char **envp)
         input = expand_variables(input);
         if(!input[0])
             continue ;
-        while(check_complete(input) == 0)
+        if(check_complete(input) == 0)
         {
-            input = ft_strjoin(input, " ");
-            input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
+            printf("\033[33merror: incomplete command\033[0m\n");
+            continue;
         }
         if(parse(cmd, input, 0) == 0)
+        {
 			continue ;
-        print_commands(cmd);
+        }
+        
 		decider(cmd, envp, cmd->env);
         free(cmd->args);
         cmd->args = NULL;
