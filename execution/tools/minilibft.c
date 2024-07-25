@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minilibft.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:46:39 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 20:16:11 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:48:11 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_strcmp(const char	*s1, const char	*s2)
 {

@@ -6,11 +6,11 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:45:06 by ymouigui          #+#    #+#             */
-/*   Updated: 2023/11/13 09:18:30 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:49:16 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	lenth(int *len1, int *len2, char const *s1, char const *s2)
 {
