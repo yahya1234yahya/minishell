@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/23 23:21:07 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 01:47:51 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,24 @@ void decider(t_cmd *cmd, char **envp)
 		}
 		ft_echo(cmd);
 	}
+	else if (!ft_strcmp("cd", cmd->cmd))  // hadi ghi test
+		changedir(cmd->args, envp);
+	else if (!ft_strcmp("env", cmd->cmd))
+		printenv(envp);
+	else if (!ft_strcmp("exit", cmd->cmd))
+		exit(0);
+	else
+		notbuilt(cmd);
+	// else if (!ft_strcmp("env", cmd->cmd))
+	// 	printenv(envp);
 	// if (!ft_strcmp("clear", cmd->cmd))
 	// {
 	// 	system("clear");
 	// }
 	// else if(!ft_strcmp("exit", cmd->cmd))
 	// 	exit(0);
-	// else
-	// 	notbuilt(cmd);
 	// if (!ft_strcmp("pwd", cmd->cmd))   //wa9ela fiha mochkill
 	// 	ft_pwd(envp);
 	// if (!ft_strcmp("exit", cmd->cmd))
 	// 	exit(0);
-	// if (!ft_strcmp("cd", cmd->cmd))  // hadi ghi test
-	// {
-	// 	chdir(cmd->args);
-	// }
 }

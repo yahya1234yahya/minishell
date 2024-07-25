@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:46:39 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/07 17:04:32 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:51:36 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,28 @@ void	ft_putstr_fd(char *s, int fd)
 		write (fd, &s[i], 1);
 		i++;
 	}
-}
+};
+
+char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!haystack && len == 0 && needle != NULL)
+		return (NULL);
+	if (needle[i] == '\0')
+		return ((char *)haystack);
+	while (haystack[i])
+	{
+		j = 0;
+		while (haystack[i + j] == needle[j] && (i + j) < len)
+		{
+			if (needle[j + 1] == '\0')
+				return ((char *)(haystack + i));
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+};

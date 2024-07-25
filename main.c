@@ -49,7 +49,8 @@ char *expand_variables(char *input)
 }
 
 
-void print_commands(t_cmd *head) {
+void print_commands(t_cmd *head)
+{
     t_cmd *current = head;
     while (current != NULL) {
         printf("Command: %s\n", current->cmd);
@@ -64,10 +65,13 @@ void print_commands(t_cmd *head) {
 
 int main(int argc, char **argv, char **envp)
 {
-    t_cmd	cmd;
+    t_cmd	*cmd;
     t_cmd	head;
     char	*input;
-    
+    char	**env;
+
+	cmd = init_cmd();
+	env = initenv(envp);
 	while (1)
 	{
 		input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
@@ -80,10 +84,10 @@ int main(int argc, char **argv, char **envp)
             input = ft_strjoin(input, " ");
             input = ft_strjoin(input, readline("\033[31mcontinue\033[0m \033[34m>\033[0m "));
         }
-        if(parse(&cmd, input, 0) == 0)
+        if(parse(cmd, input, 0) == 0)
 			exit(1);
-        // print_commands(&cmd);
-		decider(&cmd, envp);
+        // print_commands(cmd);
+		decider(cmd, env);
     }
     return 0;
 }
