@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:42:32 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/22 02:49:04 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:33:57 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void ft_echo(t_cmd *cmd)
         else
             break;
     }
-    write(1, &cmd->args[i], strlen(&cmd->args[i]));
+    write(cmd->fd_redirect, &cmd->args[i], strlen(&cmd->args[i]));
 	if (!option)
         write(1, "\n", 1);
 }
