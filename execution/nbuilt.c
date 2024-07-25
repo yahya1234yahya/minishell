@@ -40,7 +40,7 @@ static char **prepend_array(char **original, char *new_element)
     return (new_array);
 };
 
-void notbuilt(t_cmd *cmd)
+void notbuilt(t_cmd *cmd, char **envp)
 {
 	int i;
 	int pid;
@@ -57,7 +57,7 @@ void notbuilt(t_cmd *cmd)
 		{
 			pid = fork();
 			if (pid == 0)
-				execve(fixed[0], fixed, NULL);
+				execve(fixed[0], fixed, envp);
 			else
 			{
 				int status;
@@ -68,13 +68,16 @@ void notbuilt(t_cmd *cmd)
 	else
 	{
 		fixed = (char **)malloc(sizeof(char *) * 2);
-		fixed[0] = ft_strjoin("/bin/", cmd->cmd);
+		fixed[0] = cmd->path;
 		fixed[1] = NULL;
-		if (access(fixed[0], X_OK) == 0)
+		if (access(fixed[0],F_OK | X_OK) == 0)
 		{
 			pid = fork();
 			if (pid == 0)
-				execve(fixed[0], fixed, NULL);
+			{
+				if(execve(fixed[0], fixed, envp) == -1)
+					perror("execve");
+			}
 			else
 			{
 				int status;

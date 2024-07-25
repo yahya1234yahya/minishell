@@ -86,7 +86,7 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, 0) == 0)
 			exit(1);
-        // print_commands(cmd);
+        print_commands(cmd);
 		decider(cmd, env);
     }
     return 0;
