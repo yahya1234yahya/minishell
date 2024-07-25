@@ -1,6 +1,5 @@
 
 #include "minishell.h"
-#include <stdio.h>
 
 char *expand_variables(char *input)
 {
@@ -35,8 +34,6 @@ char *expand_variables(char *input)
             value = "";
 		new_len = strlen(expanded) - strlen(varname) - 1 + strlen(value);
 		new_expanded = malloc(new_len + 1);
-        if (!new_expanded) 
-            exit(1);
         strncpy(new_expanded, expanded, start - expanded);
         new_expanded[start - expanded] = '\0';
         strcat(new_expanded, value);
@@ -85,10 +82,7 @@ int main(int argc, char **argv, char **envp)
             continue;
         }
         if(parse(cmd, input, 0) == 0)
-        {
 			continue ;
-        }
-        // print_commands(cmd);
 		decider(cmd, envp);
         free(cmd->args);
         cmd->args = NULL;
