@@ -43,9 +43,9 @@ t_env	*envsearch(t_env *env, char *name);
 char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
+char 	*expand_variables(char *input);
 
 //execution
-int		execute(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	decider(t_cmd *cmd, char **envp);
 void	ft_pwd(t_env *env);
