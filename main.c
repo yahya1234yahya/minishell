@@ -1,52 +1,6 @@
 
 #include "minishell.h"
 
-char *expand_variables(char *input)
-{
-    char	*expanded;
-    char	*pos;
-    char	*start;
-    int		i;
-    char	varname[256];
-    char	*value;
-    int		new_len;
-    char	*new_expanded;
-	
-	expanded = malloc(strlen(input) + 1);
-    if (!expanded)
-	{
-        perror("malloc");
-        exit(1);
-    }
-    strcpy(expanded, input);
-	pos = expanded;
-    while ((pos = strchr(pos, '$')) != NULL)
-	{
-		start = pos;
-        pos++;
-		i = 0;
-        while (*pos && (isalnum(*pos) || *pos == '_'))
-            varname[i++] = *pos++;
-        varname[i] = '\0';
-
-		value = getenv(varname);
-        if (!value)
-            value = "";
-		new_len = strlen(expanded) - strlen(varname) - 1 + strlen(value);
-		new_expanded = malloc(new_len + 1);
-        strncpy(new_expanded, expanded, start - expanded);
-        new_expanded[start - expanded] = '\0';
-        strcat(new_expanded, value);
-        strcat(new_expanded, pos);
-        free(expanded);
-        expanded = new_expanded;
-        pos = expanded + (start - expanded) + strlen(value);
-    }
-    free(input);
-    return expanded;
-}
-
-
 void print_commands(t_cmd *head)
 {
     t_cmd *current = head;
