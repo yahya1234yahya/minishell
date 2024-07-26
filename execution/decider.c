@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   decider.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 22:58:48 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/26 21:09:40 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void decider(t_cmd *cmd, char **envp)
 	}
 	else if (!ft_strcmp("cd", cmd->cmd))
 		changedir(cmd);
+	else if (!ft_strcmp("export", cmd->cmd))
+		ft_export(cmd);
 	else if (!ft_strcmp("env", cmd->cmd))
 		printenv(cmd->env);
 	else if (!ft_strcmp("exit", cmd->cmd))

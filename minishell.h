@@ -34,7 +34,7 @@ typedef struct s_cmd
 } t_cmd;
 
 
-
+void ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, const char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);

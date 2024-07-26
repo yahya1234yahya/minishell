@@ -28,11 +28,11 @@ char *expand_variables(char *input)
     while (input[i])
     {
       
-        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i))
+        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i) && input[i + 1] != '$')
         {
             i++;
             j = i;
-            while (input[j] && input[j] != ' ' && input[i] != '\'' && input[i] != '"')
+            while (input[j] && input[j] != ' ' && input[i] != '\'' && input[i] != '"' && input[i] != '$')
                 j++;
             name = malloc(j - i + 1);
             z = 0;
@@ -59,11 +59,11 @@ char *expand_variables(char *input)
     new_input = malloc(length + 1);
     while (input[i])
     {
-        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i))
+        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i) && input[i + 1] != '$')
         {
             i++;
             int start = i;
-            while (input[i] && input[i] != ' ' && input[i] != '\'' && input[i] != '"')
+            while (input[i] && input[i] != ' ' && input[i] != '\'' && input[i] != '"' && input[i] != '$')
                 i++;
             name = malloc(i - start + 1);
             strncpy(name, &input[start], i - start);
