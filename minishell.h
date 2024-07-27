@@ -44,6 +44,7 @@ char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
 char 	*expand_variables(char *input);
+int index_char(char *str);
 
 //execution
 void	ft_echo(t_cmd *cmd);

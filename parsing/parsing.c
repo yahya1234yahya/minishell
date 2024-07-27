@@ -36,11 +36,9 @@ int is_valid_command(t_cmd *cmd, char *word)
 
 int parse(t_cmd *cmd, char *input, int rec)
 {
-   
     char *next_word;
     int flags;
-    
-	next_word = NULL;
+    next_word = NULL;
     input = skip_whitespace(input);
     if (rec == 0)
     {
@@ -74,8 +72,9 @@ int parse(t_cmd *cmd, char *input, int rec)
             parse(cmd->next, next_word, 1);
             break;
 
-        } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0) {
-            cmd->redirection = 1;
+        } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
+        {
+            cmd->redirection = index_char(next_word);
             next_word = ft_strtok(NULL, " ");
             if (next_word == NULL)
 			{
