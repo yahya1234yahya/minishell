@@ -34,7 +34,7 @@ typedef struct s_cmd
 } t_cmd;
 
 
-void ft_export(t_cmd *cmd);
+void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, const char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
@@ -55,6 +55,9 @@ void 	changedir(t_cmd *cmd);
 t_cmd	*init_cmd(void);
 void	printenv(t_env *env);
 t_env	*envset(t_env *env, char *name, char *value);
+t_env	*ft_lstnew(void *content);
+void	ft_lstadd_back(t_env **lst, t_env *newnode);
+void	ft_unset(t_env **env, t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);

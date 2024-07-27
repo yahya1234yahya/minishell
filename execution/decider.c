@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   decider.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/26 21:21:20 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/27 01:35:42 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ void decider(t_cmd *cmd, char **envp)
 		printenv(cmd->env);
 	else if (!ft_strcmp("exit", cmd->cmd))
 		exit(0);
-	else if (!ft_strcmp("pwd", cmd->cmd))   //wa9ela fiha mochkill
+	else if (!ft_strcmp("pwd", cmd->cmd))
 		ft_pwd(cmd->env);
+	else if (!ft_strcmp("unset", cmd->cmd))
+		ft_unset(&cmd->env, cmd);
 	else
 		notbuilt(cmd, envp);
-
-	// if (!ft_strcmp("exit", cmd->cmd))
-	// 	exit(0);
 }
