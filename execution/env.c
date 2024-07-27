@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static t_env	*ft_lstnew(void *content)
+t_env	*ft_lstnew(void *content)
 {
 	t_env	*node;
 
@@ -12,19 +12,19 @@ static t_env	*ft_lstnew(void *content)
 	return (node);
 };
 
-static void	ft_lstadd_back(t_env **lst, t_env *new)
+void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
 
 	if (!*lst)
 	{
-		*lst = new;
+		*lst = newnode;
 		return ;
 	}
 	last = *lst;
 	while (last->next)
 		last = last->next;
-	last->next = new;
+	last->next = newnode;
 };
 
 void printenv(t_env *env)

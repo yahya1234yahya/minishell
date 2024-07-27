@@ -37,6 +37,7 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, 0) == 0)
 			continue ;
+		print_commands(cmd);
 		decider(cmd, envp);
         free(cmd->args);
         cmd->args = NULL;
