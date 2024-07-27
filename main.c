@@ -20,6 +20,7 @@ int main(int argc, char **argv, char **envp)
     t_cmd	*cmd;
     t_cmd	head;
     char	*input;
+    char	*word;
 
     cmd = init_cmd();
 	cmd->env = initenv(envp);
@@ -37,10 +38,12 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, 0) == 0)
 			continue ;
-		print_commands(cmd);
+		// print_commands(cmd);
+        // printf("cmd->redirection : %d\n", cmd->redirection);
 		decider(cmd, envp);
         free(cmd->args);
         cmd->args = NULL;
+
     }
     return 0;
 }
