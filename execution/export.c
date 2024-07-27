@@ -1,4 +1,6 @@
 #include "../minishell.h"
+#include <stdio.h>
+#include <string.h>
 
 // void ft_export(t_cmd *cmd)
 // {
@@ -35,9 +37,11 @@ void	ft_unset(t_env	**env, t_cmd *cmd)
 {
 	t_env *tmp;
 	t_env *runner;
+	char **split;
 	
+	split = ft_split(cmd->args, '=');
 	tmp = *env;
-	if (!ft_strcmp(tmp->name,cmd->args)) 
+	if (!strncmp(tmp->name,split[0], ft_strlen(split[0]))) 
 	{
 		*env = tmp->next;
 		free(tmp);
@@ -46,7 +50,7 @@ void	ft_unset(t_env	**env, t_cmd *cmd)
 	while (tmp)
 	{
 		runner = tmp->next;
-		if (runner && !ft_strcmp(runner->name, cmd->args))
+		if (runner && !strncmp(runner->name, split[0], ft_strlen(split[0])))
 		{
 			tmp->next = runner->next;
 			free(runner);
