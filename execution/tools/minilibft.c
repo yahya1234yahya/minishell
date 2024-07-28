@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minilibft.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:46:39 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 21:48:11 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/07/28 06:01:20 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 	return (NULL);
 };
 
-size_t ft_strlen(const char *s)
+size_t ft_strlen( char *s)
 {
 	size_t i;
 

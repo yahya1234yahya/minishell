@@ -14,6 +14,7 @@
 #include <libc.h>
 #include <ctype.h>
 // # include <sys/wait.h>
+#define BUFFER_SIZE 200
 
 typedef struct s_env
 {
@@ -38,7 +39,7 @@ void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char  *s1, char  *s2);
 t_env	*envsearch(t_env *env, char *name);
 char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
@@ -59,13 +60,21 @@ t_env	*envset(t_env *env, char *name, char *value);
 t_env	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_env **lst, t_env *newnode);
 void	ft_unset(t_env **env, t_cmd *cmd);
+char	*get_next_line2(char **line, char **rem, char **buf, int fd);
+int	newcheck(char *str);
+char	*ft_strdup(char *s1);
+size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
+char	*get_next_line(int fd);
+char	*ft_cutfront(char *line);
+char	*ft_cutback(char *line);
+t_cmd	*redirectchange(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);
 int		ft_strcmp(const char	*s1, const char	*s2);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strnstr(char	*haystack, char	*needle, size_t	len);
-size_t ft_strlen(const char *s);
+size_t	ft_strlen( char *s);
 // echo with -n option
 // cd with relative or absolute path
 // pwd with no options

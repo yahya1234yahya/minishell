@@ -78,14 +78,17 @@ int parse(t_cmd *cmd, char *input, int rec)
             next_word = ft_strtok(NULL, " ");
             if (next_word == NULL)
 			{
-                printf("\033[33merror: expected filename after redirection \033[0m\n\n");
+                printf("\033[33merror: expected filename after redirection \033[0m\n");
                 return (0);
             }
-			flags = O_RDWR | O_CREAT | O_APPEND;
+			if (strcmp(next_word, "<") == 0)
+				flags = O_RDONLY;
+			else
+				flags = O_RDWR | O_CREAT | O_APPEND;
             cmd->fd_redirect = open(next_word, flags, 0644);
             if (cmd->fd_redirect == -1)
 			{
-                printf("\033[33merror: can't open file \033[0m\n\n");
+                printf("\033[33merror: can't open file \033[0m\n");
                 return (0);
             }
         } else
