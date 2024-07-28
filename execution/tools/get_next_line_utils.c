@@ -6,21 +6,12 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 15:57:04 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/28 05:31:44 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/28 06:01:14 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-size_t	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize)
 {
