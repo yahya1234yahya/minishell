@@ -81,7 +81,7 @@ int parse(t_cmd *cmd, char *input, int rec)
                 printf("\033[33merror: expected filename after redirection \033[0m\n\n");
                 return (0);
             }
-			flags = O_WRONLY | O_CREAT | O_APPEND;
+			flags = O_RDWR | O_CREAT | O_APPEND;
             cmd->fd_redirect = open(next_word, flags, 0644);
             if (cmd->fd_redirect == -1)
 			{
