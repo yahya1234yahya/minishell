@@ -6,8 +6,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 #include <stdbool.h> 
-
-
 #include <fcntl.h>
 #include <unistd.h>
 # include <stdbool.h> 
@@ -37,7 +35,7 @@ typedef struct s_cmd
 
 
 void 	ft_export(t_cmd *cmd);
-char	*ft_strtok(char *str, const char *delim);
+char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, int rec);
 int		check_complete(const char *input);
 char	*ft_strjoin(char const *s1, char const *s2);
