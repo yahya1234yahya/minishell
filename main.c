@@ -45,5 +45,5 @@ int main(int argc, char **argv, char **envp)
         cmd->args = NULL;
 
     }
-    return 0;
+    return (0);
 }

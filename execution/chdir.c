@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 23:43:45 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 23:51:07 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:24:59 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ void changedir(t_cmd *cmd)
 	if (cmd->args == NULL)
 	{
 		home = ft_split(envsearch(cmd->env, "HOME")->name, '=');
+		if (!home[1] || !home[0])
+		{
+			ft_putstr_fd("HOME not set\n", 2);
+			return ;
+		};
 		if (chdir(home[1]) == -1)
 		{
 			perror("chdir");
-			return ;
+			exit(1);
 		};
 		envset(cmd->env, "OLDPWD", oldpwd);
 		envset(cmd->env, "PWD",home[1]);

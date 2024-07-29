@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:50:10 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/28 05:32:07 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:27:07 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@ char	*ft_strjoin(char	*s1, char	*s2)
 	s2len = ft_strlen(s2);
 	str = (char *)malloc(s1len + s2len + 1);
 	if (!str)
-		return (free(s1), NULL);
+		return ( NULL);
 	ft_strlcpy (str, s1, s1len + 1);
 	ft_strlcpy (str + s1len, s2, s2len + 1);
-	free(s1);
-	s1 = NULL;
 	return (str);
 }
 

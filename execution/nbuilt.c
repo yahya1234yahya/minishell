@@ -20,6 +20,33 @@ int	calculateargs(t_cmd *cmd)
 	return (i);
 };
 
+char	**convert(t_cmd *cmd)
+{
+	t_env *tmp;
+	char **ret;
+	int i;
+	int j;
+
+	i = 0;
+	tmp = cmd->env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	};
+	ret = (char **)malloc(sizeof(char *) * (i + 1));
+	j = 0;
+	tmp = cmd->env;
+	while (j < i)
+	{
+		ret[j] = tmp->name;
+		j++;
+		tmp = tmp->next;
+	};
+	ret[j] = NULL;
+	return (ret);
+};
+
 
 static char **prepend_array(char **original, char *new_element)
 {
@@ -47,6 +74,7 @@ void notbuilt(t_cmd *cmd, char **envp)
 	char **fixed;
 	char **splited;
 
+	char **envvv = convert(cmd);
 	if (cmd->args != NULL)
 	{
 		i = calculateargs(cmd);
@@ -57,7 +85,7 @@ void notbuilt(t_cmd *cmd, char **envp)
 		{
 			pid = fork();
 			if (pid == 0)
-				execve(fixed[0], fixed, envp);
+				execve(fixed[0], fixed, envvv);
 			else
 			{
 				int status;
@@ -75,7 +103,7 @@ void notbuilt(t_cmd *cmd, char **envp)
 			pid = fork();
 			if (pid == 0)
 			{
-				if(execve(fixed[0], fixed, envp) == -1)
+				if(execve(fixed[0], fixed, envvv) == -1)
 					perror("execve");
 			}
 			else
@@ -85,4 +113,4 @@ void notbuilt(t_cmd *cmd, char **envp)
 			}
 		}
 	}
-}
+};

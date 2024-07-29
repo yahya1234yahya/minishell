@@ -68,6 +68,7 @@ char	*get_next_line(int fd);
 char	*ft_cutfront(char *line);
 char	*ft_cutback(char *line);
 t_cmd	*redirectchange(t_cmd *cmd);
+char	**convert(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);

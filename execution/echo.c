@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:42:32 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/25 22:58:05 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:04:48 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ void ft_echo(t_cmd *cmd)
 	
 	i = 0;
 	option = 0;
+	if (cmd->args == NULL)
+	{
+		write(cmd->fd_redirect, "\n", 1);
+		return ;
+	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
     {
         j = i + 2;

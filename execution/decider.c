@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:44:19 by mboughra          #+#    #+#             */
-/*   Updated: 2024/07/28 06:04:18 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:04:57 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,11 @@
 
 void decider(t_cmd *cmd, char **envp)
 {
-	if (cmd->redirection == 1)
-	{
-		cmd = redirectchange(cmd);
-	}
+	// if (cmd->redirection == 1)
+	// 	cmd = redirectchange(cmd);
 	
 	if (!ft_strcmp("echo", cmd->cmd))
-	{
-		if (cmd->args == NULL)
-		{
-			write(cmd->fd_redirect,"\n",1);
-			return ; //TODO HANDLE THE CASE OF -n and empty
-		}
 		ft_echo(cmd);
-	}
 	else if (!ft_strcmp("cd", cmd->cmd))
 		changedir(cmd);
 	else if (!ft_strcmp("export", cmd->cmd))
