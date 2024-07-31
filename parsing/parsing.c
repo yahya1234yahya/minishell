@@ -1,5 +1,18 @@
 #include "../minishell.h"
 
+static int redirectionhelper(t_cmd *cmd)
+{
+	if (cmd->redirection == 1)
+		return (O_RDONLY);
+	else if (cmd->redirection == 2)
+		return (O_RDWR | O_CREAT | O_TRUNC);
+	else if (cmd->redirection == 3)
+		return (O_RDWR | O_CREAT | O_APPEND);
+	else if (cmd->redirection == 4)
+		return (O_RDWR | O_CREAT | O_APPEND);
+	return (0);
+};
+
 char *skip_whitespace(char *str)
 {
     while (isspace(*str)) str++;
@@ -81,20 +94,7 @@ int parse(t_cmd *cmd, char *input, int rec)
                 printf("\033[33merror: expected filename after redirection \033[0m\n");
                 return (0);
             }
-			if (cmd->redirection == 1)
-				flags = O_RDONLY;
-			else if (cmd->redirection == 2)
-			{
-				flags = O_RDWR | O_CREAT | O_TRUNC;
-			}
-			else if (cmd->redirection == 3)
-			{
-				flags = O_RDWR | O_CREAT | O_APPEND;
-			}
-			else if (cmd->redirection == 4)
-			{
-				flags = O_RDWR | O_CREAT | O_APPEND;
-			}
+			flags = redirectionhelper(cmd);
             cmd->fd_redirect = open(next_word, flags, 0644);
             if (cmd->fd_redirect == -1)
 			{
