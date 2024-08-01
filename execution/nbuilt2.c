@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 03:18:44 by mboughra          #+#    #+#             */
-/*   Updated: 2024/08/01 03:19:49 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/08/01 03:27:06 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmd->redirection == 2)
+			if (cmd->redirection > 0)
 			{
 				dup2(cmd->fd_redirect, STDOUT_FILENO);
 				close(cmd->fd_redirect);
@@ -55,9 +55,9 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmd->redirection == 2)
+			if (cmd->redirection > 0)
 			{
-				dup2(cmd->fd_redirect, 1);
+				dup2(cmd->fd_redirect, STDOUT_FILENO);
 				close(cmd->fd_redirect);
             }
 			execve(fixed[0], fixed, env);
