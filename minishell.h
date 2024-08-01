@@ -61,7 +61,7 @@ t_env	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_env **lst, t_env *newnode);
 void	ft_unset(t_env **env, t_cmd *cmd);
 char	*get_next_line2(char **line, char **rem, char **buf, int fd);
-int	newcheck(char *str);
+int		newcheck(char *str);
 char	*ft_strdup(char *s1);
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*get_next_line(int fd);
@@ -69,6 +69,10 @@ char	*ft_cutfront(char *line);
 char	*ft_cutback(char *line);
 t_cmd	*redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
+void	args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited);
+void	noargs(t_cmd *cmd, char **envp, char **fixed, char **splited);
+char	**prepend_array(char **original, char *new_element);
+int		calculateargs(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);

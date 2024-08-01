@@ -1,0 +1,11 @@
+Archive
+Makefile
+README.MD
+execution
+main.c
+minishell
+minishell.h
+parsing
+test.c
+test1.c
+text.txt

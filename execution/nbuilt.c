@@ -48,7 +48,7 @@ char	**convert(t_cmd *cmd)
 };
 
 
-static char **prepend_array(char **original, char *new_element)
+char **prepend_array(char **original, char *new_element)
 {
     int i;
     int original_size = 0;
@@ -65,52 +65,97 @@ static char **prepend_array(char **original, char *new_element)
     new_array[original_size + 1] = NULL;
 
     return (new_array);
-};
+}
 
-void notbuilt(t_cmd *cmd, char **envp)
+void	notbuilt(t_cmd *cmd, char **envp)
 {
 	int i;
-	int pid;
 	char **fixed;
 	char **splited;
 
-	char **envvv = convert(cmd);
-	if (cmd->args != NULL)
-	{
-		i = calculateargs(cmd);
-		fixed = (char **)malloc(sizeof(char *) * (i + 2));
-		splited = ft_split(cmd->args, ' ');
-		fixed = prepend_array(splited, cmd->path);
-		if (access(fixed[0], X_OK) == 0)
-		{
-			pid = fork();
-			if (pid == 0)
-				execve(fixed[0], fixed, envvv);
-			else
-			{
-				int status;
-				wait(&status);
-			}
-		}
-	}
+	if (cmd->args)
+		args(cmd, envp, i, fixed, splited);
 	else
-	{
-		fixed = (char **)malloc(sizeof(char *) * 2);
-		fixed[0] = cmd->path;
-		fixed[1] = NULL;
-		if (access(fixed[0],F_OK | X_OK) == 0)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if(execve(fixed[0], fixed, envvv) == -1)
-					perror("execve");
-			}
-			else
-			{
-				int status;
-				wait(&status);
-			}
-		}
-	}
+		noargs(cmd, envp, fixed, splited);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void notbuilt(t_cmd *cmd, char **envp)
+// {
+// 	int i;
+// 	int pid;
+// 	char **fixed;
+// 	char **splited;
+// 	char **envvv = convert(cmd);
+
+// 	if (cmd->args != NULL)
+// 	{
+// 		i = calculateargs(cmd);
+// 		fixed = (char **)malloc(sizeof(char *) * (i + 2));
+// 		splited = ft_split(cmd->args, ' ');
+// 		fixed = prepend_array(splited, cmd->path);
+// 		if (access(fixed[0], X_OK) == 0)
+// 		{
+// 			pid = fork();
+// 			if (pid == 0)
+// 			{
+// 				if (cmd->redirection == 2)
+//                 {
+//                     dup2(cmd->fd_redirect, STDOUT_FILENO);
+//                     close(cmd->fd_redirect);
+//                 }
+// 				execve(fixed[0], fixed, envvv);
+// 			}
+// 			else
+// 			{
+// 				int status;
+// 				wait(&status);
+// 			}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		fixed = (char **)malloc(sizeof(char *) * 2);
+// 		fixed[0] = cmd->path;
+// 		fixed[1] = NULL;
+// 		if (access(fixed[0],F_OK | X_OK) == 0)
+// 		{
+// 			pid = fork();
+// 			if (pid == 0)
+// 			{
+// 				if (cmd->redirection == 2)
+//                 {
+//                     dup2(cmd->fd_redirect, 1);
+//                     close(cmd->fd_redirect);
+//                 }
+// 				execve(fixed[0], fixed, envvv);
+// 				if (execve(fixed[0], fixed, envvv) == -1)
+// 					perror("execve");
+// 			}
+// 			else
+// 			{
+// 				int status;
+// 				wait(&status);
+// 			}
+// 		}
+// 	}
+// };
