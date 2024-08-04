@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **envp)
             printf("\033[33merror: incomplete command\033[0m\n");
             continue;
         }
-        if(parse(cmd, input, 0) == 0)
+        if(parse(cmd, input, envp, 0) == 0)
 			continue ;
 		// print_commands(cmd);
         printf("cmd->redirection : %d\n", cmd->redirection);

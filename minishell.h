@@ -11,7 +11,6 @@
 # include <stdbool.h> 
 # include <unistd.h>
 # include <sys/types.h>
-#include <libc.h>
 #include <ctype.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
@@ -37,7 +36,7 @@ typedef struct s_cmd
 
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
-int		parse(t_cmd *cmd, char *input, int rec);
+int		parse(t_cmd *cmd, char *input, char **envp, int rec);
 int		check_complete(const char *input);
 char	*ft_strjoin(char  *s1, char  *s2);
 t_env	*envsearch(t_env *env, char *name);

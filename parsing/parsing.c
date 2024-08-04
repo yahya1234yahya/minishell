@@ -47,7 +47,7 @@ int is_valid_command(t_cmd *cmd, char *word)
     return 0;
 }
 
-int parse(t_cmd *cmd, char *input, int rec)
+int parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
     char *next_word;
     int flags;
@@ -64,8 +64,11 @@ int parse(t_cmd *cmd, char *input, int rec)
 
         next_word = ft_strtok(input, " ");
     }
-    else    
+    else
+    {
+        cmd->env = initenv(envp);
         next_word = input;
+    }
     if (!next_word) return (0);
 
     if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word) && strcmp("unset", next_word) && strcmp("export", next_word) && strcmp("set", next_word))
@@ -82,7 +85,7 @@ int parse(t_cmd *cmd, char *input, int rec)
             cmd->pipe = 1;
             cmd->next = (t_cmd *)malloc(sizeof(t_cmd));
             next_word = ft_strtok(NULL, " ");
-            parse(cmd->next, next_word, 1);
+            parse(cmd->next, next_word, envp, 1);
             break;
 
         } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
