@@ -38,7 +38,7 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, envp, 0) == 0)
 			continue ;
-		// print_commands(cmd);
+		print_commands(cmd);
         printf("cmd->redirection : %d\n", cmd->redirection);
 		decider(cmd, envp);
         free(cmd->args);

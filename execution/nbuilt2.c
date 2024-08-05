@@ -28,12 +28,18 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmd->redirection > 0)
+			if (cmd->redirection == 2 || cmd->redirection == 3)
 			{
 				dup2(cmd->fd_redirect, STDOUT_FILENO);
 				close(cmd->fd_redirect);
 			}
-			execve(fixed[0], fixed, env);
+			else if (cmd->redirection == 1)
+			{
+				dup2(cmd->fd_redirect, STDIN_FILENO);
+    			close(cmd->fd_redirect);	
+			}
+			if (execve(fixed[0], fixed, env) == -1)
+				perror("execve");
 		}
 		else
 			wait(&status);
@@ -55,12 +61,16 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmd->redirection > 0)
+			if (cmd->redirection == 2 || cmd->redirection == 3)
 			{
 				dup2(cmd->fd_redirect, STDOUT_FILENO);
 				close(cmd->fd_redirect);
             }
-			execve(fixed[0], fixed, env);
+			else if (cmd->redirection == 1)
+			{
+				dup2(cmd->fd_redirect, STDIN_FILENO);
+				close(cmd->fd_redirect);	
+			}
 			if (execve(fixed[0], fixed, env) == -1)
 				perror("execve");
 		}
