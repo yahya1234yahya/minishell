@@ -26,6 +26,12 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 	if (access(fixed[0], X_OK) == 0)
 	{
 		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			return ;
+		}
+		perror("fork");
 		if (pid == 0)
 		{
 			if (cmd->redirection == 2 || cmd->redirection == 3)
@@ -59,6 +65,11 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 	if (access(fixed[0],F_OK | X_OK) == 0)
 	{
 		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			return ;
+		}
 		if (pid == 0)
 		{
 			if (cmd->redirection == 2 || cmd->redirection == 3)
