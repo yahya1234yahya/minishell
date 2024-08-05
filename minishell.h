@@ -12,6 +12,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 #include <ctype.h>
+#include <string.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
