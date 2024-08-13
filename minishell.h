@@ -30,6 +30,7 @@ typedef struct s_cmd
 	int		redirection;
 	int		fd_redirect;
 	char 	*path;
+	char	*hdoc;
 	t_env	*env;
 	struct 	s_cmd *next;
 } t_cmd;
@@ -67,12 +68,17 @@ size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*get_next_line(int fd);
 char	*ft_cutfront(char *line);
 char	*ft_cutback(char *line);
-t_cmd	*redirectchange(t_cmd *cmd);
+void	redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
 void	args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited);
 void	noargs(t_cmd *cmd, char **envp, char **fixed, char **splited);
 char	**prepend_array(char **original, char *new_element);
 int		calculateargs(t_cmd *cmd);
+t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
+
+//
+// void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp);
+int nodeslen(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);

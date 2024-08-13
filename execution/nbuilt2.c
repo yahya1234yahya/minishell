@@ -31,19 +31,10 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 			perror("fork");
 			return ;
 		}
-		perror("fork");
 		if (pid == 0)
 		{
-			if (cmd->redirection == 2 || cmd->redirection == 3)
-			{
-				dup2(cmd->fd_redirect, STDOUT_FILENO);
-				close(cmd->fd_redirect);
-			}
-			else if (cmd->redirection == 1)
-			{
-				dup2(cmd->fd_redirect, STDIN_FILENO);
-    			close(cmd->fd_redirect);	
-			}
+			if (cmd->redirection != 0)
+			redirectchange(cmd);
 			if (execve(fixed[0], fixed, env) == -1)
 				perror("execve");
 		}
@@ -60,8 +51,11 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 	
 	env = convert(cmd);
 	fixed = (char **)malloc(sizeof(char *) * 2);
+	if (cmd->redirection == 4)
+		fixed[1] = cmd->hdoc;
+	else
+		fixed[1] = NULL;
 	fixed[0] = cmd->path;
-	fixed[1] = NULL;
 	if (access(fixed[0],F_OK | X_OK) == 0)
 	{
 		pid = fork();
@@ -72,20 +66,12 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 		}
 		if (pid == 0)
 		{
-			if (cmd->redirection == 2 || cmd->redirection == 3)
-			{
-				dup2(cmd->fd_redirect, STDOUT_FILENO);
-				close(cmd->fd_redirect);
-            }
-			else if (cmd->redirection == 1)
-			{
-				dup2(cmd->fd_redirect, STDIN_FILENO);
-				close(cmd->fd_redirect);	
-			}
+			if (cmd->redirection != 0)
+				redirectchange(cmd);
 			if (execve(fixed[0], fixed, env) == -1)
 				perror("execve");
 		}
 		else
 			wait(&status);
 	}
-};
+}
