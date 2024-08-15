@@ -49,26 +49,16 @@ void parent_process(int pipefd[2], char* command)
 
 int main(int argc, char* argv[])
 {
-	if (argc < 3) {
-		printf("Usage: %s <command1>  <command2>\n", argv[0]);
-		return 1;
-	}
-
-	int pipefd[2];
 	pid_t pid;
+	int pipefd[2];
 
-	if (pipe(pipefd) == -1)
+	if (argc < 3)
 	{
-		perror("pipe");
-		return 1;
+		printf("Usage: %s <command1>  <command2>\n", argv[0]);
+		return -1;
 	}
-
+	pipe(pipefd);
 	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return 1;
-	}
 	char *cmd1 = strjoin("/bin/", argv[1]);
 	char *cmd2 = strjoin("/bin/", argv[2]);
 	if (pid == 0)
