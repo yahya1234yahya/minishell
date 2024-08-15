@@ -63,19 +63,22 @@ char	**convert(t_cmd *cmd)
 char **prepend_array(char **original, char *new_element)
 {
     int i;
-    int original_size = 0;
+    int original_size;
+    char **new_array;
 
-    while (original[original_size] != NULL) {
+	original_size = 0;
+    while (original[original_size] != NULL)
         original_size++;
-    }
-    char **new_array = (char **)malloc(sizeof(char *) * (original_size + 2));
+	new_array = (char **)malloc(sizeof(char *) * (original_size + 2));
     new_array[0] = (char *)malloc(strlen(new_element) + 1);
-    strcpy(new_array[0], new_element);
-    for (i = 0; i < original_size; i++) {
-        new_array[i + 1] = original[i];
-    }
+    strcpy(new_array[0], new_element); //ft_strcpy
+	i = 0;
+	while (i < original_size)
+	{
+		new_array[i + 1] = original[i];
+		i++;
+	}
     new_array[original_size + 1] = NULL;
-
     return (new_array);
 }
 

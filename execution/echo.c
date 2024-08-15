@@ -51,7 +51,6 @@ static int echohelper(t_cmd *cmd)
 
 void ft_echo(t_cmd *cmd)
 {
-
     int option;
     int i;
 	int	j;
@@ -80,5 +79,5 @@ void ft_echo(t_cmd *cmd)
     }
     write(cmd->fd_redirect, &cmd->args[i], strlen(&cmd->args[i]));
 	if (!option)
-        write(cmd->fd_redirect, "\n", 1);
+        write(1, "\n", 1);
 }

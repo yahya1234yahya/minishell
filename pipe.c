@@ -57,6 +57,7 @@ int main(int argc, char* argv[])
 		printf("Usage: %s <command1>  <command2>\n", argv[0]);
 		return -1;
 	}
+	// 0 is read end, 1 is write end
 	pipe(pipefd);
 	pid = fork();
 	char *cmd1 = strjoin("/bin/", argv[1]);

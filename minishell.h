@@ -22,6 +22,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_data
+{
+	int 	originalfd[2];
+	int 	pipedfd[2];
+} t_data;
+
 typedef struct s_cmd
 {
 	char	*cmd;
@@ -32,9 +38,9 @@ typedef struct s_cmd
 	char 	*path;
 	char	*hdoc;
 	t_env	*env;
+	t_data	data;
 	struct 	s_cmd *next;
 } t_cmd;
-
 
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
@@ -75,6 +81,7 @@ void	noargs(t_cmd *cmd, char **envp, char **fixed, char **splited);
 char	**prepend_array(char **original, char *new_element);
 int		calculateargs(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
+int filedreset(int input, int output);
 
 //
 // void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp);

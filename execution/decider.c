@@ -12,6 +12,19 @@
 
 #include "../minishell.h"
 
+int nodeslen(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	while (cmd)
+	{
+		i++;
+		cmd = cmd->next;
+	}
+	return (i);
+}
+
 void redirectchange(t_cmd *cmd)
 {
 	if (cmd->redirection == 2 || cmd->redirection == 3)
@@ -26,17 +39,8 @@ void redirectchange(t_cmd *cmd)
 	}
 }
 
-void decider(t_cmd *cmd, char **envp)
+static int isbuiltin(t_cmd *cmd)
 {
-	t_cmd	*tmp;
-	int 	count;
-	tmp = cmd;
-	count = 0;
-	while (tmp->pipe == 1)
-	{
-	};
-	printf("count = %d\n", count);
-	
 	if (!ft_strcmp("echo", cmd->cmd))
 		ft_echo(cmd);
 	else if (!ft_strcmp("cd", cmd->cmd))
@@ -52,22 +56,65 @@ void decider(t_cmd *cmd, char **envp)
 	else if (!ft_strcmp("unset", cmd->cmd))
 		ft_unset(&cmd->env, cmd);
 	else
+		return (-1);
+	return (0);
+}
+static 	void	executesingle(t_cmd *cmd , char **envp)
+{
+	// if (cmd->redirection != 0)
+	// {
+	// 	printf("--------------------\n--->%d<---\n--->%d<---\n", STDIN_FILENO, STDOUT_FILENO);
+	// 	cmd->data.originalfd[0] = dup(STDIN_FILENO);
+	// 	cmd->data.originalfd[1] = dup(STDOUT_FILENO);
+	// 	redirectchange(cmd);
+	// }
+	if (isbuiltin(cmd) == -1)
 		notbuilt(cmd, envp);
+	//reset file descriptors
+	// if (cmd->redirection != 0)
+	// 	filedreset(cmd->data.originalfd[0], cmd->data.originalfd[1]);
+}
+
+static void executemultiple(t_cmd *cmd , char **envp)
+{
+
+}
+/*
+	int input;
+	int output;
+	
+	if (cmd->redirection != 0)
+	{
+		input = dup(STDIN_FILENO);
+		output = dup(STDOUT_FILENO);
+		redirectchange(cmd);
+	}*/
+
+
+int filedreset(int input, int output)
+{
+	dup2(input, STDIN_FILENO);
+	dup2(output, STDOUT_FILENO);
+	close(input);
+	close(output);
+	return (0);
 };
 
-
-int nodeslen(t_cmd *cmd)
+void decider(t_cmd *cmd, char **envp)
 {
-	int i;
 
-	i = 0;
-	while (cmd)
+	if (cmd->next == NULL)
 	{
-		i++;
-		cmd = cmd->next;
+		// ft_export(cmd);
+		executesingle(cmd, envp);
 	}
-	return (i);
+	else
+	{
+		executemultiple(cmd, envp);
+	}
+	// printf("--------------------\n--->%d<---\n--->%d<---\n", cmd->data.originalfd[0], cmd->data.originalfd[1]);
 }
+
 
 // void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp)  //deleteme or change me
 // {
