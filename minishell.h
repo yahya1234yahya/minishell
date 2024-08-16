@@ -81,7 +81,8 @@ void	noargs(t_cmd *cmd, char **envp, char **fixed, char **splited);
 char	**prepend_array(char **original, char *new_element);
 int		calculateargs(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
-int filedreset(int input, int output);
+int		filedreset(int input, int output);
+void	execfromsystem(t_cmd *cmd, char **envp);
 
 //
 // void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp);

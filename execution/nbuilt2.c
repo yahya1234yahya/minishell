@@ -18,7 +18,6 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 	char **env;
 	int status;
 
-	env = convert(cmd);
 	i = calculateargs(cmd);
 	fixed = (char **)malloc(sizeof(char *) * (i + 2));
 	splited = ft_split(cmd->args, ' ');
@@ -33,7 +32,7 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 		}
 		if (pid == 0)
 		{
-			if (execve(fixed[0], fixed, env) == -1)
+			if (execve(fixed[0], fixed, envp) == -1)
 				perror("execve");
 		}
 		else
@@ -47,10 +46,9 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 	int pid;
 	char **env;
 	
-	env = convert(cmd);
 	fixed = (char **)malloc(sizeof(char *) * 2);
 	if (cmd->redirection == 4)
-		fixed[1] = cmd->hdoc;
+		fixed[1] = cmd->hdoc;					//might come handy LATER
 	else
 		fixed[1] = NULL;
 	fixed[0] = cmd->path;
@@ -64,10 +62,54 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 		}
 		if (pid == 0)
 		{
-			if (execve(fixed[0], fixed, env) == -1)
+			if (execve(fixed[0], fixed, envp) == -1)
 				perror("execve");
 		}
 		else
 			wait(&status);
+	}
+}
+
+static void helperfunction(t_cmd **cmd, char ***fixed,char ***splited)
+{
+	int i;
+
+	if ((*cmd)->args)
+	{
+		*splited = ft_split((*cmd)->args, ' ');
+		i = 0;
+		while (splited[i])
+			i++;
+		*fixed = (char **)malloc(sizeof(char *) * (i + 2));
+		*fixed = prepend_array(*splited, (*cmd)->path);
+	}else
+	{
+		*fixed = (char **)malloc(sizeof(char *) * 2);
+		(*fixed)[0] = (*cmd)->path;
+		(*fixed)[1] = NULL;
+	};
+}
+void execfromsystem(t_cmd *cmd, char **envp)
+{
+	int pid;
+	char **fixed;
+	char **splited;
+
+	helperfunction(&cmd, &fixed, &splited);
+	if (access(fixed[0], X_OK | F_OK) == 0)
+	{
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(1);
+		}
+		if (pid == 0)
+		{
+			if (execve(fixed[0], fixed, envp) == -1)
+				perror("execve");
+		}
+		else
+			waitpid(pid, NULL, 0);
 	}
 }

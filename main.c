@@ -24,10 +24,11 @@ int main(int argc, char **argv, char **envp)
 
     cmd = init_cmd();
 	cmd->env = initenv(envp);
+	char **envpconverted = convert(cmd);
 	while (1)
 	{
 		input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
-		if (input)
+		if (input != NULL)
 			add_history(input);
         input = expand_variables(input);
         if(!input[0])
@@ -39,9 +40,9 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, envp, 0) == 0)
 			continue ;
-		print_commands(cmd);
-        printf("cmd->redirection : %d\n", cmd->redirection);
-		decider(cmd, envp);
+		// print_commands(cmd);
+        // printf("cmd->redirection : %d\n", cmd->redirection);
+		decider(cmd, envpconverted);
 		free(cmd->args);
         cmd->args = NULL;
 		cmd->redirection = 0;
