@@ -104,17 +104,19 @@ int filedreset(int input, int output)
 	return (0);
 };
 
-void decider(t_cmd *cmd, char **envp)
+void decider(t_cmd *cmd)
 {
+	char **env;
 
+	env = convert(cmd);
 	if (cmd->next == NULL)
 	{
 		// ft_export(cmd);
-		executesingle(cmd, envp);
+		executesingle(cmd, env);
 	}
 	else
 	{
-		executemultiple(cmd, envp);
+		executemultiple(cmd, env);
 	}
 	// printf("--------------------\n--->%d<---\n--->%d<---\n", cmd->data.originalfd[0], cmd->data.originalfd[1]);
 }

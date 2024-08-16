@@ -30,7 +30,7 @@ typedef struct s_data
 
 typedef struct s_cmd
 {
-	char	*cmd;
+	char	*cmd;  
 	char	*args;
 	int		pipe;
 	int		redirection;
@@ -56,7 +56,7 @@ int index_char(char *str);
 
 //execution
 void	ft_echo(t_cmd *cmd);
-void	decider(t_cmd *cmd, char **envp);
+void	decider(t_cmd *cmd);
 void	ft_pwd(t_env *env);
 void	notbuilt(t_cmd *cmd, char **envp);
 t_env 	*initenv(char **envp);

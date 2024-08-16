@@ -24,7 +24,6 @@ int main(int argc, char **argv, char **envp)
 
     cmd = init_cmd();
 	cmd->env = initenv(envp);
-	char **envpconverted = convert(cmd);
 	while (1)
 	{
 		input = readline("\033[32mminishell\033[0m \033[34m>\033[0m ");
@@ -42,7 +41,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		// print_commands(cmd);
         // printf("cmd->redirection : %d\n", cmd->redirection);
-		decider(cmd, envpconverted);
+		decider(cmd);
 		free(cmd->args);
         cmd->args = NULL;
 		cmd->redirection = 0;
