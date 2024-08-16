@@ -66,16 +66,21 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 
 	if (cmd->redirection != 0)
 	{
-		printf("--------------------\n--->%d<---\n--->%d<---\n", STDIN_FILENO, STDOUT_FILENO);
+		// printf("--------------------\n--->%d<---\n--->%d<---\n", STDIN_FILENO, STDOUT_FILENO);
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
 		redirectchange(cmd);
 	}
 	if (isbuiltin(cmd) == -1)
 		notbuilt(cmd, envp);
-
+	
 	//reset file descriptors
-	filedreset(input, output);	
+	if (cmd->fd_redirect != input)
+	{
+		filedreset(input, output);	
+	
+
+	}
 }
 
 static void executemultiple(t_cmd *cmd , char **envp)

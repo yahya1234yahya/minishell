@@ -23,7 +23,7 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 	fixed = (char **)malloc(sizeof(char *) * (i + 2));
 	splited = ft_split(cmd->args, ' ');
 	fixed = prepend_array(splited, cmd->path);
-	if (access(fixed[0], X_OK) == 0)
+	if (access(fixed[0], X_OK | F_OK) == 0)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -64,8 +64,6 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 		}
 		if (pid == 0)
 		{
-			if (cmd->redirection != 0)
-				redirectchange(cmd);
 			if (execve(fixed[0], fixed, env) == -1)
 				perror("execve");
 		}
