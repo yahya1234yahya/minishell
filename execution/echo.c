@@ -59,7 +59,7 @@ void ft_echo(t_cmd *cmd)
 	option = 0;
 	if (cmd->args == NULL)
 	{
-		write(cmd->fd_redirect, "\n", 1);
+	write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
@@ -77,7 +77,7 @@ void ft_echo(t_cmd *cmd)
         else
             break;
     }
-    write(cmd->fd_redirect, &cmd->args[i], strlen(&cmd->args[i]));
+    write(STDOUT_FILENO, &cmd->args[i], strlen(&cmd->args[i]));
 	if (!option)
         write(1, "\n", 1);
 }

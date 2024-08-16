@@ -33,8 +33,6 @@ void args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited)
 		}
 		if (pid == 0)
 		{
-			if (cmd->redirection != 0)
-			redirectchange(cmd);
 			if (execve(fixed[0], fixed, env) == -1)
 				perror("execve");
 		}
