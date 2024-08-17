@@ -21,7 +21,7 @@
 	
 // 	while (1)
 // 	{
-// 		reader = get_next_line(cmd->fd_redirect);
+// 		reader = get_next_line(cmd->ft_in);
 // 		if (!reader)
 // 			break ;
 // 		joined = ft_strjoin(joined, reader);

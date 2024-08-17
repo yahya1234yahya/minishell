@@ -77,7 +77,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
         return (0);
     }
     cmd->cmd = strdup(next_word);
-    cmd->fd_redirect = 1;
+    cmd->ft_in = 1;
     while ((next_word = ft_strtok(NULL, " ")) != NULL)
 	{
 		if (strcmp(next_word, "|") == 0)
@@ -88,7 +88,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             parse(cmd->next, next_word, envp, 1);
             break;
 
-        } else if (strcmp(next_word, "<") == 0 || strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
+        } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
         {
             cmd->redirection = index_char(next_word);
             next_word = ft_strtok(NULL, " ");
@@ -98,13 +98,32 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 return (0);
             }
 			flags = redirectionhelper(cmd);
-            cmd->fd_redirect = open(next_word, flags, 0644);
-            if (cmd->fd_redirect == -1)
+            cmd->ft_out = open(next_word, flags, 0644);
+            if (cmd->ft_in == -1)
 			{
                 printf("\033[33merror: can't open file \033[0m\n");
                 return (0);
             }
-        } else
+        
+        }
+        else if (strcmp(next_word, "<") == 0)
+        {
+             cmd->redirection = index_char(next_word);
+            next_word = ft_strtok(NULL, " ");
+            if (next_word == NULL)
+			{
+                printf("\033[33merror: expected filename after redirection \033[0m\n");
+                return (0);
+            }
+			flags = redirectionhelper(cmd);
+            cmd->ft_in = open(next_word, flags, 0644);
+            if (cmd->ft_in == -1)
+			{
+                printf("\033[33merror: can't open file \033[0m\n");
+                return (0);
+            }   
+        }
+        else
         {
             if (cmd->args == NULL) 
                 cmd->args = strdup(next_word);

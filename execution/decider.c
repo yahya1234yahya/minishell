@@ -29,13 +29,13 @@ void redirectchange(t_cmd *cmd)
 {
 	if (cmd->redirection == 2 || cmd->redirection == 3)
 	{
-		dup2(cmd->fd_redirect, STDOUT_FILENO);
-		close(cmd->fd_redirect);
+		dup2(cmd->ft_out, STDOUT_FILENO);
+		close(cmd->ft_out);
 	}
-	else if (cmd->redirection == 1 || cmd->redirection == 4)
+	else if (cmd->redirection == 1)
 	{
-		dup2(cmd->fd_redirect, STDIN_FILENO);
-		close(cmd->fd_redirect);
+		dup2(cmd->ft_in, STDIN_FILENO);
+		close(cmd->ft_in);
 	}
 }
 
@@ -73,7 +73,7 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	if (isbuiltin(cmd) == -1)
 		execfromsystem(cmd, envp);
 		// notbuilt(cmd, envp);
-	if (cmd->fd_redirect != input)
+	if (cmd->ft_in != input)
 	{
 		filedreset(input, output);
 	}

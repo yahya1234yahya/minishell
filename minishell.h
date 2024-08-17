@@ -34,7 +34,8 @@ typedef struct s_cmd
 	char	*args;
 	int		pipe;
 	int		redirection;
-	int		fd_redirect;
+	int		ft_in;
+	int		ft_out;
 	char 	*path;
 	char	*hdoc;
 	t_env	*env;

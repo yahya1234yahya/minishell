@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hdoc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 03:30:51 by mboughra          #+#    #+#             */
-/*   Updated: 2024/08/08 05:25:09 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/08/17 10:19:38 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ t_cmd *hdoc(char *delimiter, t_cmd *cmd)
 	}
 	write(fd, line, ft_strlen(line));
 	cmd->hdoc = line;
-	cmd->fd_redirect = fd;
+	cmd->ft_in = fd;
 	return (cmd);
 };

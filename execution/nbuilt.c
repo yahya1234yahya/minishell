@@ -135,8 +135,8 @@ void	notbuilt(t_cmd *cmd, char **envp)
 // 			{
 // 				if (cmd->redirection == 2)
 //                 {
-//                     dup2(cmd->fd_redirect, STDOUT_FILENO);
-//                     close(cmd->fd_redirect);
+//                     dup2(cmd->ft_in, STDOUT_FILENO);
+//                     close(cmd->ft_in);
 //                 }
 // 				execve(fixed[0], fixed, envvv);
 // 			}
@@ -159,8 +159,8 @@ void	notbuilt(t_cmd *cmd, char **envp)
 // 			{
 // 				if (cmd->redirection == 2)
 //                 {
-//                     dup2(cmd->fd_redirect, 1);
-//                     close(cmd->fd_redirect);
+//                     dup2(cmd->ft_in, 1);
+//                     close(cmd->ft_in);
 //                 }
 // 				execve(fixed[0], fixed, envvv);
 // 				if (execve(fixed[0], fixed, envvv) == -1)
