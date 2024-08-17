@@ -81,7 +81,23 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 
 static void executemultiple(t_cmd *cmd , char **envp)
 {
+	int input;
+	int output;
+	int pipefd[2];
+	int prev_pipe;
 
+	prev_pipe = 0;
+	while (cmd)
+	{		
+		if (pipe(pipefd) == -1)
+		{
+			perror("pipe");
+			exit(1);
+		}
+		dup2(prev_pipe, STDIN_FILENO);
+		close(prev_pipe);
+		
+	};
 }
 /*
 	int input;
@@ -118,7 +134,6 @@ void decider(t_cmd *cmd)
 	{
 		executemultiple(cmd, env);
 	}
-	// printf("--------------------\n--->%d<---\n--->%d<---\n", cmd->data.originalfd[0], cmd->data.originalfd[1]);
 }
 
 

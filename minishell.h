@@ -42,6 +42,7 @@ typedef struct s_cmd
 	struct 	s_cmd *next;
 } t_cmd;
 
+
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
