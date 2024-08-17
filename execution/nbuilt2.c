@@ -47,7 +47,7 @@ void noargs(t_cmd *cmd, char **envp, char **fixed, char **splited)
 	char **env;
 	
 	fixed = (char **)malloc(sizeof(char *) * 2);
-	if (cmd->redirection == 4)
+	if (cmd->redout == 4)
 		fixed[1] = cmd->hdoc;					//might come handy LATER
 	else
 		fixed[1] = NULL;

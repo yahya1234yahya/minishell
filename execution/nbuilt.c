@@ -133,7 +133,7 @@ void	notbuilt(t_cmd *cmd, char **envp)
 // 			pid = fork();
 // 			if (pid == 0)
 // 			{
-// 				if (cmd->redirection == 2)
+// 				if (cmd->redout == 2)
 //                 {
 //                     dup2(cmd->ft_in, STDOUT_FILENO);
 //                     close(cmd->ft_in);
@@ -157,7 +157,7 @@ void	notbuilt(t_cmd *cmd, char **envp)
 // 			pid = fork();
 // 			if (pid == 0)
 // 			{
-// 				if (cmd->redirection == 2)
+// 				if (cmd->redout == 2)
 //                 {
 //                     dup2(cmd->ft_in, 1);
 //                     close(cmd->ft_in);

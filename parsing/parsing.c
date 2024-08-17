@@ -1,14 +1,14 @@
 #include "../minishell.h"
 
-static int redirectionhelper(t_cmd *cmd)
+static int redouthelper(t_cmd *cmd)
 {
-	if (cmd->redirection == 1)
+	if (cmd->redout == 1)
 		return (O_RDONLY);
-	else if (cmd->redirection == 2)
+	else if (cmd->redout == 2)
 		return (O_RDWR | O_CREAT | O_TRUNC);
-	else if (cmd->redirection == 3)
+	else if (cmd->redout == 3)
 		return (O_RDWR | O_CREAT | O_APPEND);
-	else if (cmd->redirection == 4)
+	else if (cmd->redout == 4)
 		return (O_RDWR | O_CREAT | O_APPEND);
 	return (0);
 };
@@ -90,14 +90,14 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
 
         } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
         {
-            cmd->redirection = index_char(next_word);
+            cmd->redout = index_char(next_word);
             next_word = ft_strtok(NULL, " ");
             if (next_word == NULL)
 			{
-                printf("\033[33merror: expected filename after redirection \033[0m\n");
+                printf("\033[33merror: expected filename after redout \033[0m\n");
                 return (0);
             }
-			flags = redirectionhelper(cmd);
+			flags = redouthelper(cmd);
             cmd->ft_out = open(next_word, flags, 0644);
             if (cmd->ft_in == -1)
 			{
@@ -108,14 +108,14 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
         }
         else if (strcmp(next_word, "<") == 0)
         {
-             cmd->redirection = index_char(next_word);
+            cmd->redin = index_char(next_word);
             next_word = ft_strtok(NULL, " ");
             if (next_word == NULL)
 			{
-                printf("\033[33merror: expected filename after redirection \033[0m\n");
+                printf("\033[33merror: expected filename after redout \033[0m\n");
                 return (0);
             }
-			flags = redirectionhelper(cmd);
+			flags = redouthelper(cmd);
             cmd->ft_in = open(next_word, flags, 0644);
             if (cmd->ft_in == -1)
 			{

@@ -27,17 +27,11 @@ int nodeslen(t_cmd *cmd)
 
 void redirectchange(t_cmd *cmd)
 {
-	if (cmd->redirection == 2 || cmd->redirection == 3)
-	{
-		dup2(cmd->ft_out, STDOUT_FILENO);
-		close(cmd->ft_out);
-	}
-	else if (cmd->redirection == 1)
-	{
-		dup2(cmd->ft_in, STDIN_FILENO);
-		close(cmd->ft_in);
-	}
-}
+	dup2(cmd->ft_in, STDIN_FILENO);
+	dup2(cmd->ft_out, STDOUT_FILENO);
+	close(cmd->ft_in);
+	close(cmd->ft_out);
+};
 
 static int isbuiltin(t_cmd *cmd)
 {
@@ -64,7 +58,7 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	int input;
 	int output;
 
-	if (cmd->redirection != 0)
+	if (cmd->redout != 0)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
@@ -84,26 +78,25 @@ static void executemultiple(t_cmd *cmd , char **envp)
 	int input;
 	int output;
 	int pipefd[2];
-	int prev_pipe;
 
-	prev_pipe = 0;
-	while (cmd)
-	{		
-		if (pipe(pipefd) == -1)
-		{
-			perror("pipe");
-			exit(1);
-		}
-		dup2(prev_pipe, STDIN_FILENO);
-		close(prev_pipe);
-		
-	};
+	input = dup(STDIN_FILENO);
+	output = dup(STDOUT_FILENO);
+	pipe(pipefd);
+	int pid = fork();
+	if (pid == 0)
+	{
+
+	}else
+	{
+
+	}
+
 }
 /*
 	int input;
 	int output;
 	
-	if (cmd->redirection != 0)
+	if (cmd->redout != 0)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
