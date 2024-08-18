@@ -30,6 +30,7 @@ typedef struct s_data
 
 typedef struct s_cmd
 {
+	char	*input;
 	char	*cmd;  
 	char	*args;
 	int		pipe;

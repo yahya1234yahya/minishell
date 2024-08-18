@@ -2,12 +2,15 @@
 
 void my_free(t_cmd *t)
 {
-    t_cmd *head = t;
-    while(head)
-    {
-        free(head->args);
-        head = head->next;
-    }
+    // t_cmd *head = t;
+    // while(head)
+    // {
+    //     free(head->args);
+    //     free(head->cmd);
+    //     free(head->cmd);
+    //     head = head->next;
+    // }
+    free(t);
 
 }
 int is_all_space(char *input)

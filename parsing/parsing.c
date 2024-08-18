@@ -52,9 +52,9 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     char *next_word;
     int flags;
     next_word = NULL;
-    input = skip_whitespace(input);
     if (rec == 0)
     {
+        input = skip_whitespace(input);
         input = remove_quotes(input);
         if (input == NULL)
         {
@@ -66,8 +66,6 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     }
     else
     {
-        cmd = init_cmd();
-        cmd->env = initenv(envp);
         next_word = input;
     }
     if (!next_word) return (0);
@@ -82,15 +80,12 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     while ((next_word = ft_strtok(NULL, " ")) != NULL)
 	{
 		if (strcmp(next_word, "|") == 0)
-		{
+        {
             cmd->pipe = 1;
-            cmd->next = (t_cmd *)malloc(sizeof(t_cmd));
-            next_word = ft_strtok(NULL, " ");
-            			printf("Command: %s\n", cmd->cmd);
-        parse(cmd->next, next_word, envp, 1);
-            			printf("kk: %d\n", cmd->next->pipe);
-
-            break;
+            cmd->next = init_cmd();
+            cmd->next->env = initenv(envp);
+            parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
+            break;  
 
         } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
         {
