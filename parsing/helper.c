@@ -1,6 +1,15 @@
 #include "../minishell.h"
 
+void my_free(t_cmd *t)
+{
+    t_cmd *head = t;
+    while(head)
+    {
+        free(head->args);
+        head = head->next;
+    }
 
+}
 int is_all_space(char *input)
 {
     int i = 0;

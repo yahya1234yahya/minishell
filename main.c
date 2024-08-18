@@ -6,14 +6,18 @@ void print_commands(t_cmd *head)
 	int i = 0;
     while (current != NULL)
 	{
-		printf("Command: %s\n", current->cmd ? current->cmd : "(none)");
-		printf("Arguments: %s\n", current->args ? current->args : "(none)");
-		printf("Pipe: %d\n", current->pipe ? current->pipe : 0);
-		printf("redout: %d\n", current->redout ? current->redout : 0);
-		printf("redin: %d\n", current->redin ? current->redin : 0);
-		printf("path: %s\n", current->path ? current->path : "(none)");
-		printf("----------------\n");
-		i++;
+		
+		// if (current->cmd)
+			printf("Command: %s\n", current->cmd);
+		// if (current->args)
+		// 	printf("Arguments: %s\n", current->args);
+		// printf("Pipe: %d\n", current->pipe ? current->pipe : 0);
+		// printf("redout: %d\n", current->redout ? current->redout : 0);
+		// printf("redin: %d\n", current->redin ? current->redin : 0);
+		// if (current->path)
+		// printf("path: %s\n", current->path);
+		// printf("----------------\n");
+		// i++;
 		current = current->next;
 	}
 }
@@ -25,6 +29,7 @@ int main(int argc, char **argv, char **envp)
     char	*input;
 
     cmd = init_cmd();
+	// cmd->next = init_cmd;
 	cmd->env = initenv(envp);
 	while (1)
 	{
@@ -41,10 +46,12 @@ int main(int argc, char **argv, char **envp)
         }
         if(parse(cmd, input, envp, 0) == 0)
 			continue ;
-		print_commands(cmd);
+		
+		// print_commands(cmd);
+					// printf("Command: %s\n", cmd->cmd);
 		// decider(cmd);
-		// free(cmd->args);
-        // cmd->args = NULL;
+		
+		// my_free(cmd);
 		// cmd->redout = 0;
     }
     return (0);

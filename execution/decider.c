@@ -25,6 +25,7 @@ int nodeslen(t_cmd *cmd)
 	return (i);
 }
 
+
 void redirectchange(t_cmd *cmd)
 {
 	dup2(cmd->ft_in, STDIN_FILENO);

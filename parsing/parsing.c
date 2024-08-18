@@ -66,6 +66,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     }
     else
     {
+        cmd = init_cmd();
         cmd->env = initenv(envp);
         next_word = input;
     }
@@ -85,7 +86,10 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             cmd->pipe = 1;
             cmd->next = (t_cmd *)malloc(sizeof(t_cmd));
             next_word = ft_strtok(NULL, " ");
-            parse(cmd->next, next_word, envp, 1);
+            			printf("Command: %s\n", cmd->cmd);
+        parse(cmd->next, next_word, envp, 1);
+            			printf("kk: %d\n", cmd->next->pipe);
+
             break;
 
         } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)

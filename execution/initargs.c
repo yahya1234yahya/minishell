@@ -26,6 +26,7 @@ t_cmd	*init_cmd(void)
 	new_cmd->args = NULL;
 	new_cmd->pipe = 0;
 	new_cmd->redout = 0;
+	new_cmd->redin = 0;
 	new_cmd->ft_in = 1;
 	new_cmd->path = NULL;
 	new_cmd->next = NULL;

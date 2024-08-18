@@ -16,7 +16,7 @@ CLEAN = 🧹
 all: $(NAME)
 $(NAME): $(OBJS)
 	@echo "$(GREEN)$(SMILEY) Compiling...$(RESET)"
-	@cc $(SRCS) -o $(NAME) -lreadline
+	@cc $(SRCS) -o $(NAME) -fsanitize=address -g -lreadline
 	@make clean
 	@echo "$(GREEN)$(SMILEY) Compilation completed!$(RESET)"
 	@echo "   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████    ▄█    █▄       ▄████████  ▄█        ▄█       "
