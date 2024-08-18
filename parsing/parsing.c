@@ -87,7 +87,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
             break;  
 
-        } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, "<<") == 0 || strcmp(next_word, ">>") == 0)
+        } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
         {
             cmd->redout = index_char(next_word);
             next_word = ft_strtok(NULL, " ");
@@ -121,6 +121,11 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 printf("\033[33merror: can't open file \033[0m\n");
                 return (0);
             }   
+        }
+        else if (strcmp(next_word, "<<") == 0 )
+        {
+            cmd->args = handle_heredoc(ft_strtok(NULL, " "));
+            
         }
         else
         {

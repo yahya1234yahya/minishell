@@ -58,6 +58,7 @@ int		is_all_space(char *input);
 char 	*expand_variables(char *input);
 int index_char(char *str);
 void my_free(t_cmd *t);
+char *handle_heredoc(char *delimiter);
 
 //execution
 void	ft_echo(t_cmd *cmd);

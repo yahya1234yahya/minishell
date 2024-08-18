@@ -13,6 +13,21 @@ void my_free(t_cmd *t)
     free(t);
 
 }
+
+char *handle_heredoc(char *delimiter)
+{
+    char *line;
+    char *input;
+
+    while (1) {
+        line = readline("> ");
+        if (strcmp(line, delimiter) == 0) {
+            return (input);
+        }
+        input = ft_strjoin(input, line);
+        input = ft_strjoin(input, " ");
+    }
+}
 int is_all_space(char *input)
 {
     int i = 0;
