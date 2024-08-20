@@ -82,17 +82,6 @@ char **prepend_array(char **original, char *new_element)
     return (new_array);
 }
 
-void	notbuilt(t_cmd *cmd, char **envp)
-{
-	int i;
-	char **fixed;
-	char **splited;
-
-	if (cmd->args)
-		args(cmd, envp, i, fixed, splited);
-	else
-		noargs(cmd, envp, fixed, splited);
-};
 
 
 

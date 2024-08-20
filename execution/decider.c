@@ -67,32 +67,150 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	}
 	if (isbuiltin(cmd) == -1)
 		execfromsystem(cmd, envp);
-		// notbuilt(cmd, envp);
 	if (cmd->ft_in != input)
 	{
 		filedreset(input, output);
 	}
 }
 
+
+
 static void executemultiple(t_cmd *cmd , char **envp)
 {
-	int input;
-	int output;
-	int pipefd[2];
+    int		input;
+	int		output;
+	int		pipefd[2];
+    pid_t	pid;
 
-	input = dup(STDIN_FILENO);
-	output = dup(STDOUT_FILENO);
-	pipe(pipefd);
-	int pid = fork();
-	if (pid == 0)
+    input = dup(STDIN_FILENO);
+    output = dup(STDOUT_FILENO);
+
+    if (pipe(pipefd) == -1)
 	{
-
-	}else
+        perror("pipe");
+        exit(EXIT_FAILURE);
+    }
+    pid = fork();
+    if (pid == -1)
 	{
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
+    if (pid == 0)
+	{
+        // Child process
+		printf("child in func1 %d-->\n",getpid());
+        close(pipefd[1]); // Close unused write end
+        dup2(pipefd[0], STDIN_FILENO);
+        close(pipefd[0]); // Close after duplicating
 
-	}
-
+        child_process(pipefd, cmd->next);
+    }
+	else
+	{
+        // Parent process
+		printf("parent in func1 %d-->\n",getpid());
+        close(pipefd[0]); // Close unused read end
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[1]); // Close after duplicating
+		parent_process(pipefd, cmd);
+		waitpid(pid, NULL, 0);
+        // Restore original stdin and stdout
+        dup2(input, STDIN_FILENO);
+        dup2(output, STDOUT_FILENO);
+        close(input);
+        close(output);
+    }
 }
+
+void child_process(int pipefd[2], t_cmd *cmd)
+{
+    char **splited;
+    char *command;
+
+    close(pipefd[1]); // Close the write end of the pipe
+
+    if (cmd->args) {
+        command = ft_strjoin(cmd->path, " ");
+        command = ft_strjoin(command, cmd->args);
+        splited = ft_split(command, ' ');
+    } else {
+        splited = (char **)malloc(sizeof(char *) * 2);
+        splited[0] = cmd->path;
+        splited[1] = NULL;
+    }
+
+    if (access(splited[0], X_OK | F_OK) == 0)
+	{
+        if (execve(splited[0], splited, convert(cmd)) == -1)
+            perror("execve");
+    }
+}
+
+void parent_process(int pipefd[2], t_cmd *cmd)
+{
+    char **splited;
+    char *command;
+	int pid;
+
+    close(pipefd[0]); // Close the read end of the pipe
+
+    if (cmd->args)
+	{
+        command = ft_strjoin(cmd->path, " ");
+        command = ft_strjoin(command, cmd->args);
+        splited = ft_split(command, ' ');
+    }
+	else 
+	{
+        splited = (char **)malloc(sizeof(char *) * 2);
+        splited[0] = cmd->path;
+        splited[1] = NULL;
+    }
+
+    if (access(splited[0], X_OK | F_OK) == 0)
+	{	
+		pid = fork();
+		if (pid == 0)
+		{
+			if (execve(splited[0], splited, convert(cmd)) == -1)
+				perror("execve");
+		}
+		else
+		{
+			waitpid(pid, NULL, 0);
+		}
+    }
+	else
+	{
+        exit(0);
+    }
+}
+
+// static void executemultiple(t_cmd *cmd , char **envp)
+// {
+// 	int input;
+// 	int output;
+// 	int pipefd[2];
+
+// 	input = dup(STDIN_FILENO);
+// 	output = dup(STDOUT_FILENO);
+// 	pid_t pid;
+// 	// 0 is read end, 1 is write end
+// 	pipe(pipefd);
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		child_process(pipefd, cmd->next);
+// 	}
+// 	else
+// 	{
+// 		parent_process(pipefd, cmd);
+// 	}
+// 	// dup2(input, STDIN_FILENO);
+// 	// dup2(output, STDOUT_FILENO);
+
+// }
 /*
 	int input;
 	int output;
