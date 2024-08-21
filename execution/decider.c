@@ -62,57 +62,64 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 
 
 
+/**
+ * Executes multiple commands in a pipeline.
+ *
+ * This function takes a linked list of commands and executes them in a pipeline.
+ * Each command is executed in a separate child process, and the output of each
+ * command is redirected to the input of the next command using pipes.
+ *
+ */
 static void executemultiple(t_cmd *cmd, char **envp)
 {
-    int		input = dup(STDIN_FILENO); // Save the original input (stdin)
-	int		pipefd[2];
-    pid_t	pid;
+	// Save the original input (stdin)
+	int input = dup(STDIN_FILENO);
+	int pipefd[2];
+	pid_t pid;
 
-    while (cmd)
-    {
-        pipe(pipefd);  // Create a new pipe for the current command
-        
-        pid = fork();
-        if (pid == 0)  // Child process
-        {
-            dup2(input, STDIN_FILENO); // Redirect input to previous command's output
+	while (cmd)
+	{
+		// Create a new pipe for the current command
+		pipe(pipefd);
 
-            if (cmd->next != NULL)  // If not the last command, redirect output to pipe
-                dup2(pipefd[1], STDOUT_FILENO);
-            
-            close(pipefd[0]);  // Close unused pipe ends in the child process
-            close(pipefd[1]);
+		pid = fork();
+		if (pid == 0) // Child process
+		{
+			dup2(input, STDIN_FILENO);
 
-            cmd = preparecmd(cmd);
-            if (access(cmd->splited[0], X_OK | F_OK) == 0)
-            {
-                if (execve(cmd->splited[0], cmd->splited, envp) == -1)
-                {
-                    perror("execve");
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else
-            {
-                perror("access");
-                exit(EXIT_FAILURE);
-            }
-        }
-        else if (pid < 0)  // Error in fork
-        {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        else  // Parent process
-        {
-            waitpid(pid, NULL, 0);  // Wait for the child process to finish
-            
-            close(pipefd[1]);  // Close the write end of the pipe in the parent process
-            input = pipefd[0];  // Save the read end of the pipe for the next command
-        }
-        
-        cmd = cmd->next;  // Move to the next command
-    }
+			if (cmd->next != NULL) // If not the last command, redirect output to pipe
+				dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[0]);
+			close(pipefd[1]);
+
+			cmd = preparecmd(cmd);
+			if (access(cmd->splited[0], X_OK | F_OK) == 0)
+			{
+				if (execve(cmd->splited[0], cmd->splited, envp) == -1)
+				{
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				perror("access");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else if (pid < 0) // Error in fork
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else // Parent process
+		{
+			waitpid(pid, NULL, 0);
+			close(pipefd[1]);
+			input = pipefd[0];
+		}
+		cmd = cmd->next;
+	}
 }
 
 
@@ -133,74 +140,74 @@ static void executemultiple(t_cmd *cmd, char **envp)
 
 // };
 
-static int exeqtonebyone(int pipefd[2], t_cmd *cmd)
-{
-	int pid;
+// static int exeqtonebyone(int pipefd[2], t_cmd *cmd)
+// {
+// 	int pid;
 
-	pipe(pipefd);
-	close(pipefd[0]); 				// Close the read end of the pipe
-	dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to the write end of the pipe
-	close(pipefd[1]); 				// Close the write end of the pipe
-	cmd = preparecmd(cmd);
-	if (access(cmd->splited[0], X_OK | F_OK) == 0)
-	{
-		pid = fork();
-		if(pid == 0)
-			if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
-			{
-				perror("execve");
-				exit(1);
-			}
-		else
-			waitpid(pid, NULL, 0);
-	}
-	else
-	{
-		perror("access\n");
-		exit(1);
-	}
-	return (0);
-}
+// 	pipe(pipefd);
+// 	close(pipefd[0]); 				// Close the read end of the pipe
+// 	dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to the write end of the pipe
+// 	close(pipefd[1]); 				// Close the write end of the pipe
+// 	cmd = preparecmd(cmd);
+// 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
+// 	{
+// 		pid = fork();
+// 		if(pid == 0)
+// 			if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
+// 			{
+// 				perror("execve");
+// 				exit(1);
+// 			}
+// 		else
+// 			waitpid(pid, NULL, 0);
+// 	}
+// 	else
+// 	{
+// 		perror("access\n");
+// 		exit(1);
+// 	}
+// 	return (0);
+// }
 
-void parent_process(int pipefd[2], t_cmd *cmd)
-{
-    char **splited;
-    char *command;
-	int pid;
+// void parent_process(int pipefd[2], t_cmd *cmd)
+// {
+//     char **splited;
+//     char *command;
+// 	int pid;
 
-    close(pipefd[0]); // Close the read end of the pipe
+//     close(pipefd[0]); // Close the read end of the pipe
 
-    if (cmd->args)
-	{
-        command = ft_strjoin(cmd->path, " ");
-        command = ft_strjoin(command, cmd->args);
-        splited = ft_split(command, ' ');
-    }
-	else 
-	{
-        splited = (char **)malloc(sizeof(char *) * 2);
-        splited[0] = cmd->path;
-        splited[1] = NULL;
-    }
+//     if (cmd->args)
+// 	{
+//         command = ft_strjoin(cmd->path, " ");
+//         command = ft_strjoin(command, cmd->args);
+//         splited = ft_split(command, ' ');
+//     }
+// 	else 
+// 	{
+//         splited = (char **)malloc(sizeof(char *) * 2);
+//         splited[0] = cmd->path;
+//         splited[1] = NULL;
+//     }
 
-    if (access(splited[0], X_OK | F_OK) == 0)
-	{	
-		pid = fork();
-		if (pid == 0)
-		{
-			if (execve(splited[0], splited, convert(cmd)) == -1)
-				perror("execve");
-		}
-		else
-		{
-			waitpid(pid, NULL, 0);
-		}
-    }
-	else
-	{
-        exit(0);
-    }
-}
+//     if (access(splited[0], X_OK | F_OK) == 0)
+// 	{	
+// 		pid = fork();
+// 		if (pid == 0)
+// 		{
+// 			if (execve(splited[0], splited, convert(cmd)) == -1)
+// 				perror("execve");
+// 		}
+// 		else
+// 		{
+// 			waitpid(pid, NULL, 0);
+// 		}
+//     }
+// 	else
+// 	{
+//         exit(0);
+//     }
+// }
 
 // static void executemultiple(t_cmd *cmd , char **envp)
 // {
