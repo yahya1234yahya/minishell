@@ -72,26 +72,22 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
  */
 static void executemultiple(t_cmd *cmd, char **envp)
 {
-	// Save the original input (stdin)
-	int input = dup(STDIN_FILENO);
+	int input;
 	int pipefd[2];
 	pid_t pid;
 
+	input = dup(STDIN_FILENO);
 	while (cmd)
 	{
-		// Create a new pipe for the current command
 		pipe(pipefd);
-
 		pid = fork();
-		if (pid == 0) // Child process
+		if (pid == 0)
 		{
 			dup2(input, STDIN_FILENO);
-
 			if (cmd->next != NULL) // If not the last command, redirect output to pipe
 				dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[0]);
 			close(pipefd[1]);
-
 			cmd = preparecmd(cmd);
 			if (access(cmd->splited[0], X_OK | F_OK) == 0)
 			{
