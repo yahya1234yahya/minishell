@@ -92,6 +92,7 @@ int		filedreset(int input, int output);
 void	execfromsystem(t_cmd *cmd, char **envp);
 void child_process(int pipefd[2], t_cmd *cmd);
 void parent_process(int pipefd[2], t_cmd *cmd);
+t_cmd *preparecmd(t_cmd *cmd);
 //
 // void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp);
 int nodeslen(t_cmd *cmd);

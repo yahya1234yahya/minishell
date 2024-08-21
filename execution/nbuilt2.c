@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static t_cmd *preparecmd(t_cmd *cmd)
+t_cmd *preparecmd(t_cmd *cmd)
 {
 	char *tmp;
 

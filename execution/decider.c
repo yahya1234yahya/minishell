@@ -50,9 +50,6 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
-		// printf("sssss\n");
-		// printf("cmd->ft_in %d\n", cmd->ft_in);
-		// printf("cmd->ft_out %d\n", cmd->ft_out);
 		redirectchange(cmd);
 	}
 	if (isbuiltin(cmd) == -1)
@@ -65,76 +62,104 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 
 
 
-static void executemultiple(t_cmd *cmd , char **envp)
+static void executemultiple(t_cmd *cmd, char **envp)
 {
-    int		input;
-	int		output;
+    int		input = dup(STDIN_FILENO); // Save the original input (stdin)
 	int		pipefd[2];
     pid_t	pid;
 
-    input = dup(STDIN_FILENO);
-    output = dup(STDOUT_FILENO);
+    while (cmd)
+    {
+        pipe(pipefd);  // Create a new pipe for the current command
+        
+        pid = fork();
+        if (pid == 0)  // Child process
+        {
+            dup2(input, STDIN_FILENO); // Redirect input to previous command's output
 
-    if (pipe(pipefd) == -1)
-	{
-        perror("pipe");
-        exit(EXIT_FAILURE);
-    }
-    pid = fork();
-    if (pid == -1)
-	{
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-    if (pid == 0)
-	{
-        // Child process
-		printf("child in func1 %d-->\n",getpid());
-        close(pipefd[1]); // Close unused write end
-        dup2(pipefd[0], STDIN_FILENO);
-        close(pipefd[0]); // Close after duplicating
+            if (cmd->next != NULL)  // If not the last command, redirect output to pipe
+                dup2(pipefd[1], STDOUT_FILENO);
+            
+            close(pipefd[0]);  // Close unused pipe ends in the child process
+            close(pipefd[1]);
 
-        child_process(pipefd, cmd->next);
-    }
-	else
-	{
-        // Parent process
-		printf("parent in func1 %d-->\n",getpid());
-        close(pipefd[0]); // Close unused read end
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]); // Close after duplicating
-		parent_process(pipefd, cmd);
-		waitpid(pid, NULL, 0);
-        // Restore original stdin and stdout
-        dup2(input, STDIN_FILENO);
-        dup2(output, STDOUT_FILENO);
-        close(input);
-        close(output);
+            cmd = preparecmd(cmd);
+            if (access(cmd->splited[0], X_OK | F_OK) == 0)
+            {
+                if (execve(cmd->splited[0], cmd->splited, envp) == -1)
+                {
+                    perror("execve");
+                    exit(EXIT_FAILURE);
+                }
+            }
+            else
+            {
+                perror("access");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else if (pid < 0)  // Error in fork
+        {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else  // Parent process
+        {
+            waitpid(pid, NULL, 0);  // Wait for the child process to finish
+            
+            close(pipefd[1]);  // Close the write end of the pipe in the parent process
+            input = pipefd[0];  // Save the read end of the pipe for the next command
+        }
+        
+        cmd = cmd->next;  // Move to the next command
     }
 }
 
-void child_process(int pipefd[2], t_cmd *cmd)
+
+// static void executemultiple(t_cmd *cmd , char **envp)
+// {
+//     int		input;
+// 	int		output;
+// 	int		pipefd[2];
+//     pid_t	pid;
+
+// 	output = dup(STDOUT_FILENO);
+// 	while (cmd->next)
+// 	{
+// 		if (exeqtonebyone(pipefd, cmd) == -1)
+// 			exit(1);
+// 	}
+	
+
+// };
+
+static int exeqtonebyone(int pipefd[2], t_cmd *cmd)
 {
-    char **splited;
-    char *command;
+	int pid;
 
-    close(pipefd[1]); // Close the write end of the pipe
-
-    if (cmd->args) {
-        command = ft_strjoin(cmd->path, " ");
-        command = ft_strjoin(command, cmd->args);
-        splited = ft_split(command, ' ');
-    } else {
-        splited = (char **)malloc(sizeof(char *) * 2);
-        splited[0] = cmd->path;
-        splited[1] = NULL;
-    }
-
-    if (access(splited[0], X_OK | F_OK) == 0)
+	pipe(pipefd);
+	close(pipefd[0]); 				// Close the read end of the pipe
+	dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to the write end of the pipe
+	close(pipefd[1]); 				// Close the write end of the pipe
+	cmd = preparecmd(cmd);
+	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{
-        if (execve(splited[0], splited, convert(cmd)) == -1)
-            perror("execve");
-    }
+		pid = fork();
+		if(pid == 0)
+			if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
+			{
+				perror("execve");
+				exit(1);
+			}
+		else
+			waitpid(pid, NULL, 0);
+	}
+	else
+	{
+		perror("access\n");
+		exit(1);
+	}
+	return (0);
 }
 
 void parent_process(int pipefd[2], t_cmd *cmd)
