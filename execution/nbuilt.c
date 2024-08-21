@@ -12,26 +12,6 @@
 
 #include "../minishell.h"
 
-int	calculateargs(t_cmd *cmd)
-{
-	char **args;
-	int i;
-	int j;
-	
-	args = ft_split(cmd->args, ' ');
-	i = 1;
-	while (args[i])
-		i++;
-	j = i;
-	while (j != 0)
-	{
-		free(args[j]);
-		j--;
-	}
-	free(args);
-	return (i);
-};
-
 char	**convert(t_cmd *cmd)
 {
 	t_env *tmp;
@@ -59,28 +39,6 @@ char	**convert(t_cmd *cmd)
 	return (ret);
 };
 
-
-char **prepend_array(char **original, char *new_element)
-{
-    int i;
-    int original_size;
-    char **new_array;
-
-	original_size = 0;
-    while (original[original_size] != NULL)
-        original_size++;
-	new_array = (char **)malloc(sizeof(char *) * (original_size + 2));
-    new_array[0] = (char *)malloc(strlen(new_element) + 1);
-    strcpy(new_array[0], new_element); //ft_strcpy
-	i = 0;
-	while (i < original_size)
-	{
-		new_array[i + 1] = original[i];
-		i++;
-	}
-    new_array[original_size + 1] = NULL;
-    return (new_array);
-}
 
 
 

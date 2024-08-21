@@ -3,16 +3,15 @@ SRCS = main.c parsing/parsing.c parsing/ft_strtok.c parsing/check_complete.c \
 parsing/ft_strjoin.c  execution/pwd.c execution/decider.c \
 execution/echo.c execution/nbuilt.c execution/nbuilt2.c execution/tools/minilibft.c execution/tools/split.c execution/env.c execution/chdir.c execution/initargs.c \
 parsing/srchenv.c parsing/remove_quotes.c parsing/helper.c parsing/expand.c execution/export.c execution/tools/get_next_line.c \
-execution/tools/get_next_line_utils.c execution/redirect.c execution/hdoc.c execution/pipe.c
+execution/tools/get_next_line_utils.c execution/hdoc.c execution/pipe.c
 OBJS = $(SRCS:.c=.o)
 HEADER = minishell.h
 
-all: $(NAME)
+all: $(NAME) clean
 
 $(NAME): $(OBJS)
 	@echo "Compiling..."
 	@cc $(SRCS) -o $(NAME) -fsanitize=address -g -lreadline
-	@# @make clean
 	@echo "Compilation completed!"
 
 clean:

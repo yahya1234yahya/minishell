@@ -56,8 +56,8 @@ int main(int argc, char **argv, char **envp)
 		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
 		// }
 		
-		print_commands(cmd);
-		// decider(cmd);
+		// print_commands(cmd);
+		decider(cmd);
 		
 		my_free(cmd);
 		// cmd->redout = 0;

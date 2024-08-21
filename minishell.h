@@ -42,6 +42,7 @@ typedef struct s_cmd
 	char	*hdoc;
 	t_env	*env;
 	t_data	data;
+	char	**splited;
 	struct 	s_cmd *next;
 } t_cmd;
 

@@ -12,65 +12,30 @@
 
 #include "../minishell.h"
 
-
-void helperfunction(t_cmd **cmd, char ***fixed,char ***splited)
+static t_cmd *preparecmd(t_cmd *cmd)
 {
-	int		i;
-	char	*command;
-
-	if ((*cmd)->args)
-	{
-		command = ft_strjoin((*cmd)->cmd, " ");
-		command = ft_strjoin(command, (*cmd)->args);
-		(*splited) = ft_split(command, ' ');
-		int r = 0;
-		while (splited[r])
-		{
-			printf("splited[%d] = %s\n", r, (*splited)[r]);
-			r++;
-		}
-		exit(1);
-		// *splited = ft_split((*cmd)->args, ' ');
-		// i = 0;
-
-		// while (splited[i])
-		// 	printf("splited[%d] = %s\n", i, (*splited)[i++]);
-		
-		// exit(1);
-		// while (splited[i])
-		// 	i++;
-		// *fixed = (char **)malloc(sizeof(char *) * (i + 2));
-		// *fixed = prepend_array(*splited, (*cmd)->path);
-		// // for (size_t r = 0; r < i; r++)
-		// {
-		// 	printf("fixed[%d] = %s\n", r, (*fixed)[r]);
-		// }
-	}else
-	{
-		*fixed = (char **)malloc(sizeof(char *) * 2);
-		(*fixed)[0] = (*cmd)->path;
-		(*fixed)[1] = NULL;
-	};
-}
-void execfromsystem(t_cmd *cmd, char **envp)
-{
-	int pid;
-	char **splited;
-	char *command;
+	char *tmp;
 
 	if (cmd->args)
 	{	
-		command = ft_strjoin(cmd->path, " ");
-		command = ft_strjoin(command, cmd->args);
-		splited = ft_split(command, ' ');
+		tmp = ft_strjoin(cmd->path, " ");
+		tmp = ft_strjoin(tmp, cmd->args);
+		cmd->splited = ft_split(tmp, ' ');
 	}else
 	{
-		splited = (char **)malloc(sizeof(char *) * 2);
-		splited[0] = cmd->path;
-		splited[1] = NULL;
-	}
-	// helperfunction(&cmd, &fixed, &splited);
-	if (access(splited[0], X_OK | F_OK) == 0)
+		cmd->splited = (char **)malloc(sizeof(char *) * 2);
+		cmd->splited[0] = cmd->path;
+		cmd->splited[1] = NULL;
+	};
+	return (cmd);
+}
+
+void execfromsystem(t_cmd *cmd, char **envp)
+{
+	int pid;
+	
+	cmd = preparecmd(cmd);
+	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -80,7 +45,7 @@ void execfromsystem(t_cmd *cmd, char **envp)
 		}
 		if (pid == 0)
 		{
-			if (execve(splited[0], splited, envp) == -1)
+			if (execve(cmd->splited[0], cmd->splited, envp) == -1)
 				perror("execve");
 		}
 		else

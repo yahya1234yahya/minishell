@@ -12,26 +12,13 @@
 
 #include "../minishell.h"
 
-int nodeslen(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	while (cmd)
-	{
-		i++;
-		cmd = cmd->next;
-	}
-	return (i);
-}
-
-
 void redirectchange(t_cmd *cmd)
 {
 	dup2(cmd->ft_in, STDIN_FILENO);
 	dup2(cmd->ft_out, STDOUT_FILENO);
-	close(cmd->ft_in);
-	close(cmd->ft_out);
+	// write(STDIN_FILENO, "hsssssere\n", 11);
+	// close(cmd->ft_in);
+	// close(cmd->ft_out);
 };
 
 static int isbuiltin(t_cmd *cmd)
@@ -63,6 +50,9 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
+		// printf("sssss\n");
+		// printf("cmd->ft_in %d\n", cmd->ft_in);
+		// printf("cmd->ft_out %d\n", cmd->ft_out);
 		redirectchange(cmd);
 	}
 	if (isbuiltin(cmd) == -1)

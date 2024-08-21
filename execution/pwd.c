@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdio.h>
 
 static char	*ft_strstr(const char	*haystack, const char	*needle)
 {
