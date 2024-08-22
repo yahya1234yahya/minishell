@@ -40,10 +40,11 @@ void	ft_export(t_cmd *cmd)
 {
 	char	**arg;
 
-	if (!cmd->args)
-		return;
+	// if (!cmd->args)
+	// 	return;
 	ft_lstadd_back(&cmd->env, ft_lstnew(cmd->args));
-	
+	t_env *tmp = cmd->env;
+
 
 
 	//export "key"

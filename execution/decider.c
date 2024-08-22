@@ -81,9 +81,10 @@ static void executemultiple(t_cmd *cmd, char **envp)
 	{
 		pipe(pipefd);
 		pid = fork();
-		if (pid == 0)
+		if (pid == 0) // Child process
 		{
 			dup2(input, STDIN_FILENO);
+
 			if (cmd->next != NULL) // If not the last command, redirect output to pipe
 				dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[0]);
