@@ -7,15 +7,15 @@ int	main(void)
 {
 	int	fd2;
 	int fd;
+
+	fd = open("file1.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fd2 = open("file2.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	
-	fd = open("file1.c", O_RDONLY);
-	fd2 = open("file2", O_RDONLY);
-	printf("file 1fd = %d\n", fd);
-	printf("file 2fd = %d\n", fd2);
-	printf("\n\ndup2\n\n");
+
 	dup2(fd, fd2);
-	printf("file 1fd = %d\n", fd);
-	printf("file 2fd = %d\n", fd2);
+
+	write(fd, "fd", 2);
+	write(fd2, "fd2", 3);
 
 	return (0);
 }

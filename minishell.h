@@ -16,6 +16,13 @@
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
+typedef struct s_garbage
+{
+    void                *adr;
+    bool                is_free;
+    struct s_garbage    *next;
+}    t_garbage;
+
 typedef struct s_env
 {
 	char			*name;
@@ -62,40 +69,25 @@ void my_free(t_cmd *t);
 char *handle_heredoc(char *delimiter);
 
 //execution
-void	ft_echo(t_cmd *cmd);
-void	decider(t_cmd *cmd);
-void	ft_pwd(t_env *env);
-void	notbuilt(t_cmd *cmd, char **envp);
 t_env 	*initenv(char **envp);
-void 	changedir(t_cmd *cmd);
 t_cmd	*init_cmd(void);
-void	printenv(t_env *env);
 t_env	*envset(t_env *env, char *name, char *value);
 t_env	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_env **lst, t_env *newnode);
+void	decider(t_cmd *cmd);
+void	ft_echo(t_cmd *cmd);
+void	ft_pwd(t_env *env);
+void 	changedir(t_cmd *cmd);
+void	printenv(t_env *env);
 void	ft_unset(t_env **env, t_cmd *cmd);
-char	*get_next_line2(char **line, char **rem, char **buf, int fd);
-int		newcheck(char *str);
-char	*ft_strdup(char *s1);
-size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
-char	*get_next_line(int fd);
-char	*ft_cutfront(char *line);
-char	*ft_cutback(char *line);
 void	redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
-void	args(t_cmd *cmd, char **envp, int i, char **fixed, char **splited);
-void	noargs(t_cmd *cmd, char **envp, char **fixed, char **splited);
-char	**prepend_array(char **original, char *new_element);
-int		calculateargs(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
 int		filedreset(int input, int output);
 void	execfromsystem(t_cmd *cmd, char **envp);
-void child_process(int pipefd[2], t_cmd *cmd);
-void parent_process(int pipefd[2], t_cmd *cmd);
-t_cmd *preparecmd(t_cmd *cmd);
-//
-// void execute_pipeline(t_cmd *cmds, int num_cmds, char **envp);
-int nodeslen(t_cmd *cmd);
+void	executemultiple(t_cmd *cmd);
+t_cmd	*preparecmd(t_cmd *cmd);
+
 
 //tools
 char	**ft_split(char *s, char c);
@@ -103,6 +95,10 @@ int		ft_strcmp(const char	*s1, const char	*s2);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strnstr(char	*haystack, char	*needle, size_t	len);
 size_t	ft_strlen( char *s);
+size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
+char	*ft_strdup(char *s1);
+
+
 // echo with -n option
 // cd with relative or absolute path
 // pwd with no options

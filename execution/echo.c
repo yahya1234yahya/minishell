@@ -19,36 +19,6 @@ static int echohelper(t_cmd *cmd)
 	return (0);
 }
 
-// void ft_echo(t_cmd *cmd)
-// {
-// 	char **av;
-// 	int i;
-// 	int	option;
-
-// 	i = 0;
-// 	option = 0;
-
-// 		while (cmd->args[i])
-// 		{
-// 			if (cmd->args[i] == '-')
-// 			{
-// 				while (cmd->args[i + 1] == 'n')
-// 				{
-// 					i++;
-// 					option = 1;				
-// 				}
-// 				i++;
-// 			}
-// 			while (cmd->args[i])
-// 			{
-// 				write(1, &cmd->args[i], 1);
-// 				i++;
-// 			}
-// 			if (option == 0)
-// 				write(1, "\n", 1);
-// 		}	
-// }
-
 void ft_echo(t_cmd *cmd)
 {
     int option;
@@ -59,8 +29,8 @@ void ft_echo(t_cmd *cmd)
 	option = 0;
 	if (cmd->args == NULL)
 	{
-	write(STDOUT_FILENO, "\n", 1);
-		return ;
+		write(STDOUT_FILENO, "\n", 1);
+			return ;
 	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
     {

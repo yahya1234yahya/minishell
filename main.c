@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/24 15:26:42 by mboughra          #+#    #+#             */
+/*   Updated: 2024/08/24 15:26:42 by mboughra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void print_commands(t_cmd *head)
@@ -23,17 +35,16 @@ void print_commands(t_cmd *head)
 }
 
 int main(int argc, char **argv, char **envp)
-{
+{  
 	while (1)
 	{
-    t_cmd	*cmd;
-    t_cmd	head;
-    char	*input;
-
-    cmd = init_cmd();
-	// cmd->next = init_cmd;
-	cmd->env = initenv(envp);
-	
+		t_cmd	*cmd;
+		t_cmd	head;
+		char	*input;
+		
+		cmd = init_cmd();
+		// cmd->next = init_cmd;
+		cmd->env = initenv(envp);
 		input = readline("minishell > ");
 		if (input != NULL && *input != '\0')
 			add_history(input);

@@ -21,9 +21,6 @@ t_env	*ft_lstnew(void *content)
 	if (!node)
 		return (NULL);
 	split = ft_split((char *)content , '=');
-	printf("value -->%s", split[0]);
-	printf("Name -->%s", split[1]);
-	exit(1);
 	node->name = content;
 	node->next = NULL;
 	return (node);
