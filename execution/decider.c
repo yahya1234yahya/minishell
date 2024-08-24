@@ -115,8 +115,9 @@ void executemultiple(t_cmd *cmd)
 
 	while (cmd)
 	{
+		if (cmd->cmd == NULL)
+			break;
 		pipe(pipefd);
-
 		pid = fork();
 		if (pid == -1)
 		{

@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **envp)
 		// print_commands(cmd);
 		decider(cmd);
 		
-		my_free(cmd);
+		// my_free(cmd);
 		// cmd->redout = 0;
     }
     return (0);
