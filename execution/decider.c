@@ -81,10 +81,11 @@ int child(t_cmd *cmd, int input , int *pipefd)
 	if (cmd->next != NULL) // If not the last command, redirect output to pipe
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
+	if (cmd->redin != 0 || cmd->redout != 0)
+		redirectchange(cmd);
 	if (helper(cmd) == 0)
 	{
-		if (cmd->redin != 0 || cmd->redout != 0)
-			redirectchange(cmd);
+	
 		isbuiltin(cmd);
 		exit(0);
 	}
