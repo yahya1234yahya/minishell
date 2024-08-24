@@ -83,6 +83,8 @@ int child(t_cmd *cmd, int input , int *pipefd)
 	close(pipefd[1]);
 	if (helper(cmd) == 0)
 	{
+		if (cmd->redin != 0 || cmd->redout != 0)
+			redirectchange(cmd);
 		isbuiltin(cmd);
 		exit(0);
 	}
@@ -110,6 +112,7 @@ int child(t_cmd *cmd, int input , int *pipefd)
 void executemultiple(t_cmd *cmd)
 {
 	int		input;
+	int		output;
 	int		pipefd[2];
 	pid_t	pid;
 
@@ -125,7 +128,9 @@ void executemultiple(t_cmd *cmd)
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)
+		{		
 			child(cmd, input, pipefd);
+		}
 		else
 		{
 			close(pipefd[1]);
