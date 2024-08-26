@@ -2,9 +2,8 @@ Makefile
 README.MD
 Untitled-2024-08-15-0938.excalidraw
 execution
-ls
+file11.txt
 main.c
-minishell
 minishell.dSYM
 minishell.h
 parsing

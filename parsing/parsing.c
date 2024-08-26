@@ -21,7 +21,7 @@ char *skip_whitespace(char *str)
 
 int is_valid_command(t_cmd *cmd, char *word)
 {
-    char *path_env = envsearch(cmd->env, "PATH")->name;
+    char *path_env = envsearch(cmd->env, "PATH")->name; //TODO WE HAVE TO CHANGE HERE
     if (!path_env) {
         exit (0);
     }
@@ -83,10 +83,9 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
         {
             cmd->pipe = 1;
             cmd->next = init_cmd();
-            cmd->next->env = initenv(envp);
-            parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
-            break;  
-
+            cmd->next->env = initenv(envp); //TODO WE HAVE TO CHANGE HERE
+            parse(cmd->next, ft_strtok(NULL, " "), envp, 1);  //TODO WE HAVE TO CHANGE HERE
+            break;
         } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
         {
             cmd->redout = index_char(next_word);

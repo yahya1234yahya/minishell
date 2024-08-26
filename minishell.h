@@ -26,6 +26,8 @@ typedef struct s_garbage
 typedef struct s_env
 {
 	char			*name;
+	char			*key;
+	char 			*value;
 	struct s_env	*next;
 }	t_env;
 

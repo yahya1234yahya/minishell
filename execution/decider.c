@@ -85,7 +85,6 @@ int child(t_cmd *cmd, int input , int *pipefd)
 		redirectchange(cmd);
 	if (helper(cmd) == 0)
 	{
-	
 		isbuiltin(cmd);
 		exit(0);
 	}
@@ -129,13 +128,20 @@ void executemultiple(t_cmd *cmd)
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)
-		{		
+		{
+			if (cmd->redin != 0 || cmd->redout != 0)
+			{
+				input = dup(STDIN_FILENO);
+				output = dup(STDOUT_FILENO);
+				redirectchange(cmd);
+			}
 			child(cmd, input, pipefd);
 		}
 		else
 		{
 			close(pipefd[1]);
 			waitpid(pid, NULL, 0);
+			// filedreset(input, output);
 			input = dup(pipefd[0]);
 			close(pipefd[0]);
 		}
@@ -278,6 +284,7 @@ int filedreset(int input, int output)
 
 void decider(t_cmd *cmd)
 {
+
 	char **env;
 
 	env = convert(cmd);
