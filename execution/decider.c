@@ -16,9 +16,6 @@ void redirectchange(t_cmd *cmd)
 {
 	dup2(cmd->ft_in, STDIN_FILENO);
 	dup2(cmd->ft_out, STDOUT_FILENO);
-	// write(STDIN_FILENO, "hsssssere\n", 11);
-	// close(cmd->ft_in);
-	// close(cmd->ft_out);
 };
 
 static int isbuiltin(t_cmd *cmd)
@@ -74,17 +71,57 @@ static int helper(t_cmd *cmd)
 
 }
 
-int child(t_cmd *cmd, int input , int *pipefd)
+// int child(t_cmd *cmd, int input , int *pipefd)
+// {
+// 	close(pipefd[0]);
+// 	dup2(input, STDIN_FILENO);
+// 	if (cmd->next != NULL) // If not the last command, redirect output to pipe
+// 		dup2(pipefd[1], STDOUT_FILENO);
+// 	close(pipefd[1]);
+// 	if (helper(cmd) == 0)
+// 	{
+// 		if (cmd->redin != 0 || cmd->redout != 0)
+// 			redirectchange(cmd);
+// 		isbuiltin(cmd);
+// 		exit(0);
+// 	}
+// 	else
+// 	{
+// 		cmd = preparecmd(cmd);
+// 		if (access(cmd->splited[0], X_OK | F_OK) == 0)
+// 		{
+// 			if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
+// 			{ 
+// 				perror("execve");
+// 				return (-1);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			perror("access");
+// 			return (-1);
+// 		}
+// 	}
+// 	return (0);
+// }
+
+
+int child(t_cmd *cmd, int input, int *pipefd)
 {
-	close(pipefd[0]);
-	dup2(input, STDIN_FILENO);
-	if (cmd->next != NULL) // If not the last command, redirect output to pipe
-		dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
-	if (cmd->redin != 0 || cmd->redout != 0)
-		redirectchange(cmd);
-	if (helper(cmd) == 0)
+    close(pipefd[0]);
+    if (cmd->redin != 0)
+        dup2(cmd->ft_in, STDIN_FILENO);
+	else
+        dup2(input, STDIN_FILENO);
+    if (cmd->redout != 0)
+        dup2(cmd->ft_out, STDOUT_FILENO);
+	else if (cmd->next != NULL)
+        dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);
+ 	if (helper(cmd) == 0)
 	{
+		if (cmd->redin != 0 || cmd->redout != 0)
+			redirectchange(cmd);
 		isbuiltin(cmd);
 		exit(0);
 	}
@@ -105,49 +142,81 @@ int child(t_cmd *cmd, int input , int *pipefd)
 			return (-1);
 		}
 	}
-	return (0);
+    exit(EXIT_SUCCESS);
 }
 
 
 void executemultiple(t_cmd *cmd)
 {
-	int		input;
-	int		output;
-	int		pipefd[2];
-	pid_t	pid;
+    int input;
+	
+    int pipefd[2];
+    pid_t pid;
 
-	while (cmd)
+	input = STDIN_FILENO;
+    while (cmd)
 	{
-		if (cmd->cmd == NULL)
-			break;
-		pipe(pipefd);
-		pid = fork();
-		if (pid == -1)
+        if (cmd->cmd == NULL)
+            break;
+        pipe(pipefd);
+        pid = fork();
+        if (pid == -1)
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-		{
-			if (cmd->redin != 0 || cmd->redout != 0)
-			{
-				input = dup(STDIN_FILENO);
-				output = dup(STDOUT_FILENO);
-				redirectchange(cmd);
-			}
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        if (pid == 0)
+		{ 
 			child(cmd, input, pipefd);
-		}
+        }
 		else
 		{
 			close(pipefd[1]);
 			waitpid(pid, NULL, 0);
-			// filedreset(input, output);
-			input = dup(pipefd[0]);
-			close(pipefd[0]);
-		}
-		cmd = cmd->next;
-	}
+            input = dup(pipefd[0]);
+            close(pipefd[0]);
+        }
+        cmd = cmd->next; // Move to the next command
+    }
 }
+
+
+// void executemultiple(t_cmd *cmd)
+// {
+// 	int		input;
+// 	int		output;
+// 	int		pipefd[2];
+// 	pid_t	pid;
+
+
+// 	while (cmd)
+// 	{
+// 		if (cmd->cmd == NULL) // TODO Example: fkjldfkdfkl; | ls
+// 			break;
+// 		pipe(pipefd);
+// 		pid = fork();
+// 		if (pid == -1)
+// 		{
+// 			perror("fork");
+// 			exit(EXIT_FAILURE);
+// 		}
+
+// 		if (pid == 0)
+// 		{
+
+// 			child(cmd, input, pipefd);
+// 		}
+// 		else
+// 		{
+// 			close(pipefd[1]);
+// 			waitpid(pid, NULL, 0);
+// 			// filedreset(input, output);
+// 			input = dup(pipefd[0]);
+// 			close(pipefd[0]);
+// 		}
+// 		cmd = cmd->next;
+// 	}
+// }
 
 // 0 is read end, 1 is write end
 

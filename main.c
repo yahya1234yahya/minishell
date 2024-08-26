@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **envp)
 		
 		cmd = init_cmd();
 		// cmd->next = init_cmd;
-		cmd->env = initenv(envp); //TODO we cange here
+		cmd->env = initenv(envp);//TODO we cange here
 		input = readline("minishell > ");
 		if (input != NULL && *input != '\0')
 			add_history(input);

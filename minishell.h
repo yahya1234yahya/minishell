@@ -66,9 +66,9 @@ char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
 char 	*expand_variables(char *input);
-int index_char(char *str);
-void my_free(t_cmd *t);
-char *handle_heredoc(char *delimiter);
+int		index_char(char *str);
+void	my_free(t_cmd *t);
+char	*handle_heredoc(char *delimiter);
 
 //execution
 t_env 	*initenv(char **envp);
