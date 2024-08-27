@@ -1,89 +1,136 @@
 #include "../minishell.h"
 
-int is_single_quote(char *input, int i)
+void    check_quots(char c, int *single_q, int  *double_q)
 {
-    int j = 0;
-    int found = 0;
-    while(j < i)
-    {
-        if (input[j] == '"' && found == 0)
-            return 0;
-        if (input[j] == '\'')
-            found += 1; 
-        j++;
-    }
-    if (found % 2 != 0)
-        return (1);
-    return (0);
+    if (c == '\'' && *double_q == 0)
+        *single_q = !(*single_q);
+    else if (c == '\'' && *double_q == 1)
+        return ;
+    else if (c == '"' && *single_q == 0)
+        *double_q = !(*double_q);
+    else if (c == '"' && *single_q == 1)
+        return ;
 }
-char *expand_variables(char *input)
+int	ft_isalpha(int c)
 {
-    int length = 0;
+	if ((c > 64 && c < 91) || (c > 96 && c < 123))
+		return (1);
+	else 
+		return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c > 47 && c < 58)
+		return (1);
+	else
+		return (0);
+}
+
+int count_word(char *input)
+{
+    int i = 0;
+    while(input[i] && (ft_isdigit(input[i]) || ft_isalpha(input[i]) || input[i] == '_') )
+    {
+        i++;
+    }
+    return (i);
+
+}
+
+int count_new_input(char    *input)
+{
+    int count;
+    int count_name;
+    int single_q = 0;
+    int double_q = 0;
+    int i = 0;
+    char    *name;
+    char    *env_value;
+    if (!input)
+        return (0);
+    
+    while (*input)
+    {
+        i = 0;
+        check_quots(*input, &single_q, &double_q);
+        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
+        {
+            input++;
+            name = malloc(count_word(input) + 1);
+            i = 0;
+            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_') )
+            {
+                name[i++] = *input;
+                input++;
+            }
+            name[i] = '\0';
+            env_value = getenv(name);
+            if (env_value)
+                count += strlen(env_value);
+            free(name);
+        }
+        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*input + 1)))
+            input = input + 2;
+        else 
+        {
+            count++;
+            input++;
+        }
+    }
+    return (count);
+}
+
+char *expand_variables(char    *input)
+{
+    int count;
+    int count_name;
+    int single_q = 0;
+    int double_q = 0;
     int i = 0;
     int j = 0;
-    int z = 0;
-    char *name;
-    char *env_value;
-    char *new_input;
-    while (input[i])
+    char    *name;
+    char    *env_value;
+    char    *new_input;
+
+    if (!input)
+        return (0);
+    
+    count = count_new_input(input);
+    new_input = malloc(count + 1);
+    while (*input)
     {
-      
-        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i) && input[i + 1] != '$')
+        i = 0;
+        check_quots(*input, &single_q, &double_q);
+        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
         {
-            i++;
-            j = i;
-            while (input[j] && input[j] != ' ' && input[i] != '\'' && input[i] != '"' && input[i] != '$')
-                j++;
-            name = malloc(j - i + 1);
-            z = 0;
-            while (i < j)
+            input++;
+            name = malloc(count_word(input) + 1);
+            i = 0;
+            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_') )
             {
-                name[z] = input[i];
-                z++;
-                i++;
+                name[i++] = *input;
+                input++;
             }
-            name[z] = '\0';
+            name[i] = '\0';
             env_value = getenv(name);
             if (env_value)
-                length += ft_strlen(env_value);
-            free(name);
-        }
-        else
-        {
-            length++;
-            i++;
-        }
-    }
-    i = 0;
-    j = 0;
-    new_input = malloc(length + 1);
-    while (input[i])
-    {
-        if (input[i] == '$' && input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '\'' && input[i + 1] != '"' && !is_single_quote(input, i) && input[i + 1] != '$')
-        {
-            i++;
-            int start = i;
-            while (input[i] && input[i] != ' ' && input[i] != '\'' && input[i] != '"' && input[i] != '$')
-                i++;
-            name = malloc(i - start + 1);
-            strncpy(name, &input[start], i - start);
-            name[i - start] = '\0';
-            env_value = getenv(name);
-            // printf("name%s-\n", name);
-            if (env_value)
             {
-                strcpy(&new_input[j], env_value);
-                j += ft_strlen(env_value);
+                while (*env_value)
+                {
+                    new_input[j++] = *env_value;
+                    env_value++;
+                }
             }
-            free(name);
         }
-        else
+        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*(input + 1))))
+            input = input + 2;
+        else 
         {
-            new_input[j++] = input[i++];
+            new_input[j++] = *input;
+            input++;
         }
     }
     new_input[j] = '\0';
     return (new_input);
 }
-
-

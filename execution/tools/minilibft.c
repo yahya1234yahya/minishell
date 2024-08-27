@@ -12,6 +12,47 @@
 
 #include "../../minishell.h"
 
+static int	check_char(char  *set, char c)
+{
+	int	w;
+
+	w = 0;
+	while (set[w])
+	{
+		if (set[w] == c)
+			return (1);
+		w++;
+	}
+	return (0);
+}
+
+char	*ft_strtrim(char  *s1, char  *set)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*ptr;
+
+	if (s1 == NULL)
+		return (NULL);
+	if (set == NULL)
+		return (ft_strdup(s1));
+	len = ft_strlen(s1);
+	i = 0;
+	while (check_char(set, s1[i]) == 1 && s1[i])
+		i++;
+	while (i < len && check_char(set, s1[len - 1]) == 1)
+		len--;
+	ptr = (char *)malloc(len - i + 1);
+	if (ptr == NULL)
+		return (NULL);
+	j = 0;
+	while (i < len)
+		ptr[j++] = s1[i++];
+	ptr[j] = '\0';
+	return (ptr);
+}
+
 int	ft_strcmp(const char	*s1, const char	*s2)
 {
 	size_t			i;

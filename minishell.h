@@ -59,7 +59,7 @@ typedef struct s_cmd
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
-int		check_complete(const char *input);
+int		check_complete(char *input);
 char	*ft_strjoin(char  *s1, char  *s2);
 t_env	*envsearch(t_env *env, char *name);
 char    *remove_quotes(char *input);
@@ -69,6 +69,7 @@ char 	*expand_variables(char *input);
 int		index_char(char *str);
 void	my_free(t_cmd *t);
 char	*handle_heredoc(char *delimiter);
+void	split_pipe(t_cmd *cmd, char *input, char **envp);
 
 //execution
 t_env 	*initenv(char **envp);
@@ -99,6 +100,7 @@ char	*ft_strnstr(char	*haystack, char	*needle, size_t	len);
 size_t	ft_strlen( char *s);
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*ft_strdup(char *s1);
+char	*ft_strtrim(char  *s1, char  *set);
 
 
 // echo with -n option

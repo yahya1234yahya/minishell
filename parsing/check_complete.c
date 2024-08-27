@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int check_complete(const char *input)
+int check_complete(char *input)
 {
 	int		len;
     int		i;
