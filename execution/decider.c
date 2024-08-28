@@ -25,7 +25,9 @@ static int isbuiltin(t_cmd *cmd)
 	else if (!ft_strcmp("cd", cmd->cmd))
 		changedir(cmd);
 	else if (!ft_strcmp("export", cmd->cmd))
+	{
 		ft_export(cmd);
+	}
 	else if (!ft_strcmp("env", cmd->cmd))
 		printenv(cmd->env);
 	else if (!ft_strcmp("exit", cmd->cmd))

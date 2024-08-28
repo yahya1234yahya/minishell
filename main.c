@@ -18,8 +18,8 @@ void print_commands(t_cmd *head)
 	int i = 0;
 	while(current)
 	{
+		// printf("input: %s\n", current->input);
 		printf("Command: %s\n", current->cmd);
-		printf("input: %s\n", current->input);
 		printf("Arguments: [%s]\n", current->args);
 		printf("Pipe: %d\n", current->pipe ? current->pipe : 0);
 		printf("redout: %d\n", current->redout ? current->redout : 0);
@@ -47,6 +47,16 @@ int main(int argc, char **argv, char **envp)
         input = expand_variables(input);
         if(!input[0])
             continue ;
+		 if(check_complete(input) == 0)
+    	{
+        printf("error: incomplete command\n");
+        continue ;
+    	}
+		if (input == NULL)
+    	{
+          printf("\033[33merror:  command not found\033[0m\n");
+          return (0);
+    	}
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)
@@ -57,8 +67,8 @@ int main(int argc, char **argv, char **envp)
 		// 	cmd->next->env = initenv(envp);
 		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
 		// }
-		// print_commands(cmd);
-		// decider(cmd);
+		print_commands(cmd);
+		decider(cmd);
 		// while(head)
 		// {
 		// 	t_cmd *tmp = head;

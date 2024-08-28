@@ -102,7 +102,7 @@ char *expand_variables(char    *input)
     {
         i = 0;
         check_quots(*input, &single_q, &double_q);
-        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
+        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ||  *(input + 1) == '?') && single_q == 0)
         {
             input++;
             name = malloc(count_word(input) + 1);

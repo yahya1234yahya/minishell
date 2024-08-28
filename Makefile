@@ -11,7 +11,7 @@ all: $(NAME) clean
 
 $(NAME): $(OBJS)
 	@echo "Compiling..."
-	@cc $(SRCS) -o $(NAME) -fsanitize=address -lreadline
+	@cc $(SRCS) -o $(NAME) -lreadline
 	@echo "Compilation completed!"
 
 clean:

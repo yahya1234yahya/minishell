@@ -52,33 +52,29 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     char *next_word;
     int flags;
     next_word = NULL;
-    input = skip_whitespace(input);
+
+   
     while(cmd)
     {
-        if(check_complete(cmd->input) == 0)
-        {
-            printf("error: incomplete command\n");
-            return (0);
-        }
-
-        if (cmd->input == NULL)
-        {
-            printf("\033[33merror:  command not found\033[0m\n");
-            return (0);
-        }
 
         next_word = ft_strtok(cmd->input, "<>\"' \t\n");
-        // printf("\n\nnext_word : %s\n\n", next_word);
         if (!next_word) return (0);
 
-        if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word) && strcmp("unset", next_word) && strcmp("export", next_word) && strcmp("set", next_word))
+        // printf("\n\nnext_word : %s\n\n", next_word);
+
+        // if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word) && strcmp("unset", next_word) && strcmp("export", next_word) && strcmp("set", next_word))
+        // {
+        //     printf("\033[33merror: not a command\033[0m\n");
+        //     return (0);
+        // }
+        if (strcmp(next_word, ">")  || strcmp(next_word, ">>") || strcmp(next_word, "<") || strcmp(next_word, "<<"))
         {
-            printf("\033[33merror: %s is not a command\033[0m\n", next_word);
-            return (0);
+                is_valid_command(cmd, next_word);
+                cmd->cmd = strdup(next_word); 
+                next_word = ft_strtok(NULL, "<>\"' \t\n");
         }
-        cmd->cmd = strdup(next_word);
         cmd->ft_in = 1;
-        while ((next_word = ft_strtok(NULL, " ")) != NULL)
+        while (next_word)
         {
             if (strcmp(next_word, "|") == 0)
             {
@@ -87,7 +83,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
             {
                 cmd->redout = index_char(next_word);
-                next_word = ft_strtok(NULL, " ");
+                next_word = ft_strtok(NULL, "<>\"' \t\n");
                 if (next_word == NULL)
                 {
                     printf("\033[33merror: expected filename after redout \033[0m\n");
@@ -95,7 +91,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 }
                 flags = redouthelper(cmd);
                 cmd->ft_out = open(next_word, flags, 0644);
-                if (cmd->ft_in == -1)
+                if (cmd->ft_out == -1)
                 {
                     printf("\033[33merror: can't open file \033[0m\n");
                     return (0);
@@ -105,7 +101,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             else if (strcmp(next_word, "<") == 0)
             {
                 cmd->redin = index_char(next_word);
-                next_word = ft_strtok(NULL, " ");
+                next_word = ft_strtok(NULL, "<>\"' \t\n");
                 if (next_word == NULL)
                 {
                     printf("\033[33merror: expected filename after redout \033[0m\n");
@@ -121,11 +117,12 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             }
             else if (strcmp(next_word, "<<") == 0 )
             {
-                cmd->args = handle_heredoc(ft_strtok(NULL, " "));
+                cmd->args = handle_heredoc(ft_strtok(NULL, "<>\"' \t\n"));
                 
             }
             else
             {
+                next_word = remove_quotes(next_word);
                 if (cmd->args == NULL) 
                     cmd->args = strdup(next_word);
                 else
@@ -134,6 +131,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     cmd->args = ft_strjoin(cmd->args, next_word);
                 }
             }
+        next_word = ft_strtok(NULL, "<>\"' \t\n");
         }
         cmd = cmd->next;
     }
