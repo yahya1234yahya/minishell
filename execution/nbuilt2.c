@@ -16,6 +16,8 @@ t_cmd *preparecmd(t_cmd *cmd)
 {
 	char *tmp;
 
+	if (!cmd->path)
+		cmd->path = ft_strdup(cmd->cmd);
 	if (cmd->args)
 	{	
 		tmp = ft_strjoin(cmd->path, " ");
