@@ -42,7 +42,6 @@ void	ft_pwd(t_env *env)
 	char **cwd;
 
 	wd = envsearch(env, "PWD");
-	cwd = ft_split(wd->name, '=');
-	printf("%s\n", cwd[1]);
+	printf("%s\n", wd->value);
 }
 

@@ -21,6 +21,8 @@ t_env	*ft_lstnew(void *content)
 	if (!node)
 		return (NULL);
 	split = ft_split((char *)content , '=');
+	node->key = split[0];
+	node->value = split[1];
 	node->name = content;
 	node->next = NULL;
 	return (node);
@@ -29,11 +31,22 @@ t_env	*ft_lstnew(void *content)
 void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
-
 	if (!*lst)
 	{
 		*lst = newnode;
 		return ;
+	}
+	last = *lst;
+	while (last)
+	{
+		if (ft_strcmp(last->key, newnode->key) == 0)  //l9inah
+		{
+			if (last->value && newnode->value == NULL)
+				return ;
+			envset(*lst, newnode->key, newnode->value);
+			return ;
+		}
+		last = last->next;
 	}
 	last = *lst;
 	while (last->next)
@@ -41,16 +54,44 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 	last->next = newnode;
 };
 
-void printenv(t_env *env)
+void printenv(t_env *env, int flag)
 {
 	t_env	*current;
 
 	current = env;
-	while (current)
+
+	if (flag)
 	{
-		printf("%s\n", current->name);
-		current = current->next;
+		while (current)
+		{
+			if (current->value != NULL)
+			{
+				printf("%s=", current->key);
+				printf("%s\n", current->value);
+			}
+			
+			current = current->next;
+		}
 	}
+	else
+	{
+		while (current)
+		{
+			printf("declare -x %s", current->key);
+			if(current->value)
+				printf("=%s\n", current->value);
+			else
+				printf("\n");
+			current = current->next;
+		}
+	}
+	
+	// while (current)
+	// {
+	// 	printf("%s=", current->key);
+	// 	printf("%s\n", current->value);
+	// 	current = current->next;
+	// }
 };
 
 t_env	*envset(t_env *env, char *name, char *value)
@@ -65,10 +106,7 @@ t_env	*envset(t_env *env, char *name, char *value)
 	{
 		if (ft_strnstr(current->name, name, ft_strlen(name)))
 		{
-			new = ft_strjoin(name, "=");
-			new = ft_strjoin(new, value);
-			// free(current->name);
-			current->name = new;
+			current->value = value;
 			return (env);
 		}
 		current = current->next;

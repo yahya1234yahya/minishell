@@ -51,4 +51,6 @@ void execfromsystem(t_cmd *cmd, char **envp)
 		else
 			waitpid(pid, NULL, 0);
 	}
+	else
+		write(2, "command not found or can't be executed\n", 40);
 }

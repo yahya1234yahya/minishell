@@ -32,15 +32,16 @@ void print_commands(t_cmd *head)
 
 int main(int argc, char **argv, char **envp)
 {  
+	t_cmd	*cmd;
+	t_cmd	head;
+	char	*input;
+	t_env 	*env;
+
+	env = initenv(envp);//TODO we cange here
 	while (1)
 	{
-		t_cmd	*cmd;
-		t_cmd	*head = cmd; 
-		char	*input;
-		
 		cmd = init_cmd();
-		// cmd->next = init_cmd;
-		cmd->env = initenv(envp);//TODO we cange here
+		cmd->env = env;		
 		input = readline("minishell > ");
 		if (input != NULL && *input != '\0')
 			add_history(input);
@@ -49,8 +50,8 @@ int main(int argc, char **argv, char **envp)
             continue ;
 		 if(check_complete(input) == 0)
     	{
-        printf("error: incomplete command\n");
-        continue ;
+			printf("error: incomplete command\n");
+			continue ;
     	}
 		if (input == NULL)
     	{

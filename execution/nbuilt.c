@@ -31,10 +31,19 @@ char	**convert(t_cmd *cmd)
 	tmp = cmd->env;
 	while (j < i)
 	{
-		ret[j] = tmp->name;
+		ret[j] = ft_strjoin(tmp->key, "=");
+		ret[j] = ft_strjoin(ret[j], tmp->value);
 		j++;
 		tmp = tmp->next;
 	};
+	// j = 0;
+	// tmp = cmd->env;
+	// while (j < i)
+	// {
+	// 	ret[j] = tmp->name;
+	// 	j++;
+	// 	tmp = tmp->next;
+	// };
 	ret[j] = NULL;
 	return (ret);
 };

@@ -36,14 +36,57 @@
 // 	free (env);
 // };
 
+
+static int plusaddpack(t_env **env, char *key, char *value)
+{
+	t_env	*tmp;
+	t_env	*tmp2;
+	char	*newvalue;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (!strncmp(tmp->key, value , ft_strlen(key)))
+		{
+			newvalue = ft_strjoin(tmp->value, key);
+			free(tmp->value);
+			tmp->value = newvalue;
+			return 1;
+		}
+		tmp = tmp->next;
+	}
+	return -1;
+};
+
+static char *removeFirstChar(const char* str)
+{
+	if (str == NULL || str[0] == '\0')
+		return NULL;
+	return strdup(str + 1);
+}
+
+
 void	ft_export(t_cmd *cmd)
 {
 	char	**arg;
+	t_env	*tmp;
 
-	// if (!cmd->args)
-	// 	return;
-	ft_lstadd_back(&cmd->env, ft_lstnew(cmd->args));
-	t_env *tmp = cmd->env;
+	if (!cmd->args)            //no args
+		printenv(cmd->env, 0);
+	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
+	{
+		arg = ft_split(cmd->args, '+');
+		arg[1] = removeFirstChar(arg[1]);
+		if(plusaddpack(&cmd->env, arg[1], arg[0]) == -1)
+		{
+			arg[0] = ft_strjoin(arg[0], "=");
+			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(arg[0], arg[1])));
+		}//if key not found
+	}
+	else
+		ft_lstadd_back(&cmd->env, ft_lstnew(cmd->args));
+	
+	// t_env *tmp = cmd->env;
 
 
 

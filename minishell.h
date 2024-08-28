@@ -61,7 +61,7 @@ char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
 int		check_complete(char *input);
 char	*ft_strjoin(char  *s1, char  *s2);
-t_env	*envsearch(t_env *env, char *name);
+t_env	*envsearch(t_env *env, char *key);
 char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
@@ -81,7 +81,7 @@ void	decider(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(t_env *env);
 void 	changedir(t_cmd *cmd);
-void	printenv(t_env *env);
+void	printenv(t_env *env, int flag);
 void	ft_unset(t_env **env, t_cmd *cmd);
 void	redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
@@ -101,6 +101,7 @@ size_t	ft_strlen( char *s);
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*ft_strdup(char *s1);
 char	*ft_strtrim(char  *s1, char  *set);
+char	*ft_strchr(const char *s, int c);
 
 
 // echo with -n option
