@@ -18,6 +18,7 @@
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
+
 typedef struct s_garbage
 {
     void                *adr;
@@ -58,6 +59,7 @@ typedef struct s_cmd
 	struct 	s_cmd *next;
 } t_cmd;
 
+extern int g_signal;
 
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
@@ -93,6 +95,7 @@ int		filedreset(int input, int output);
 void	execfromsystem(t_cmd *cmd, char **envp);
 void	executemultiple(t_cmd *cmd);
 t_cmd	*preparecmd(t_cmd *cmd);
+void	ft_errorwrite(t_cmd *cmd);
 
 
 //tools

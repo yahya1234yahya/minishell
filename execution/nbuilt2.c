@@ -38,14 +38,14 @@ void ft_errorwrite(t_cmd *cmd)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd(" :command or file not found\n", 2);
 		cmd->exs = 127;
 	}
 	else if (access(cmd->splited[0], X_OK) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		ft_putstr_fd(" : Permission denied\n", 2);
 		cmd->exs = 126;
 	}
 }
@@ -67,6 +67,7 @@ void execfromsystem(t_cmd *cmd, char **envp)
 		}
 		if (pid == 0)
 		{
+			g_signal = 1;
 			if (execve(cmd->splited[0], cmd->splited, envp) == -1)
 			{
 				perror("execve");

@@ -95,7 +95,7 @@ char *expand_variables(char    *input)
 
     if (!input)
         return (0);
-    count = 0;
+	count = 0;
     count = count_new_input(input);
 	// printf("count = %d\n", count); //debug malloc katfailli hna count katreturni 3adad undefined  fach kantsift star khawi
 	if (count <= 0)

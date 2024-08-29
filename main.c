@@ -30,38 +30,41 @@ void print_commands(t_cmd *head)
 	}
 } 
 
-// void	deepersighandlem(int signum, siginfo_t *info, void *ptr)
-// {
-// 	(void)info;
-// 	(void)ptr;
-// 	if (signum == SIGINT)
-// 	{
-// 		rl_on_new_line();
-// 	}
-// 	else if (signum == SIGQUIT)
-// 	{
-// 		/* code */
-// 	}
-	
 
-// }
+int g_signal = 0;
+
+
 
 void funcsign(int signum)
 {
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+    if (signum == SIGINT)
+    {
+		if (waitpid(-1, NULL, WNOHANG) != -1)
+			return;
+        write(1, "\n", 1);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+    else if (signum == SIGQUIT)
+    {
+        if (g_signal == 1)
+        {
+            write(1, "Quit: 3\n", 8);
+            exit(0);
+        }
+    }
 }
 
-void ft_signals(void)
+void ft_signals()
 {
 	rl_catch_signals = 0;
 	signal(SIGINT, funcsign);
+	signal(SIGQUIT, SIG_IGN);
 }
+
+
+// |ls hadi makhashach douz
 
 int main(int argc, char **argv, char **envp)
 {  
@@ -77,6 +80,11 @@ int main(int argc, char **argv, char **envp)
 		cmd = init_cmd();
 		cmd->env = env;
 		input = readline("minishell > ");
+		if (input == NULL)
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		if (input != NULL && *input != '\0')
 			add_history(input);
         input = expand_variables(input);

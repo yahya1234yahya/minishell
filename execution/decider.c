@@ -66,6 +66,7 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 	}
 	if (isbuiltin(cmd) == -1)
 		execfromsystem(cmd, envp);
+	g_signal = 0;
 	if (cmd->ft_in != input)
 	{
 		filedreset(input, output);
@@ -118,7 +119,7 @@ int child(t_cmd *cmd, int input, int *pipefd)
 		}
 		else
 		{
-			perror("access");
+			ft_errorwrite(cmd);
 			return (-1);
 		}
 	}
@@ -152,13 +153,18 @@ void executemultiple(t_cmd *cmd)
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)
-            child(cmd, input, pipefd);
+		{
+			g_signal = 1;
+            if(child(cmd, input, pipefd) == -1)
+				exit(1);
+		}
         else
 			parent(&input, pipefd);
         cmd = cmd->next;
 	}
 	while (wait(NULL) > 0)
         ;
+	g_signal = 0;
 }
 
 // void executemultiple(t_cmd *cmd) 							//mine//

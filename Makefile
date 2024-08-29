@@ -11,7 +11,7 @@ FLAGS = -Wall -Wextra -Werror
 HEADER = minishell.h
 READLINEDIR  =  $(shell brew --prefix readline)
 
-all: $(NAME)
+all: $(NAME) clean
 %.o: %.c $(HEADER)
 	$(CC) -c $< -o $@ -I $(READLINEDIR)/include
 $(NAME): $(OBJS)
