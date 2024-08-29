@@ -4,26 +4,21 @@ parsing/ft_strjoin.c  execution/pwd.c execution/decider.c \
 execution/echo.c execution/nbuilt.c execution/nbuilt2.c execution/tools/minilibft.c execution/tools/split.c execution/env.c execution/chdir.c execution/initargs.c \
 parsing/srchenv.c parsing/remove_quotes.c parsing/helper.c parsing/expand.c execution/export.c  \
 execution/hdoc.c execution/pipe.c parsing/split_pipe.c
+
+
 OBJS = $(SRCS:.c=.o)
+FLAGS = -Wall -Wextra -Werror
 HEADER = minishell.h
+READLINEDIR  =  $(shell brew --prefix readline)
 
-all: $(NAME) clean
-
+all: $(NAME)
+%.o: %.c $(HEADER)
+	$(CC) -c $< -o $@ -I $(READLINEDIR)/include
 $(NAME): $(OBJS)
-	@echo "Compiling..."
-	@cc $(SRCS) -o $(NAME) -lreadline
-	@echo "Compilation completed!"
-
+	$(CC) $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g -fsanitize=address 
 clean:
-	@echo "Cleaning..."
-	@rm -f $(OBJS)
-	@echo "Clean completed!"
-
+	rm -f $(OBJS)
 fclean: clean
-	@echo "Removing executable..."
-	@rm -f $(NAME)
-	@echo "Removal completed!"
-
+	rm -f $(NAME)
 re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY: clean

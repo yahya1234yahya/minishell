@@ -32,6 +32,25 @@ t_cmd *preparecmd(t_cmd *cmd)
 	return (cmd);
 }
 
+void ft_errorwrite(t_cmd *cmd)
+{
+	if (access(cmd->splited[0], F_OK) == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->splited[0], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		cmd->exs = 127;
+	}
+	else if (access(cmd->splited[0], X_OK) == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->splited[0], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		cmd->exs = 126;
+	}
+}
+
+
 void execfromsystem(t_cmd *cmd, char **envp)
 {
 	int pid;
@@ -43,16 +62,20 @@ void execfromsystem(t_cmd *cmd, char **envp)
 		if (pid == -1)
 		{
 			perror("fork");
+			cmd->exs = 1;
 			exit(1);
 		}
 		if (pid == 0)
 		{
 			if (execve(cmd->splited[0], cmd->splited, envp) == -1)
+			{
 				perror("execve");
+				cmd->exs = 126;
+			}
 		}
 		else
 			waitpid(pid, NULL, 0);
 	}
 	else
-		write(2, "command not found or can't be executed\n", 40);
+		ft_errorwrite(cmd);
 }

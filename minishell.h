@@ -1,8 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
+
 # include <stdio.h>
 # include <stdlib.h>
 #include <stdbool.h> 
@@ -13,6 +12,9 @@
 # include <sys/types.h>
 #include <ctype.h>
 #include <string.h>
+#include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
@@ -52,6 +54,7 @@ typedef struct s_cmd
 	t_env	*env;
 	t_data	data;
 	char	**splited;
+	int		exs;
 	struct 	s_cmd *next;
 } t_cmd;
 

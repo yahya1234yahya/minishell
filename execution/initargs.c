@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-t_cmd	*init_cmd(void)
+t_cmd	*init_cmd()
 {
 	t_cmd	*new_cmd;
 
@@ -22,6 +22,7 @@ t_cmd	*init_cmd(void)
 		perror("malloc");
 		exit(1);
 	}
+	new_cmd->input = NULL;
 	new_cmd->cmd = NULL;
 	new_cmd->args = NULL;
 	new_cmd->pipe = 0;
@@ -31,5 +32,25 @@ t_cmd	*init_cmd(void)
 	new_cmd->path = NULL;
 	new_cmd->next = NULL;
 	new_cmd->hdoc = NULL;
+	new_cmd->exs = 0;
 	return (new_cmd);
 };
+
+// typedef struct s_cmd
+// {
+// 	char	*input;
+// 	char	*cmd;  
+// 	char	*args;
+// 	int		pipe;
+// 	int		redout;
+// 	int		redin;
+// 	int		ft_in;
+// 	int		ft_out;
+// 	char 	*path;
+// 	char	*hdoc;
+// 	t_env	*env;
+// 	t_data	data;
+// 	char	**splited;
+// 	int		exs;
+// 	struct 	s_cmd *next;
+// } 

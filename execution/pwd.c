@@ -38,10 +38,17 @@ static char	*ft_strstr(const char	*haystack, const char	*needle)
 
 void	ft_pwd(t_env *env)
 {
-	t_env *wd;
-	char **cwd;
+	t_env	*wd;
+	char 	*pwd;
 
 	wd = envsearch(env, "PWD");
+	if (!wd)
+	{
+		pwd = getcwd(NULL, 0);
+		printf("%s\n", pwd);
+		free(pwd);
+		return ;
+	}
 	printf("%s\n", wd->value);
 }
 

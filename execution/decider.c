@@ -14,8 +14,19 @@
 
 void redirectchange(t_cmd *cmd)
 {
-	dup2(cmd->ft_in, STDIN_FILENO);
-	dup2(cmd->ft_out, STDOUT_FILENO);
+	if (dup2(cmd->ft_in, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		cmd->exs = 1;
+		exit(1);
+	}
+	
+	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
+	{
+		perror("dup2");
+		cmd->exs = 1;
+		exit(1);
+	}
 };
 
 static int isbuiltin(t_cmd *cmd)
@@ -29,7 +40,10 @@ static int isbuiltin(t_cmd *cmd)
 	else if (!ft_strcmp("env", cmd->cmd))
 		printenv(cmd->env, 1);
 	else if (!ft_strcmp("exit", cmd->cmd))
+	{
+		printf("exit\n");
 		exit(0);
+	}
 	else if (!ft_strcmp("pwd", cmd->cmd))
 		ft_pwd(cmd->env);
 	else if (!ft_strcmp("unset", cmd->cmd))
@@ -38,6 +52,7 @@ static int isbuiltin(t_cmd *cmd)
 		return (-1);
 	return (0);
 }
+
 static 	void	executesingle(t_cmd *cmd , char **envp)
 {
 	int input;

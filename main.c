@@ -28,6 +28,39 @@ void print_commands(t_cmd *head)
 		printf("----------------\n");
 		current = current->next;
 	}
+} 
+
+// void	deepersighandlem(int signum, siginfo_t *info, void *ptr)
+// {
+// 	(void)info;
+// 	(void)ptr;
+// 	if (signum == SIGINT)
+// 	{
+// 		rl_on_new_line();
+// 	}
+// 	else if (signum == SIGQUIT)
+// 	{
+// 		/* code */
+// 	}
+	
+
+// }
+
+void funcsign(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void ft_signals(void)
+{
+	rl_catch_signals = 0;
+	signal(SIGINT, funcsign);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -37,11 +70,12 @@ int main(int argc, char **argv, char **envp)
 	char	*input;
 	t_env 	*env;
 
+	ft_signals();
 	env = initenv(envp);//TODO we cange here
 	while (1)
 	{
 		cmd = init_cmd();
-		cmd->env = env;		
+		cmd->env = env;
 		input = readline("minishell > ");
 		if (input != NULL && *input != '\0')
 			add_history(input);
@@ -68,7 +102,7 @@ int main(int argc, char **argv, char **envp)
 		// 	cmd->next->env = initenv(envp);
 		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
 		// }
-		print_commands(cmd);
+		// print_commands(cmd);
 		decider(cmd);
 		// while(head)
 		// {
@@ -78,6 +112,7 @@ int main(int argc, char **argv, char **envp)
 		// }
 		// my_free(cmd);
 		// cmd->redout = 0;
+		env = cmd->env;
     }
     return (0);
 }
