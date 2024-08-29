@@ -49,21 +49,23 @@ void funcsign(int signum)
         rl_replace_line("", 0);
         rl_redisplay();
     }
-    // else if (signum == SIGQUIT)
-    // {
-    //     if (g_signal == 1)
-    //     {
-    //         write(1, "Quit: 3\n", 8);
-    //         exit(0);
-    //     }
-    // }
+    else if (signum == SIGQUIT)
+    {
+        if (waitpid(-1, NULL, WNOHANG) != -1)
+		{
+			// printf("Quit: 3\n");
+            write(1, "Quit: 3\n", 8);
+            // exit(0);
+		}
+	}
 }
+
 
 void ft_signals()
 {
 	rl_catch_signals = 0;
 	signal(SIGINT, funcsign);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, funcsign);
 }
 
 
@@ -75,7 +77,9 @@ int main(int argc, char **argv, char **envp)
 	t_cmd	head;
 	char	*input;
 	t_env 	*env;
-
+	static struct termios	termstate;
+	
+	tcgetattr(0, &termstate);
 	ft_signals();
 	env = initenv(envp);//TODO we cange here
 	while (1)
@@ -124,6 +128,7 @@ int main(int argc, char **argv, char **envp)
 		// my_free(cmd);
 		// cmd->redout = 0;
 		env = cmd->env;
+		tcsetattr(0, TCSANOW, &termstate);
     }
     return (0);
 }
