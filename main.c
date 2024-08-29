@@ -53,9 +53,7 @@ void funcsign(int signum)
     {
         if (waitpid(-1, NULL, WNOHANG) != -1)
 		{
-			// printf("Quit: 3\n");
             write(1, "Quit: 3\n", 8);
-            // exit(0);
 		}
 	}
 }

@@ -16,6 +16,7 @@ void changedir(t_cmd *cmd)
 {
 	char *oldpwd;
 	char **home;
+	t_env *homeenv;
 
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
@@ -25,12 +26,12 @@ void changedir(t_cmd *cmd)
 	};
 	if (cmd->args == NULL)
 	{
-		home = ft_split(envsearch(cmd->env, "HOME")->name, '=');
-		if (!home[1] || !home[0])
+		homeenv = envsearch(cmd->env, "HOME");
+		if (!homeenv)
 		{
 			ft_putstr_fd("HOME not set\n", 2);
 			return ;
-		};
+		}
 		if (chdir(home[1]) == -1)
 		{
 			perror("chdir");
