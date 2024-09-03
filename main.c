@@ -131,7 +131,7 @@ int main(int argc, char **argv, char **envp)
         input = expand_variables(input);
         if(!input[0])
             continue ;
-		 if(check_complete(input) == 0 || check_pipe(input) == 0 || check_redi(input))
+		 if(check_complete(input) == 0 || check_pipe(input) == 0 || check_redi(input) == 0)
     	{
 			printf("error: synatx error\n");
 			continue ;
