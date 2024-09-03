@@ -68,7 +68,43 @@ int g_signal = 0;
 
 
 // |ls hadi makhashach douz
+int	check_pipe (char	*input)
+{
+	int i = 0;
+	int pipe = 0;
 
+	while(input && input[i])
+	{
+		if (input[i] == '|' && pipe == 1)
+			return (0);
+		else if (input[i] == '|' && pipe == 0)
+			pipe = 1;
+		else if (input[i] != '|' && input[i] != ' ')
+			pipe = 0;
+		i++;
+	}
+	return (1);
+}
+
+int check_redi(char	*input)
+{
+	int i = 0;
+	int red = 0;
+
+	while (input[i])
+	{
+		if (input[i] == '<' || input[i] == '>')
+		{
+			red++;
+			if (red > 2)
+				return (0);
+		}
+		else if (input[i] != ' ' && input[i] != '|')
+			red = 0;
+		i++;
+	}
+	return (1);
+}
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
@@ -95,9 +131,9 @@ int main(int argc, char **argv, char **envp)
         input = expand_variables(input);
         if(!input[0])
             continue ;
-		 if(check_complete(input) == 0)
+		 if(check_complete(input) == 0 || check_pipe(input) == 0 || check_redi(input))
     	{
-			printf("error: incomplete command\n");
+			printf("error: synatx error\n");
 			continue ;
     	}
 		if (input == NULL)
@@ -115,7 +151,7 @@ int main(int argc, char **argv, char **envp)
 		// 	cmd->next->env = initenv(envp);
 		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
 		// }
-		print_commands(cmd);
+		// print_commands(cmd);
 		decider(cmd);
 		// while(head)
 		// {
