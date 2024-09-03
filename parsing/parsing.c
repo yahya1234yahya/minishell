@@ -47,6 +47,44 @@ int is_valid_command(t_cmd *cmd, char *word)
     return 0;
 }
 
+char    *add_space(char *input)
+{
+    int i = 0;
+    int count = 0;
+    int j = 0;
+    while(input && input[i])
+    {
+        if (input[i] == '<' || input[i] == '>')
+        {
+            if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+                count += 2;
+            count++;
+            i++;
+            continue ;
+        }
+        i++;
+        count++;
+    }
+    char *new_input = malloc(count + 1);
+    i = 0;
+    while(input && input[i])
+    {
+        if (input[i] == '<' || input[i] == '>')
+        {
+            if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+                new_input[j++] = ' ';
+            new_input[j++] = input[i++];
+            if (input[i] != '<' && input[i] != '>')
+                new_input[j++] = ' ';
+            continue;
+        }
+        new_input[j++] = input[i++];
+    }
+    new_input[j] = '\0';
+    return (new_input);
+
+}
+
 int parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
     char *next_word;
@@ -56,8 +94,8 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
    
     while(cmd)
     {
-
-        next_word = ft_strtok(cmd->input, "<>\"' \t\n");
+        cmd->input = add_space(input);
+        next_word = ft_strtok(cmd->input, "\"' \t\n");
         if (!next_word) return (0);
 
         // printf("\n\nnext_word : %s\n\n", next_word);
@@ -71,7 +109,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
         {
                 is_valid_command(cmd, next_word);
                 cmd->cmd = strdup(next_word); 
-                next_word = ft_strtok(NULL, "<>\"' \t\n");
+                next_word = ft_strtok(NULL, "\"' \t\n");
         }
         cmd->ft_in = 1;
         while (next_word)
@@ -83,7 +121,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
             {
                 cmd->redout = index_char(next_word);
-                next_word = ft_strtok(NULL, "<>\"' \t\n");
+                next_word = ft_strtok(NULL, "\"' \t\n");
                 if (next_word == NULL)
                 {
                     printf("\033[33merror: expected filename after redout \033[0m\n");
@@ -117,7 +155,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             }
             else if (strcmp(next_word, "<<") == 0 )
             {
-                cmd->args = handle_heredoc(ft_strtok(NULL, "<>\"' \t\n"));
+                cmd->args = handle_heredoc(ft_strtok(NULL, "\"' \t\n"));
                 
             }
             else
@@ -131,7 +169,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     cmd->args = ft_strjoin(cmd->args, next_word);
                 }
             }
-        next_word = ft_strtok(NULL, "<>\"' \t\n");
+        next_word = ft_strtok(NULL, "\"' \t\n");
         }
         cmd = cmd->next;
     }

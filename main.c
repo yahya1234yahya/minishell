@@ -35,36 +35,36 @@ int g_signal = 0;
 
 
 
-void funcsign(int signum)
-{
-    if (signum == SIGINT)
-    {
-		if (waitpid(-1, NULL, WNOHANG) != -1)
-		{
-			write(1, "\n", 1);
-			return;
-		}
-        write(1, "\n", 1);
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-    }
-    else if (signum == SIGQUIT)
-    {
-        if (waitpid(-1, NULL, WNOHANG) != -1)
-		{
-            write(1, "Quit: 3\n", 8);
-		}
-	}
-}
+// void funcsign(int signum)
+// {
+//     if (signum == SIGINT)
+//     {
+// 		if (waitpid(-1, NULL, WNOHANG) != -1)
+// 		{
+// 			write(1, "\n", 1);
+// 			return;
+// 		}
+//         write(1, "\n", 1);
+//         rl_on_new_line();
+//         rl_replace_line("", 0);
+//         rl_redisplay();
+//     }
+//     else if (signum == SIGQUIT)
+//     {
+//         if (waitpid(-1, NULL, WNOHANG) != -1)
+// 		{
+//             write(1, "Quit: 3\n", 8);
+// 		}
+// 	}
+// }
 
 
-void ft_signals()
-{
-	rl_catch_signals = 0;
-	signal(SIGINT, funcsign);
-	signal(SIGQUIT, funcsign);
-}
+// void ft_signals()
+// {
+// 	rl_catch_signals = 0;
+// 	signal(SIGINT, funcsign);
+// 	signal(SIGQUIT, funcsign);
+// }
 
 
 // |ls hadi makhashach douz
@@ -75,10 +75,10 @@ int main(int argc, char **argv, char **envp)
 	t_cmd	head;
 	char	*input;
 	t_env 	*env;
-	static struct termios	termstate;
+	// static struct termios	termstate;
 	
-	tcgetattr(0, &termstate);
-	ft_signals();
+	// tcgetattr(0, &termstate);
+	// ft_signals();
 	env = initenv(envp);//TODO we cange here
 	while (1)
 	{
@@ -115,7 +115,7 @@ int main(int argc, char **argv, char **envp)
 		// 	cmd->next->env = initenv(envp);
 		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
 		// }
-		// print_commands(cmd);
+		print_commands(cmd);
 		decider(cmd);
 		// while(head)
 		// {
@@ -126,7 +126,7 @@ int main(int argc, char **argv, char **envp)
 		// my_free(cmd);
 		// cmd->redout = 0;
 		env = cmd->env;
-		tcsetattr(0, TCSANOW, &termstate);
+		// tcsetattr(0, TCSANOW, &termstate);
     }
     return (0);
 }
