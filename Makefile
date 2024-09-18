@@ -15,7 +15,7 @@ all: $(NAME) clean
 %.o: %.c $(HEADER)
 	$(CC) -c $< -o $@ -I $(READLINEDIR)/include
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory 
+	$(CC) $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g -fsanitize=address 
 clean:
 	rm -f $(OBJS)
 fclean: clean

@@ -66,12 +66,28 @@ static char *removeFirstChar(const char* str)
 }
 
 
+int exportsignal(int sig, t_cmd *cmd)
+{
+	char *str;
+
+	
+	str = ft_itoa(sig);
+	if (!str)
+		return(-1);
+	cmd->args = ft_strjoin("?=", str);
+	ft_export(cmd);
+	free(str);
+	cmd->args = NULL;
+	return (0);
+}
+
+
 void	ft_export(t_cmd *cmd)
 {
 	char	**arg;
 	t_env	*tmp;
 
-	if (!cmd->args)            //no args
+	if (!cmd->args)
 		printenv(cmd->env, 0);
 	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{

@@ -12,6 +12,25 @@
 
 #include "../minishell.h"
 
+t_cmd	*set_cmd(t_cmd *cmd)
+{
+	if (cmd->first_run)
+	{
+		cmd->first_run = 0;
+		cmd->exs = 0;
+	}
+	cmd->input = NULL;
+	cmd->cmd = NULL;
+	cmd->args = NULL;
+	cmd->pipe = 0;
+	cmd->redout = 0;
+	cmd->redin = 0;
+	cmd->ft_in = 1;
+	cmd->path = NULL;
+	cmd->next = NULL;
+	cmd->hdoc = NULL;
+	return (cmd);
+};
 t_cmd	*init_cmd()
 {
 	t_cmd	*new_cmd;

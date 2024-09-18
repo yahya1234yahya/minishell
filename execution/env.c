@@ -31,6 +31,7 @@ t_env	*ft_lstnew(void *content)
 void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
+
 	if (!*lst)
 	{
 		*lst = newnode;
@@ -39,6 +40,7 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 	last = *lst;
 	while (last)
 	{
+
 		if (ft_strcmp(last->key, newnode->key) == 0)  //l9inah
 		{
 			if (last->value && newnode->value == NULL)

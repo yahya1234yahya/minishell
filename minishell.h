@@ -57,10 +57,11 @@ typedef struct s_cmd
 	t_data	data;
 	char	**splited;
 	int		exs;
+	int 	first_run;
 	struct 	s_cmd *next;
 } t_cmd;
 
-extern int g_signal;
+// extern int g_signal;
 
 void 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
@@ -71,7 +72,7 @@ t_env	*envsearch(t_env *env, char *key);
 char    *remove_quotes(char *input);
 void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
-char 	*expand_variables(char *input);
+char 	*expand_variables(t_env *env, char *input);
 int		index_char(char *str);
 void	my_free(t_cmd *t);
 char	*handle_heredoc(char *delimiter);
@@ -79,7 +80,8 @@ void	split_pipe(t_cmd *cmd, char *input, char **envp);
 
 //execution
 t_env 	*initenv(char **envp);
-t_cmd	*init_cmd(void);
+t_cmd	*set_cmd(t_cmd *cmd);
+t_cmd	*init_cmd();
 t_env	*envset(t_env *env, char *name, char *value);
 t_env	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_env **lst, t_env *newnode);
@@ -97,6 +99,8 @@ void	execfromsystem(t_cmd *cmd, char **envp);
 void	executemultiple(t_cmd *cmd);
 t_cmd	*preparecmd(t_cmd *cmd);
 void	ft_errorwrite(t_cmd *cmd);
+int	exportsignal(int sig, t_cmd *cmd);
+t_cmd	*setandget(t_cmd *cmd);
 
 
 //tools
@@ -108,7 +112,8 @@ size_t	ft_strlen( char *s);
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*ft_strdup(char *s1);
 char	*ft_strtrim(char  *s1, char  *set);
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr(const char *s, int c); //TODO
+ char	*ft_itoa(int n);
 
 
 // echo with -n option

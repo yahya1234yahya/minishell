@@ -12,15 +12,16 @@
 
 #include "../minishell.h"
 
+
 void changedir(t_cmd *cmd)
 {
 	char *oldpwd;
-	char **home;
 	t_env *homeenv;
 
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{
+		setandget(NULL)->exs = 1;
 		perror("getcwd");
 		exit(1);
 	};
@@ -29,20 +30,23 @@ void changedir(t_cmd *cmd)
 		homeenv = envsearch(cmd->env, "HOME");
 		if (!homeenv)
 		{
+			setandget(NULL)->exs = 1;
 			ft_putstr_fd("HOME not set\n", 2);
 			return ;
 		}
-		if (chdir(home[1]) == -1)
+		if (chdir(homeenv->value) == -1)
 		{
 			perror("chdir");
+			setandget(NULL)->exs = 1;
 			exit(1);
 		};
 		envset(cmd->env, "OLDPWD", oldpwd);
-		envset(cmd->env, "PWD",home[1]);
+		envset(cmd->env, "PWD",homeenv->value);
 		return ;
 	}
 	else if (chdir(cmd->args) == -1)
 	{
+		setandget(NULL)->exs = 1;
 		perror("chdir");
 		return ;
 	};

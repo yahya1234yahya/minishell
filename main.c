@@ -31,138 +31,126 @@ void print_commands(t_cmd *head)
 } 
 
 
-int g_signal = 0;
+
+void funcsign(int signum)
+{
+    if (signum == SIGINT)
+    {
+		if (waitpid(-1, NULL, WNOHANG) != -1)
+		{
+			write(1, "\n", 1);
+			setandget(NULL)->exs = 130;
+			return;
+		}
+		setandget(NULL)->exs = 130;
+        write(1, "\n", 1);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+    else if (signum == SIGQUIT)
+    {
+        if (waitpid(-1, NULL, WNOHANG) != -1)
+		{
+			setandget(NULL)->exs = 131;
+            write(1, "Quit: 3\n", 8);
+		}
+	}
+}
 
 
-
-// void funcsign(int signum)
-// {
-//     if (signum == SIGINT)
-//     {
-// 		if (waitpid(-1, NULL, WNOHANG) != -1)
-// 		{
-// 			write(1, "\n", 1);
-// 			return;
-// 		}
-//         write(1, "\n", 1);
-//         rl_on_new_line();
-//         rl_replace_line("", 0);
-//         rl_redisplay();
-//     }
-//     else if (signum == SIGQUIT)
-//     {
-//         if (waitpid(-1, NULL, WNOHANG) != -1)
-// 		{
-//             write(1, "Quit: 3\n", 8);
-// 		}
-// 	}
-// }
-
-
-// void ft_signals()
-// {
-// 	rl_catch_signals = 0;
-// 	signal(SIGINT, funcsign);
-// 	signal(SIGQUIT, funcsign);
-// }
+void ft_signals()
+{
+	rl_catch_signals = 0;
+	signal(SIGINT, funcsign);
+	signal(SIGQUIT, funcsign);
+}
 
 
 // |ls hadi makhashach douz
-int	check_pipe (char	*input)
-{
-	int i = 0;
-	int pipe = 0;
 
-	while(input && input[i])
-	{
-		if (input[i] == '|' && pipe == 1)
-			return (0);
-		else if (input[i] == '|' && pipe == 0)
-			pipe = 1;
-		else if (input[i] != '|' && input[i] != ' ')
-			pipe = 0;
-		i++;
-	}
-	return (1);
+t_cmd	*setandget(t_cmd *cmd)
+{
+	static t_cmd *cmd2;
+
+	if (cmd)
+		cmd2 = cmd;
+	return (cmd2);
 }
 
-int check_redi(char	*input)
-{
-	int i = 0;
-	int red = 0;
+// |ls hadi makhashach douz
 
-	while (input[i])
-	{
-		if (input[i] == '<' || input[i] == '>')
-		{
-			red++;
-			if (red > 2)
-				return (0);
-		}
-		else if (input[i] != ' ' && input[i] != '|')
-			red = 0;
-		i++;
-	}
-	return (1);
-}
+// free_cmd(t_cmd *cmd)
+// {
+// 	t_cmd *tmp;
+
+// 	while (cmd)
+// 	{
+// 		tmp = cmd;
+// 		cmd = cmd->next;
+// 		free(tmp->input);
+// 		free(tmp->cmd);
+// 		free(tmp->args);
+// 		free(tmp->path);
+// 		free(tmp->splited);
+// 		free(tmp);
+// 	}
+// }
+
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
-	t_cmd	head;
 	char	*input;
 	t_env 	*env;
-	// static struct termios	termstate;
-	
-	// tcgetattr(0, &termstate);
-	// ft_signals();
-	env = initenv(envp);//TODO we cange here
+	static struct termios	termstate;
+
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	tcgetattr(0, &termstate);
+	if (!*envp)
+	{
+		printf("Mazal mahandlithach\n");
+		exit(0);
+	}
+	cmd->first_run = 1;
+	env = initenv(envp);
 	while (1)
 	{
-		cmd = init_cmd();
+		set_cmd(cmd);
+		setandget(cmd);
+		ft_signals();
 		cmd->env = env;
+		exportsignal(cmd->exs, cmd);
 		input = readline("minishell > ");
 		if (input == NULL)
 		{
-			printf("exit\n");
+			write(1, "exit\n", 5);
 			exit(0);
 		}
 		if (input != NULL && *input != '\0')
 			add_history(input);
-        input = expand_variables(input);
+		if (!(*input))
+			continue ;
+        input = expand_variables(env, input);
         if(!input[0])
             continue ;
-		if(check_complete(input) == 0 || check_pipe(input) == 0 || check_redi(input) == 0)
+		 if(check_complete(input) == 0)
     	{
-			printf("error: synatx error\n");
+			printf("error: incomplete command\n");
 			continue ;
     	}
 		if (input == NULL)
     	{
-          printf("\033[33merror:  command not found\033[0m\n");
+          printf("error:  command not found\n");
           return (0);
     	}
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)
 			continue ;
-		// while (check == 5)
-		// {
-        //     cmd->next = init_cmd();
-		// 	cmd->next->env = initenv(envp);
-		// 	check = parse(cmd->next, ft_strtok(NULL, " "), envp, 1);
-		// }
 		// print_commands(cmd);
 		decider(cmd);
-		// while(head)
-		// {
-		// 	t_cmd *tmp = head;
-		// 	head = head->next;
-		// 	free(tmp);
-		// }
-		// my_free(cmd);
-		// cmd->redout = 0;
 		env = cmd->env;
-		// tcsetattr(0, TCSANOW, &termstate);
+		tcsetattr(0, TCSANOW, &termstate);
     }
     return (0);
 }

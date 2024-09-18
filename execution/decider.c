@@ -28,23 +28,40 @@ void redirectchange(t_cmd *cmd)
 		exit(1);
 	}
 };
+int ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
+}
 
+int ft_strcmp2(const char *s1, const char *s2)
+{
+	while (*s1 && *s2)
+	{
+		if (ft_tolower(*s1) != ft_tolower(*s2))
+			return (ft_tolower(*s1) - ft_tolower(*s2));
+		s1++;
+		s2++;
+	}
+	return (ft_tolower(*s1) - ft_tolower(*s2));
+}
 static int isbuiltin(t_cmd *cmd)
 {
-	if (!ft_strcmp("echo", cmd->cmd))
+	if (!ft_strcmp2("echo", cmd->cmd))
 		ft_echo(cmd);
-	else if (!ft_strcmp("cd", cmd->cmd))
+	else if (!ft_strcmp2("cd", cmd->cmd))
 		changedir(cmd);
 	else if (!ft_strcmp("export", cmd->cmd))
 		ft_export(cmd);
-	else if (!ft_strcmp("env", cmd->cmd))
+	else if (!ft_strcmp2("env", cmd->cmd))
 		printenv(cmd->env, 1);
 	else if (!ft_strcmp("exit", cmd->cmd))
 	{
 		printf("exit\n");
 		exit(0);
 	}
-	else if (!ft_strcmp("pwd", cmd->cmd))
+	else if (!ft_strcmp2("pwd", cmd->cmd))
 		ft_pwd(cmd->env);
 	else if (!ft_strcmp("unset", cmd->cmd))
 		ft_unset(&cmd->env, cmd);
@@ -65,8 +82,9 @@ static 	void	executesingle(t_cmd *cmd , char **envp)
 		redirectchange(cmd);
 	}
 	if (isbuiltin(cmd) == -1)
+	{
 		execfromsystem(cmd, envp);
-	g_signal = 0;
+	}
 	if (cmd->ft_in != input)
 	{
 		filedreset(input, output);
@@ -86,6 +104,46 @@ static int helper(t_cmd *cmd)
 		return (-1);
 
 }
+
+// int child(t_cmd *cmd, int input, int *pipefd)
+// {
+//     close(pipefd[0]);
+//     if (cmd->redin != 0)
+//         dup2(cmd->ft_in, STDIN_FILENO);
+// 	else
+//         dup2(input, STDIN_FILENO);
+//     if (cmd->redout != 0)
+//         dup2(cmd->ft_out, STDOUT_FILENO);
+// 	else if (cmd->next != NULL)
+//         dup2(pipefd[1], STDOUT_FILENO);
+//     close(pipefd[1]);
+//  	if (helper(cmd) == 0)
+// 	{
+// 		if (cmd->redin != 0 || cmd->redout != 0)
+// 			redirectchange(cmd);
+// 		isbuiltin(cmd);
+// 		exit(0);
+// 	}
+// 	else
+// 	{
+// 		cmd = preparecmd(cmd);
+// 		if (access(cmd->splited[0], X_OK | F_OK) == 0)
+// 		{
+// 			if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
+// 			{ 
+// 				perror("execve");
+// 				return (-1);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			ft_errorwrite(cmd);
+// 			return (-1);
+// 		}
+// 	}
+//     exit(EXIT_SUCCESS);
+// }
+
 
 int child(t_cmd *cmd, int input, int *pipefd)
 {
@@ -134,6 +192,44 @@ static void parent(int *input, int *pipefd)
 	*input = pipefd[0];
 }
 
+// static void parent(int *input, int *pipefd)
+// {
+// 	close(pipefd[1]);
+// 	if (*input != STDIN_FILENO)
+// 		close(*input);
+// 	*input = pipefd[0];
+// }
+
+// void executemultiple(t_cmd *cmd)  //this
+// {
+// 	pid_t	pid;
+// 	int		input;
+// 	int		pipefd[2];
+	
+// 	input = STDIN_FILENO;
+// 	while (cmd)
+// 	{
+// 		if (cmd->cmd == NULL)
+// 			break;
+// 		pipe(pipefd);
+// 		pid = fork();
+// 		if (pid == -1)
+// 		{
+// 			perror("fork");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		if (pid == 0)
+// 		{
+//             if(child(cmd, input, pipefd) == -1)
+// 				exit(1);
+// 		}
+//         else
+// 			parent(&input, pipefd);
+//         cmd = cmd->next;
+// 	}
+// 	while (wait(NULL) > 0)
+// 		;
+// }
 void executemultiple(t_cmd *cmd)
 {
 	pid_t	pid;
@@ -154,7 +250,6 @@ void executemultiple(t_cmd *cmd)
 		}
 		if (pid == 0)
 		{
-			g_signal = 1;
             if(child(cmd, input, pipefd) == -1)
 				exit(1);
 		}
@@ -164,7 +259,6 @@ void executemultiple(t_cmd *cmd)
 	}
 	while (wait(NULL) > 0)
         ;
-	g_signal = 0;
 }
 
 // void executemultiple(t_cmd *cmd) 							//mine//

@@ -38,7 +38,7 @@ int count_word(char *input)
 
 }
 
-int count_new_input(char    *input)
+int count_new_input(t_env	*env, char    *input)
 {
     int count;
     int count_name;
@@ -65,7 +65,7 @@ int count_new_input(char    *input)
                 input++;
             }
             name[i] = '\0';
-            env_value = getenv(name);
+            env_value = envsearch(env, name)->value;
             if (env_value)
                 count += strlen(env_value);
             free(name);
@@ -81,7 +81,7 @@ int count_new_input(char    *input)
     return (count);
 }
 
-char *expand_variables(char    *input)
+char *expand_variables(t_env	*env, char    *input)
 {
     int count;
     int count_name;
@@ -96,13 +96,8 @@ char *expand_variables(char    *input)
     if (!input)
         return (0);
 	count = 0;
-    count = count_new_input(input);
-	// printf("count = %d\n", count); //debug malloc katfailli hna count katreturni 3adad undefined  fach kantsift star khawi
-	if (count <= 0)
-	{
-		printf("error: invalid input\n");
-		exit(1);	
-	}
+    count = count_new_input(env, input);
+
 	
     new_input = malloc(count + 1);
     while (*input)
@@ -114,13 +109,14 @@ char *expand_variables(char    *input)
             input++;
             name = malloc(count_word(input) + 1);
             i = 0;
-            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_') )
+            while(*input && ft_isdigit(*input) || ft_isalpha(*input) || *input == '_' || *(input) == '?' )
             {
                 name[i++] = *input;
                 input++;
             }
             name[i] = '\0';
-            env_value = getenv(name);
+            env_value = envsearch(env, name)->value;
+
             if (env_value)
             {
                 while (*env_value)
