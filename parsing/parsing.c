@@ -2,13 +2,11 @@
 
 static int redouthelper(t_cmd *cmd)
 {
-	if (cmd->redout == 1)
+	if (cmd->redin == 1)
 		return (O_RDONLY);
 	else if (cmd->redout == 2)
 		return (O_RDWR | O_CREAT | O_TRUNC);
 	else if (cmd->redout == 3)
-		return (O_RDWR | O_CREAT | O_APPEND);
-	else if (cmd->redout == 4)
 		return (O_RDWR | O_CREAT | O_APPEND);
 	return (0);
 };
@@ -90,6 +88,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     char *next_word;
     int flags;
     next_word = NULL;
+    char    *delimiter;
 
    
     while(cmd)
@@ -118,7 +117,8 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             {
                 cmd->pipe = 1;
                 break;
-            } else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
+            }
+            else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
             {
                 cmd->redout = index_char(next_word);
                 next_word = ft_strtok(NULL, "\"' \t\n");
@@ -155,8 +155,15 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             }
             else if (strcmp(next_word, "<<") == 0 )
             {
-                cmd->args = handle_heredoc(ft_strtok(NULL, "\"' \t\n"));
-                
+                next_word = ft_strtok(NULL, "\"' \t\n");
+                cmd->redin = 1;
+                if (cmd->ft_in == 1)
+                {
+                    cmd->ft_in = open("tmp_hdoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+                }
+                cmd->hdoc_delimiter = strdup(next_word);
+                handle_heredoc(next_word, cmd);
+				cmd->ft_in = open("tmp_hdoc", O_RDWR , 0644);
             }
             else
             {

@@ -29,8 +29,9 @@ void ft_echo(t_cmd *cmd)
 	option = 0;
 	if (cmd->args == NULL)
 	{
-		write(STDOUT_FILENO, "\n", 1);
-			return ;
+		if (write(STDOUT_FILENO, "\n", 1) == -1)
+			perror("write");
+		return ;
 	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
     {
@@ -47,7 +48,9 @@ void ft_echo(t_cmd *cmd)
         else
             break;
     }
-    write(STDOUT_FILENO, &cmd->args[i], strlen(&cmd->args[i]));
+    if(write(STDOUT_FILENO, &cmd->args[i], strlen(&cmd->args[i])) == -1)
+		perror("write");
 	if (!option)
-        write(1, "\n", 1);
+        if(write(1, "\n", 1) == -1)
+			perror("write");
 }

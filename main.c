@@ -24,6 +24,8 @@ void print_commands(t_cmd *head)
 		printf("Pipe: %d\n", current->pipe ? current->pipe : 0);
 		printf("redout: %d\n", current->redout ? current->redout : 0);
 		printf("redin: %d\n", current->redin ? current->redin : 0);
+		printf("ft_in: %d\n", current->ft_in ? current->ft_in : 0);
+		printf("ft_out: %d\n", current->ft_out ? current->ft_out : 0);
 		printf("path: %s\n", current->path);
 		printf("----------------\n");
 		current = current->next;
@@ -97,6 +99,22 @@ t_cmd	*setandget(t_cmd *cmd)
 // 	}
 // }
 
+t_env	*noenv()
+{
+	t_env	*env;
+	char	*vallue;
+
+	env = (t_env *)malloc(sizeof(t_env));
+	if (!env)
+	{
+		perror("malloc");
+		exit(1);
+	}
+	env->key = ft_strdup("PWD");
+	env->value = getcwd(NULL, 0);
+	return (env);
+}
+
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
@@ -108,11 +126,14 @@ int main(int argc, char **argv, char **envp)
 	tcgetattr(0, &termstate);
 	if (!*envp)
 	{
-		printf("Mazal mahandlithach\n");
-		exit(0);
+		printf("error: env not found\n");
+		exit(1);
+		env = noenv();
+		cmd->env = env;
 	}
+	else
+		env = initenv(envp);
 	cmd->first_run = 1;
-	env = initenv(envp);
 	while (1)
 	{
 		set_cmd(cmd);
@@ -148,6 +169,8 @@ int main(int argc, char **argv, char **envp)
         if(check == 0)
 			continue ;
 		// print_commands(cmd);
+
+
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

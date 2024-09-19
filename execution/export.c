@@ -93,7 +93,7 @@ void	ft_export(t_cmd *cmd)
 	{
 		arg = ft_split(cmd->args, '+');
 		arg[1] = removeFirstChar(arg[1]);
-		if(plusaddpack(&cmd->env, arg[1], arg[0]) == -1)
+		if (plusaddpack(&cmd->env, arg[1], arg[0]) == -1)
 		{
 			arg[0] = ft_strjoin(arg[0], "=");
 			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(arg[0], arg[1])));

@@ -51,10 +51,10 @@ void ft_errorwrite(t_cmd *cmd)
 }
 
 
-void execfromsystem(t_cmd *cmd, char **envp)
+int	execfromsystem(t_cmd *cmd, char **envp)
 {
 	int pid;
-	int status; // Add a variable to store the status of the child process
+	int status;
 	
 	cmd = preparecmd(cmd);
 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
@@ -64,7 +64,7 @@ void execfromsystem(t_cmd *cmd, char **envp)
 		{
 			perror("fork");
 			setandget(NULL)->exs = 1;
-			exit(1);
+			return (-1);
 		}
 		if (pid == 0)
 		{
@@ -72,6 +72,7 @@ void execfromsystem(t_cmd *cmd, char **envp)
 			{
 				perror("execve");
 				setandget(NULL)->exs = 1;
+				return (-1);
 			}
 		}
 		else
@@ -84,5 +85,7 @@ void execfromsystem(t_cmd *cmd, char **envp)
 	else
 	{
 		ft_errorwrite(cmd);
+		return (-1);
 	}
+	return (0);
 }

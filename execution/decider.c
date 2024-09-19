@@ -12,21 +12,23 @@
 
 #include "../minishell.h"
 
-void redirectchange(t_cmd *cmd)
+int redirectchange(t_cmd *cmd)
 {
 	if (dup2(cmd->ft_in, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
 		cmd->exs = 1;
-		exit(1);
+		return (-1);
 	}
 	
 	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
 	{
 		perror("dup2");
 		cmd->exs = 1;
-		exit(1);
+		return (-1);
 	}
+	
+	return (0);
 };
 int ft_tolower(int c)
 {
@@ -51,7 +53,10 @@ static int isbuiltin(t_cmd *cmd)
 	if (!ft_strcmp2("echo", cmd->cmd))
 		ft_echo(cmd);
 	else if (!ft_strcmp2("cd", cmd->cmd))
-		changedir(cmd);
+		{
+			if (changedir(cmd) == -1)
+			return (-1);
+		}
 	else if (!ft_strcmp("export", cmd->cmd))
 		ft_export(cmd);
 	else if (!ft_strcmp2("env", cmd->cmd))
@@ -66,29 +71,43 @@ static int isbuiltin(t_cmd *cmd)
 	else if (!ft_strcmp("unset", cmd->cmd))
 		ft_unset(&cmd->env, cmd);
 	else
-		return (-1);
+		return (1337);
 	return (0);
 }
 
-static 	void	executesingle(t_cmd *cmd , char **envp)
+int	executesingle(t_cmd *cmd , char **envp)
 {
 	int input;
 	int output;
+	int retv;
 
 	if (cmd->redout != 0 || cmd->redin != 0)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
-		redirectchange(cmd);
+		if (input == -1 || output == -1 || redirectchange(cmd) == -1)
+		{
+			perror("dup");
+			return (-1);
+		}
+		// char buffer[6];
+		// lseek(STDIN_FILENO, 0, SEEK_SET);
+		// read(STDIN_FILENO, buffer, 5);
+		// write(STDOUT_FILENO, buffer, 5);
+	
 	}
-	if (isbuiltin(cmd) == -1)
+	retv = isbuiltin(cmd);
+	if (retv == 1337)
 	{
-		execfromsystem(cmd, envp);
+		if (execfromsystem(cmd, envp) == -1)
+			return (-1);
 	}
-	if (cmd->ft_in != input)
-	{
-		filedreset(input, output);
-	}
+	else if (retv == -1)
+		return (-1);
+	if (cmd->ft_in != input || cmd->ft_out != output)
+		if (filedreset(input, output) == -1)
+			return (-1);
+	return (0);
 }
 
 static int helper(t_cmd *cmd)
@@ -310,16 +329,28 @@ int filedreset(int input, int output)
 
 void decider(t_cmd *cmd)
 {
-	char **env;
+	char	**env;
+	char	**last_argument;
+	int		i;
+
 
 	if (cmd->next == NULL)
 	{
-		//TODO export last argument
 		env = convert(cmd);
-		executesingle(cmd, env);
+		if (executesingle(cmd, env) == 0)
+			setandget(NULL)->exs = 0;
+		if (cmd->args == NULL)
+			cmd->args = ft_strjoin("_=", cmd->cmd);
+		else
+		{
+			i = 0;
+			last_argument = ft_split(cmd->args, ' ');
+			while (last_argument[i])
+				i++;
+			cmd->args = ft_strjoin("_=",	last_argument[i - 1]);
+		}
+		ft_export(cmd);
 	}
 	else
-	{
 		executemultiple(cmd);
-	}
 }

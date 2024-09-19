@@ -14,7 +14,7 @@
 
 t_cmd	*set_cmd(t_cmd *cmd)
 {
-	if (cmd->first_run)
+	if (cmd->first_run == 1)
 	{
 		cmd->first_run = 0;
 		cmd->exs = 0;
@@ -25,10 +25,11 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->pipe = 0;
 	cmd->redout = 0;
 	cmd->redin = 0;
-	cmd->ft_in = 1;
+	cmd->ft_in = STDIN_FILENO;
+	cmd->ft_out = STDOUT_FILENO;
 	cmd->path = NULL;
 	cmd->next = NULL;
-	cmd->hdoc = NULL;
+	cmd->hdoc_delimiter = NULL;
 	return (cmd);
 };
 t_cmd	*init_cmd()
@@ -47,10 +48,11 @@ t_cmd	*init_cmd()
 	new_cmd->pipe = 0;
 	new_cmd->redout = 0;
 	new_cmd->redin = 0;
-	new_cmd->ft_in = 1;
+	new_cmd->ft_in = STDIN_FILENO;
+	new_cmd->ft_out = STDOUT_FILENO;
 	new_cmd->path = NULL;
 	new_cmd->next = NULL;
-	new_cmd->hdoc = NULL;
+	new_cmd->hdoc_delimiter = NULL;
 	new_cmd->exs = 0;
 	return (new_cmd);
 };

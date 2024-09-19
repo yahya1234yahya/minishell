@@ -13,19 +13,36 @@ void my_free(t_cmd *t)
     free(t);
 
 }
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	i;
 
-char *handle_heredoc(char *delimiter)
+	i = 0;
+	if (fd < 0)
+		return ;
+	if (!s)
+		return ;
+	while (s[i] != '\0')
+	{
+		write (fd, &s[i], 1);
+		i++;
+	}
+	write (fd, "\n", 1);
+}
+void    handle_heredoc(char *input,t_cmd *cmd)
 {
     char *line;
-    char *input;
 
     while (1) {
         line = readline("> ");
-        if (strcmp(line, delimiter) == 0) {
-            return (input);
+        if (strcmp(line, cmd->hdoc_delimiter) == 0)
+        {
+			close(cmd->ft_in);
+            return ;
         }
-        input = ft_strjoin(input, line);
-        input = ft_strjoin(input, " ");
+        line = expand_variables(cmd->env, line);
+        ft_putendl_fd(line, cmd->ft_in);
+        free(line);
     }
 }
 int is_all_space(char *input)

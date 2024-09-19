@@ -52,12 +52,13 @@ typedef struct s_cmd
 	int		ft_in;
 	int		ft_out;
 	char 	*path;
-	char	*hdoc;
+	char	*hdoc_delimiter;
 	t_env	*env;
 	t_data	data;
 	char	**splited;
 	int		exs;
 	int 	first_run;
+	int		fd_hdoc;
 	struct 	s_cmd *next;
 } t_cmd;
 
@@ -75,7 +76,7 @@ int		is_all_space(char *input);
 char 	*expand_variables(t_env *env, char *input);
 int		index_char(char *str);
 void	my_free(t_cmd *t);
-char	*handle_heredoc(char *delimiter);
+void	handle_heredoc(char *input, t_cmd *cmd);
 void	split_pipe(t_cmd *cmd, char *input, char **envp);
 
 //execution
@@ -88,18 +89,19 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode);
 void	decider(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(t_env *env);
-void 	changedir(t_cmd *cmd);
+int 	changedir(t_cmd *cmd);
 void	printenv(t_env *env, int flag);
 void	ft_unset(t_env **env, t_cmd *cmd);
-void	redirectchange(t_cmd *cmd);
+int		redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
 int		filedreset(int input, int output);
-void	execfromsystem(t_cmd *cmd, char **envp);
+int		execfromsystem(t_cmd *cmd, char **envp);
 void	executemultiple(t_cmd *cmd);
+int		executesingle(t_cmd *cmd , char **envp);
 t_cmd	*preparecmd(t_cmd *cmd);
 void	ft_errorwrite(t_cmd *cmd);
-int	exportsignal(int sig, t_cmd *cmd);
+int		exportsignal(int sig, t_cmd *cmd);
 t_cmd	*setandget(t_cmd *cmd);
 
 
