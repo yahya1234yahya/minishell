@@ -180,6 +180,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
                 }
             }
+            // printf("cmd->args : %s\n", cmd->args);
             cmd->tokens++;
         }
         cmd = cmd->next;

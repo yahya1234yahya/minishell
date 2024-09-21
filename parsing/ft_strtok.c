@@ -115,6 +115,7 @@ char *ft_strtok(char *str, char *delim)
     }
     return (current_token);
 }
+// char *ft_strtok(char *str, char *delim)
 
 char **ft_strtok_all(char *str, char *delim)
 {

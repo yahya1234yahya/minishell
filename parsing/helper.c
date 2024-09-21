@@ -10,6 +10,9 @@ void my_free(t_cmd *t)
     //     free(head->cmd);
     //     head = head->next;
     // }
+//     t_cmd *tmp;
+//     while (t)
+//     {
     free(t);
 
 }
