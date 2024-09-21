@@ -68,16 +68,16 @@ void    handle_heredoc(char *input,t_cmd *cmd)
     cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
     while (1) {
         line = readline("> ");
-        if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
-        {
-			close(cmd->ft_in);
-            break;
-        }
         if (is_quoted)
             line = add_quotes(line);
         line = expand_variables(cmd->env, line);
          if (is_quoted)
             line = remove_quotes(line);
+        if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
+        {
+			close(cmd->ft_in);
+            break;
+        }
         ft_putendl_fd(line, cmd->ft_in);
         free(line);
         line = NULL;
