@@ -88,43 +88,43 @@ int	is_special_alpha(char c)
 	return (1);
 }
 
-// int parse_export(t_cmd *cmd)
-// {
-// 	char	**split;
-// 	int		i;
-// 	int		j;
+int parse_export(t_cmd *cmd)
+{
+	char	**split;
+	int		i;
+	int		j;
 
-// 	split = ft_split(cmd->args, ' ');
-// 	if (!split)
-// 		return (-1);
-// 	i = 0;
-// 	while (split[i])
-// 	{
-// 		if (ft_strncmp(split[i], "?=" , ft_strlen("?=")) == 0)
-// 		{
-// 			i++;
-// 			if (split[i] == NULL)
-// 				break;
-// 		}
-// 		if (split[i][0] == '=' || is_special_alpha(split[i][0]) || ft_isdigit(split[i][0]))
-// 		{
-// 			printf("minishell: export: `%s': not a valid identifier\n", split[i]);
-// 			return (-1);
-// 		}
-// 		j = 0;
-// 		while (split[i][j])
-// 		{
-// 			if (is_special_alpha(split[i][j]) || ft_isdigit(split[i][j]))
-// 			{
-// 				printf("minishell: export: `%s': not a valid identifier\n", split[i]);
-// 				return (-1);
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	split = ft_split(cmd->args, ' ');
+	if (!split)
+		return (-1);
+	i = 0;
+	while (split[i])
+	{
+		if (ft_strncmp(split[i], "?=" , ft_strlen("?=")) == 0)
+		{
+			i++;
+			if (split[i] == NULL)
+				break;
+		}
+		if (split[i][0] == '=' || is_special_alpha(split[i][0]) || ft_isdigit(split[i][0]))
+		{
+			printf("minishell: export: `%s': not a valid identifier\n", split[i]);
+			return (-1);
+		}
+		j = 0;
+		while (split[i][j])
+		{
+			if (is_special_alpha(split[i][j]) || ft_isdigit(split[i][j]))
+			{
+				printf("minishell: export: `%s': not a valid identifier\n", split[i]);
+				return (-1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
 
 
 int	ft_export(t_cmd *cmd)
@@ -133,8 +133,8 @@ int	ft_export(t_cmd *cmd)
 	t_env	*tmp;
 
 	//TODO parse the args before export
-	// if (parse_export(cmd))
-	// 	return (-1);
+	if (parse_export(cmd))
+		return (-1);
 	
 	if (!cmd->args)
 		printenv(cmd->env, 0);
