@@ -164,6 +164,7 @@ int main(int argc, char **argv, char **envp)
           printf("error:  command not found\n");
           return (0);
     	}
+		// printf("input: %s\n", input);
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)
