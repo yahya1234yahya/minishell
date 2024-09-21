@@ -39,6 +39,8 @@ int ft_tolower(int c)
 
 int ft_strcmp2(const char *s1, const char *s2)
 {
+	if (!s1 || !s2)
+		return (1);
 	while (*s1 && *s2)
 	{
 		if (ft_tolower(*s1) != ft_tolower(*s2))
@@ -333,7 +335,8 @@ void decider(t_cmd *cmd)
 	char	**last_argument;
 	int		i;
 
-
+	if (cmd->cmd == NULL)
+		return ;
 	if (cmd->next == NULL)
 	{
 		env = convert(cmd);

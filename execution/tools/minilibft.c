@@ -12,6 +12,9 @@
 
 #include "../../minishell.h"
 
+
+
+
 static int	check_char(char  *set, char c)
 {
 	int	w;
@@ -59,6 +62,8 @@ int	ft_strcmp(const char	*s1, const char	*s2)
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
+	if (!s1 || !s2)
+		return (1);
 	ss1 = (unsigned char *)s1;
 	ss2 = (unsigned char *)s2;
 	i = 0;

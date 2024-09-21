@@ -7,7 +7,7 @@ void    split_pipe(t_cmd *cmd, char *input, char **envp)
     token = ft_strtok(input, "|");
     while (token != NULL)
     {
-        cmd->input = ft_strtrim(token, " ");
+        cmd->input = ft_strdup(token);
         if ((token = ft_strtok(NULL, "|")) != NULL)
         {
             cmd->next = init_cmd();

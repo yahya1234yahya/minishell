@@ -2,6 +2,8 @@
 
 char *remove_quotes(char *input)
 {
+    if (!input)
+        return (NULL);
     int length = strlen(input);
     char quote;
     char *new_input = (char *)malloc(length + 1);

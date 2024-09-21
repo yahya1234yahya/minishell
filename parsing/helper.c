@@ -29,20 +29,54 @@ void	ft_putendl_fd(char *s, int fd)
 	}
 	write (fd, "\n", 1);
 }
+
+
+char* add_quotes(char* str)
+{
+    int len ;
+    int i = 0;
+    int j = 0;
+
+    len = ft_strlen(str);
+    char* quoted_str = malloc(len + 3);
+    if (quoted_str == NULL)
+        return (NULL);
+    quoted_str[i] = '\'';
+    while(j < len)
+    {
+        quoted_str[i + 1] = str[j];
+        i++;
+        j++;
+    }
+    quoted_str[++i] = '\'';
+    quoted_str[++i] = '\0';
+    return (quoted_str);
+}
+
 void    handle_heredoc(char *input,t_cmd *cmd)
 {
     char *line;
+    int is_quoted = 0;
+    int i = 0;
 
+
+    if (cmd->hdoc_delimiter[0] == '\'' || cmd->hdoc_delimiter[0] == '"')
+        is_quoted = 1;
     while (1) {
         line = readline("> ");
-        if (strcmp(line, cmd->hdoc_delimiter) == 0)
+        if (is_quoted)
+            line = add_quotes(line);
+        if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
         {
 			close(cmd->ft_in);
-            return ;
+            break;
         }
         line = expand_variables(cmd->env, line);
+         if (is_quoted)
+            line = remove_quotes(line);
         ft_putendl_fd(line, cmd->ft_in);
         free(line);
+        line = NULL;
     }
 }
 int is_all_space(char *input)
