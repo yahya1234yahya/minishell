@@ -56,17 +56,11 @@ char **ft_strtok_all(char *str, char *delim)
 #include <stdlib.h>
 
 int main() {
-    char str[] = "\"pwd\"      \"   \"";
+    char str[] = "";
     char delim[] = " ";
 
     char **tokens = ft_strtok_all(str, delim);
-    printf("Tokens:\n");
-    for (int i = 0; tokens[i] != NULL; i++) {
-        printf("Token %d: %s\n", i, tokens[i]);
-    }
-    for (int i = 0; tokens[i] != NULL; i++) {
-        free(tokens[i]);
-    }
-    free(tokens);
+    printf("token %s\n", tokens[0]);
+   
     return 0;
 }

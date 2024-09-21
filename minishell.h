@@ -46,7 +46,7 @@ typedef struct s_cmd
 	char	*input;
 	char	**tokens;
 	char	*cmd;  
-	char	*args;
+	char	**args;
 	int		pipe;
 	int		redout;
 	int		redin;

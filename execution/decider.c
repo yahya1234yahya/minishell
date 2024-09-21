@@ -331,15 +331,14 @@ void decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1)
 			setandget(NULL)->exs = 1;
-		if (cmd->args == NULL)
-			cmd->args = ft_strjoin("_=", cmd->cmd);
+		if (cmd->args[0] == NULL)
+			cmd->args[0] = ft_strjoin("_=", cmd->cmd);
 		else
 		{
 			i = 0;
-			last_argument = ft_split(cmd->args, ' ');
-			while (last_argument[i])
+			while (cmd->args[i])
 				i++;
-			cmd->args = ft_strjoin("_=",	last_argument[i - 1]);
+			cmd->args[0] = ft_strjoin("_=",	cmd->args[i - 1]);
 		}
 		ft_export(cmd);
 	}

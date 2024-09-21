@@ -90,6 +90,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     int flags;
     next_word = NULL;
     char    *delimiter;
+    char    *tmp_args;
 
    
     while(cmd)
@@ -170,19 +171,30 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             }
             else
             {
-                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
                 // prinft("cmd->tokens : %s\n", *(cmd->tokens));
-                if (cmd->args == NULL) 
-                    cmd->args = ft_strdup(*(cmd->tokens));
+                if (tmp_args == NULL) 
+                    tmp_args = ft_strdup(*(cmd->tokens));
                 else
                 {
-                    cmd->args = ft_strjoin(cmd->args, " ");
-                    cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
+                    tmp_args = ft_strjoin(tmp_args, " ");
+                    tmp_args = ft_strjoin(tmp_args, *(cmd->tokens));
                 }
             }
             // printf("cmd->args : %s\n", cmd->args);
             cmd->tokens++;
         }
+        if(tmp_args)
+            cmd->args = ft_strtok_all(tmp_args, " ");
+      
+        
+        // Print the content of cmd->args
+        // printf("cmd->args: ");
+        // char **args = cmd->args;
+        // while (*args) {
+        //     printf("%s ", *args);
+        //     args++;
+        // }
+        // printf("\n");
         cmd = cmd->next;
     }
 	return (1);
