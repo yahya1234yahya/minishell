@@ -43,7 +43,6 @@ void ft_errorwrite(t_cmd *cmd)
 	}
 	else if (access(cmd->splited[0], X_OK) == -1)
 	{
-		//lol
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
 		ft_putstr_fd(" : Permission denied\n", 2);
@@ -56,8 +55,9 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 {
 	int pid;
 	int status;
-	
+
 	cmd = preparecmd(cmd);
+
 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{
 		pid = fork();
@@ -69,9 +69,8 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 		}
 		if (pid == 0)
 		{
-			if (execve(cmd->splited[0], cmd->splited, envp) == -1)
+			if (execve(cmd->splited[0], cmd->splited, envp) < 0)
 			{
-				perror("execve");
 				setandget(NULL)->exs = 1;
 				return (-1);
 			}
@@ -81,6 +80,7 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
 				setandget(NULL)->exs = WEXITSTATUS(status);
+			return (0);
 		}
 	}
 	else
@@ -88,5 +88,6 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 		ft_errorwrite(cmd);
 		return (-1);
 	}
+	// printf("EXITED FROM HERE\n");
 	return (0);
 }

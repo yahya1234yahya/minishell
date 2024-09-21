@@ -65,7 +65,7 @@ typedef struct s_cmd
 
 // extern int g_signal;
 
-void 	ft_export(t_cmd *cmd);
+int 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
 int		check_complete(char *input);
@@ -117,7 +117,9 @@ size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*ft_strdup(char *s1);
 char	*ft_strtrim(char  *s1, char  *set);
 char	*ft_strchr(const char *s, int c); //TODO
- char	*ft_itoa(int n);
+char	*ft_itoa(int n);
+int	ft_isalpha(int c);
+int	ft_isdigit(int c);
 
 
 // echo with -n option

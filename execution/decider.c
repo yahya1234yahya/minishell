@@ -15,19 +15,10 @@
 int redirectchange(t_cmd *cmd)
 {
 	if (dup2(cmd->ft_in, STDIN_FILENO) == -1)
-	{
-		perror("dup2");
-		cmd->exs = 1;
 		return (-1);
-	}
 	
 	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		cmd->exs = 1;
 		return (-1);
-	}
-	
 	return (0);
 };
 int ft_tolower(int c)
@@ -39,8 +30,6 @@ int ft_tolower(int c)
 
 int ft_strcmp2(const char *s1, const char *s2)
 {
-	if (!s1 || !s2)
-		return (1);
 	while (*s1 && *s2)
 	{
 		if (ft_tolower(*s1) != ft_tolower(*s2))
@@ -89,14 +78,9 @@ int	executesingle(t_cmd *cmd , char **envp)
 		output = dup(STDOUT_FILENO);
 		if (input == -1 || output == -1 || redirectchange(cmd) == -1)
 		{
-			perror("dup");
+			write(2, "dup or dup2 failed\n", 21);
 			return (-1);
 		}
-		// char buffer[6];
-		// lseek(STDIN_FILENO, 0, SEEK_SET);
-		// read(STDIN_FILENO, buffer, 5);
-		// write(STDOUT_FILENO, buffer, 5);
-	
 	}
 	retv = isbuiltin(cmd);
 	if (retv == 1337)
@@ -334,14 +318,19 @@ void decider(t_cmd *cmd)
 	char	**env;
 	char	**last_argument;
 	int		i;
+	int		exs;
 
-	if (cmd->cmd == NULL)
-		return ;
+
 	if (cmd->next == NULL)
 	{
+		if (cmd->cmd == NULL)
+			return ;
 		env = convert(cmd);
-		if (executesingle(cmd, env) == 0)
+		exs = executesingle(cmd, env);
+		if (exs == 0)
 			setandget(NULL)->exs = 0;
+		else if (exs == -1)
+			setandget(NULL)->exs = 1;
 		if (cmd->args == NULL)
 			cmd->args = ft_strjoin("_=", cmd->cmd);
 		else

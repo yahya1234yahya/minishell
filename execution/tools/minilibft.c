@@ -12,9 +12,6 @@
 
 #include "../../minishell.h"
 
-
-
-
 static int	check_char(char  *set, char c)
 {
 	int	w;
@@ -62,13 +59,26 @@ int	ft_strcmp(const char	*s1, const char	*s2)
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
-	if (!s1 || !s2)
-		return (1);
 	ss1 = (unsigned char *)s1;
 	ss2 = (unsigned char *)s2;
 	i = 0;
 	while (ss1[i] && ss2[i] && ss1[i] == ss2[i])
 		i++;
+	return (ss1[i] - ss2[i]);
+}
+int	ft_strncmp(const char	*s1, const char	*s2, size_t	n)
+{
+	size_t			i;
+	unsigned char	*ss1;
+	unsigned char	*ss2;
+
+	ss1 = (unsigned char *)s1;
+	ss2 = (unsigned char *)s2;
+	i = 0;
+	while ((i < n) && ss1[i] && ss2[i] && ss1[i] == ss2[i])
+		i++;
+	if (i == n)
+		return (0);
 	return (ss1[i] - ss2[i]);
 }
 
@@ -174,8 +184,6 @@ char	*ft_strdup(char *s1)
 	char	*s2;
 
 	i = 0;
-	if (s1 == NULL)
-		return (NULL);
 	lenofs = ft_strlen(s1)+1;
 	s2 = malloc(lenofs * sizeof(char));
 	if (!s2)

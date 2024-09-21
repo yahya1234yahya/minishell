@@ -81,12 +81,61 @@ int exportsignal(int sig, t_cmd *cmd)
 	return (0);
 }
 
+int	is_special_alpha(char c)
+{
+	if (ft_isalpha(c) || c == '_' || c == '=' || ft_isdigit(c))
+		return (0);
+	return (1);
+}
 
-void	ft_export(t_cmd *cmd)
+// int parse_export(t_cmd *cmd)
+// {
+// 	char	**split;
+// 	int		i;
+// 	int		j;
+
+// 	split = ft_split(cmd->args, ' ');
+// 	if (!split)
+// 		return (-1);
+// 	i = 0;
+// 	while (split[i])
+// 	{
+// 		if (ft_strncmp(split[i], "?=" , ft_strlen("?=")) == 0)
+// 		{
+// 			i++;
+// 			if (split[i] == NULL)
+// 				break;
+// 		}
+// 		if (split[i][0] == '=' || is_special_alpha(split[i][0]) || ft_isdigit(split[i][0]))
+// 		{
+// 			printf("minishell: export: `%s': not a valid identifier\n", split[i]);
+// 			return (-1);
+// 		}
+// 		j = 0;
+// 		while (split[i][j])
+// 		{
+// 			if (is_special_alpha(split[i][j]) || ft_isdigit(split[i][j]))
+// 			{
+// 				printf("minishell: export: `%s': not a valid identifier\n", split[i]);
+// 				return (-1);
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+
+int	ft_export(t_cmd *cmd)
 {
 	char	**arg;
 	t_env	*tmp;
 
+	//TODO parse the args before export
+	// if (parse_export(cmd))
+	// 	return (-1);
+	
 	if (!cmd->args)
 		printenv(cmd->env, 0);
 	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
@@ -97,19 +146,11 @@ void	ft_export(t_cmd *cmd)
 		{
 			arg[0] = ft_strjoin(arg[0], "=");
 			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(arg[0], arg[1])));
-		}//if key not found
+		}
 	}
 	else
 		ft_lstadd_back(&cmd->env, ft_lstnew(cmd->args));
-	
-	// t_env *tmp = cmd->env;
-
-
-
-	//export "key"
-	//export "key=value"
-	//export "key+=value"
-
+	return (0);
 };
 
 void	ft_unset(t_env	**env, t_cmd *cmd)
