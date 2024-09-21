@@ -44,6 +44,7 @@ typedef struct s_data
 typedef struct s_cmd
 {
 	char	*input;
+	char	**tokens;
 	char	*cmd;  
 	char	*args;
 	int		pipe;
@@ -78,6 +79,7 @@ int		index_char(char *str);
 void	my_free(t_cmd *t);
 void	handle_heredoc(char *input, t_cmd *cmd);
 void	split_pipe(t_cmd *cmd, char *input, char **envp);
+char	**ft_strtok_all(char *str, char *delim);
 
 //execution
 t_env 	*initenv(char **envp);

@@ -83,6 +83,7 @@ char    *add_space(char *input)
 
 }
 
+
 int parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
     char *next_word;
@@ -94,9 +95,9 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
     while(cmd)
     {
         // cmd->input = add_space(input); to do
-        next_word = ft_strtok(cmd->input, "\"' \t\n");
+        cmd->tokens = ft_strtok_all(cmd->input, " ");
         // printf("next_word : %s\n", next_word);
-        if (!next_word) return (0);
+        if (!*(cmd->tokens)) return (0);
 
         // printf("\n\nnext_word : %s\n\n", next_word);
 
@@ -105,31 +106,32 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
         //     printf("\033[33merror: not a command\033[0m\n");
         //     return (0);
         // }
-        if (strcmp(next_word, ">")  && strcmp(next_word, ">>") && strcmp(next_word, "<") && strcmp(next_word, "<<"))
+        if (strcmp(*(cmd->tokens), ">")  && strcmp(*(cmd->tokens), ">>") && strcmp(*(cmd->tokens), "<") && strcmp(*(cmd->tokens), "<<"))
         {
-                is_valid_command(cmd, next_word);
-                cmd->cmd = strdup(next_word); 
-                next_word = ft_strtok(NULL, "\"' \t\n");
+                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
+                is_valid_command(cmd, *(cmd->tokens));
+                cmd->cmd = ft_strdup(*(cmd->tokens)); 
+                cmd->tokens++;
         }
         cmd->ft_in = 1;
-        while (next_word)
+        while (cmd->tokens && *(cmd->tokens))
         {
-            if (strcmp(next_word, "|") == 0)
+            if (strcmp(*(cmd->tokens), "|") == 0)
             {
                 cmd->pipe = 1;
                 break;
             }
-            else if (strcmp(next_word, ">") == 0 || strcmp(next_word, ">>") == 0)
+            else if (strcmp(*(cmd->tokens), ">") == 0 || strcmp(*(cmd->tokens), ">>") == 0)
             {
-                cmd->redout = index_char(next_word);
-                next_word = ft_strtok(NULL, "\"' \t\n");
-                if (next_word == NULL)
+                cmd->redout = index_char(*(cmd->tokens));
+                cmd->tokens++;
+                if (*(cmd->tokens) == NULL)
                 {
                     printf("\033[33merror: expected filename after redout \033[0m\n");
                     return (0);
                 }
                 flags = redouthelper(cmd);
-                cmd->ft_out = open(next_word, flags, 0644);
+                cmd->ft_out = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_out == -1)
                 {
                     printf("\033[33merror: can't open file \033[0m\n");
@@ -137,47 +139,48 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 }
             
             }
-            else if (strcmp(next_word, "<") == 0)
+            else if (strcmp(*(cmd->tokens), "<") == 0)
             {
-                cmd->redin = index_char(next_word);
-                next_word = ft_strtok(NULL, "<>\"' \t\n");
-                if (next_word == NULL)
+                cmd->redin = index_char(*(cmd->tokens));
+                cmd->tokens++;
+                if (*(cmd->tokens) == NULL)
                 {
                     printf("\033[33merror: expected filename after redout \033[0m\n");
                     return (0);
                 }
                 flags = redouthelper(cmd);
-                cmd->ft_in = open(next_word, flags, 0644);
+                cmd->ft_in = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_in == -1)
                 {
                     printf("\033[33merror: can't open file \033[0m\n");
                     return (0);
                 }   
             }
-            else if (strcmp(next_word, "<<") == 0 )
+            else if (strcmp(*(cmd->tokens), "<<") == 0 )
             {
-                next_word = ft_strtok(NULL, "\"' \t\n");
+                cmd->tokens++;
                 cmd->redin = 1;
                 if (cmd->ft_in == 1)
                 {
                     cmd->ft_in = open("tmp_hdoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
                 }
-                cmd->hdoc_delimiter = ft_strdup(next_word);
-                handle_heredoc(next_word, cmd);
+                cmd->hdoc_delimiter = ft_strdup(*(cmd->tokens));
+                handle_heredoc(*(cmd->tokens), cmd);
 				cmd->ft_in = open("tmp_hdoc", O_RDWR , 0644);
             }
             else
             {
-                next_word = remove_quotes(next_word);
+                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
+                // prinft("cmd->tokens : %s\n", *(cmd->tokens));
                 if (cmd->args == NULL) 
-                    cmd->args = strdup(next_word);
+                    cmd->args = ft_strdup(*(cmd->tokens));
                 else
                 {
                     cmd->args = ft_strjoin(cmd->args, " ");
-                    cmd->args = ft_strjoin(cmd->args, next_word);
+                    cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
                 }
             }
-            next_word = ft_strtok(NULL, "\"' \t\n");
+            cmd->tokens++;
         }
         cmd = cmd->next;
     }

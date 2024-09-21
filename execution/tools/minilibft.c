@@ -174,6 +174,8 @@ char	*ft_strdup(char *s1)
 	char	*s2;
 
 	i = 0;
+	if (s1 == NULL)
+		return (NULL);
 	lenofs = ft_strlen(s1)+1;
 	s2 = malloc(lenofs * sizeof(char));
 	if (!s2)

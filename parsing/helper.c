@@ -60,12 +60,12 @@ void    handle_heredoc(char *input,t_cmd *cmd)
     int i = 0;
 
 
-    if (cmd->hdoc_delimiter[0] == '\'' || cmd->hdoc_delimiter[0] == '"')
-        is_quoted = 1;
+    if (cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '\'' || cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '"')        is_quoted = 1;
     while (1) {
         line = readline("> ");
         if (is_quoted)
             line = add_quotes(line);
+        
         if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
         {
 			close(cmd->ft_in);
