@@ -66,7 +66,6 @@ void    handle_heredoc(char *input,t_cmd *cmd)
     if (cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '\'' || cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '"')
         is_quoted = 1;
     cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
-    printf("heredoc delimiter : %s\n", cmd->hdoc_delimiter);
     while (1) {
         line = readline("> ");
         if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
