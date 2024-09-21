@@ -43,6 +43,7 @@ void ft_errorwrite(t_cmd *cmd)
 	}
 	else if (access(cmd->splited[0], X_OK) == -1)
 	{
+		//lol
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
 		ft_putstr_fd(" : Permission denied\n", 2);
