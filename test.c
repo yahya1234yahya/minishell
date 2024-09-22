@@ -56,11 +56,15 @@ char **ft_strtok_all(char *str, char *delim)
 #include <stdlib.h>
 
 int main() {
-    char str[] = "";
+    char str[] = "ls -l -a";
     char delim[] = " ";
 
     char **tokens = ft_strtok_all(str, delim);
-    printf("token %s\n", tokens[0]);
+    while(*tokens)
+    {
+        printf("token %s\n", *tokens);
+        tokens++;
+    }
    
     return 0;
 }

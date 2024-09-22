@@ -15,14 +15,21 @@
 t_cmd *preparecmd(t_cmd *cmd)
 {
 	char *tmp;
+	int i;
 
+	i = 0;
 	if (!cmd->path)
-		cmd->path = strdup(cmd->cmd);
+		cmd->path = ft_strdup(cmd->cmd);
 	if (cmd->args)
 	{	
 		tmp = ft_strjoin(cmd->path, " ");
 		tmp = ft_strjoin(tmp, cmd->args);
-		cmd->splited = ft_split(tmp, ' ');
+		cmd->splited = ft_strtok_all(tmp, " ");
+		while (cmd->splited[i])
+		{
+			cmd->splited[i] = remove_quotes(cmd->splited[i]);
+			i++;
+		}
 	}else
 	{
 		cmd->splited = (char **)malloc(sizeof(char *) * 2);

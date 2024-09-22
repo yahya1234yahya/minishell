@@ -133,8 +133,8 @@ int	ft_export(t_cmd *cmd)
 	t_env	*tmp;
 
 	//TODO parse the args before export
-	if (parse_export(cmd))
-		return (-1);
+	// if (parse_export(cmd))
+	// 	return (-1);
 	
 	if (!cmd->args)
 		printenv(cmd->env, 0);

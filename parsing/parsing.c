@@ -171,20 +171,19 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             }
             else
             {
+               
                 // prinft("cmd->tokens : %s\n", *(cmd->tokens));
-                if (tmp_args == NULL) 
-                    tmp_args = ft_strdup(*(cmd->tokens));
+                if (cmd->args == NULL) 
+                    cmd->args = ft_strdup(*(cmd->tokens));
                 else
                 {
-                    tmp_args = ft_strjoin(tmp_args, " ");
-                    tmp_args = ft_strjoin(tmp_args, *(cmd->tokens));
+                    cmd->args = ft_strjoin(cmd->args, " ");
+                    cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
                 }
             }
             // printf("cmd->args : %s\n", cmd->args);
             cmd->tokens++;
         }
-        if(tmp_args)
-            cmd->args = ft_strtok_all(tmp_args, " ");
       
         
         // Print the content of cmd->args

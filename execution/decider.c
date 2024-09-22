@@ -42,7 +42,10 @@ int ft_strcmp2(const char *s1, const char *s2)
 static int isbuiltin(t_cmd *cmd)
 {
 	if (!ft_strcmp2("echo", cmd->cmd))
+	{
+		cmd->args = remove_quotes(cmd->args);
 		ft_echo(cmd);
+	}
 	else if (!ft_strcmp2("cd", cmd->cmd))
 		{
 			if (changedir(cmd) == -1)
@@ -331,14 +334,15 @@ void decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1)
 			setandget(NULL)->exs = 1;
-		if (cmd->args[0] == NULL)
-			cmd->args[0] = ft_strjoin("_=", cmd->cmd);
+		if (cmd->args == NULL)
+			cmd->args = ft_strjoin("_=", cmd->cmd);
 		else
 		{
 			i = 0;
-			while (cmd->args[i])
+			last_argument = ft_split(cmd->args, ' ');
+			while (last_argument[i])
 				i++;
-			cmd->args[0] = ft_strjoin("_=",	cmd->args[i - 1]);
+			cmd->args = ft_strjoin("_=",	last_argument[i - 1]);
 		}
 		ft_export(cmd);
 	}
