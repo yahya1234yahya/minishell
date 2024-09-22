@@ -314,7 +314,7 @@ int filedreset(int input, int output)
 	return (0);
 }
 
-void decider(t_cmd *cmd)
+void	decider(t_cmd *cmd)
 {
 	char	**env;
 	char	**last_argument;
@@ -332,7 +332,7 @@ void decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1)
 			setandget(NULL)->exs = 1;
-		if (cmd->args == NULL)
+		if (cmd->args == NULL || cmd->args[0] == '\0')
 			cmd->args = ft_strjoin("_=", cmd->cmd);
 		else
 		{

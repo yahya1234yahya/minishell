@@ -48,20 +48,65 @@ char **ft_strtok_all(char *str, char *delim)
     tokens[token_count] = NULL;
     return tokens;
 }
-
-
+int is_all_space(char *input)
+{
+    int i = 0;
+    while(input[i])
+    {
+        if (input[i] != ' ')
+            return 0;
+        i++;
+    }
+    return 1;
+}
+char *remove_quotes(char *input)
+{
+    if (!input)
+        return (NULL);
+    int length = strlen(input);
+    char quote;
+    char *new_input = (char *)malloc(length + 1);
+    int i = 0;
+    int j = 0;
+    while (i <= length)
+    {
+        if (input[i] == '"' || input[i] == '\'') {
+            quote = input[i];
+            i++;
+            while (i <= length && input[i] != quote)
+                new_input[j++] = input[i++];
+            if (i <= length && input[i] == quote)
+                i++;
+        }
+        else
+        {
+            new_input[j++] = input[i++];
+        }
+    }
+    new_input[j] = '\0';
+    if (i != j && j == 0)
+        return (NULL);
+    if (is_all_space(new_input))
+    {
+        new_input[0] = '\0';
+        return (new_input);
+    }
+    return new_input;
+}
 
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main() {
-    char str[] = "ls -l -a";
+    char str[] = "ls | grep \"\"";
     char delim[] = " ";
 
     char **tokens = ft_strtok_all(str, delim);
     while(*tokens)
     {
+        *tokens = remove_quotes(*tokens);
         printf("token %s\n", *tokens);
         tokens++;
     }

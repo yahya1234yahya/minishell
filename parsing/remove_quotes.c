@@ -9,14 +9,14 @@ char *remove_quotes(char *input)
     char *new_input = (char *)malloc(length + 1);
     int i = 0;
     int j = 0;
-    while (i < length)
+    while (i <= length)
     {
         if (input[i] == '"' || input[i] == '\'') {
             quote = input[i];
             i++;
-            while (i < length && input[i] != quote)
+            while (i <= length && input[i] != quote)
                 new_input[j++] = input[i++];
-            if (i < length && input[i] == quote)
+            if (i <= length && input[i] == quote)
                 i++;
         }
         else
@@ -28,6 +28,9 @@ char *remove_quotes(char *input)
     if (i != j && j == 0)
         return (NULL);
     if (is_all_space(new_input))
-        return (NULL);
+    {
+        new_input[0] = '\0';
+        return (new_input);
+    }
     return new_input;
 }
