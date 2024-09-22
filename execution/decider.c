@@ -41,11 +41,10 @@ int ft_strcmp2(const char *s1, const char *s2)
 }
 static int isbuiltin(t_cmd *cmd)
 {
-	if (!ft_strcmp2("echo", cmd->cmd))
-	{
+	if (!helper(cmd))
 		cmd->args = remove_quotes(cmd->args);
+	if (!ft_strcmp2("echo", cmd->cmd))
 		ft_echo(cmd);
-	}
 	else if (!ft_strcmp2("cd", cmd->cmd))
 		{
 			if (changedir(cmd) == -1)
@@ -99,15 +98,14 @@ int	executesingle(t_cmd *cmd , char **envp)
 	return (0);
 }
 
-static int helper(t_cmd *cmd)
+int helper(t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->cmd, "echo") == 0 || ft_strcmp(cmd->cmd, "pwd") == 0
-		|| ft_strcmp(cmd->cmd, "env") == 0 || ft_strcmp(cmd->cmd, "exit") == 0 
-			|| ft_strcmp(cmd->cmd, "cd") == 0 
+	if (ft_strcmp2(cmd->cmd, "echo") == 0 || ft_strcmp2(cmd->cmd, "pwd") == 0
+		|| ft_strcmp2(cmd->cmd, "env") == 0 || ft_strcmp2(cmd->cmd, "exit") == 0 
+			|| ft_strcmp2(cmd->cmd, "cd") == 0 
 				|| ft_strcmp(cmd->cmd, "export") == 0 
 					|| ft_strcmp(cmd->cmd, "unset") == 0)
 		return (0);
-
 	else
 		return (-1);
 
