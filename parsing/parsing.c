@@ -185,16 +185,29 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
             cmd->tokens++;
         }
       
-        
-        // Print the content of cmd->args
-        // printf("cmd->args: ");
-        // char **args = cmd->args;
-        // while (*args) {
-        //     printf("%s ", *args);
-        //     args++;
-        // }
-        // printf("\n");
-        cmd = cmd->next;
+        if (ft_strcmp(cmd->cmd, "export") == 0 && !cmd->args )
+        {
+            t_cmd *tmp;
+            
+            if (cmd->next)
+                tmp = cmd->next;
+            
+            cmd->next = init_cmd();
+            if (cmd->redout == 2 || cmd->redout == 3)
+            {
+                cmd->next->redout = cmd->ft_out;
+                cmd->next->ft_out = cmd->ft_out;
+                cmd->ft_out = 1;
+                cmd->redout = 0;
+            }
+            cmd = cmd->next;
+            cmd->env = initenv(envp);
+            cmd->input = ft_strdup("sort");
+            if (tmp)
+                cmd->next = tmp;
+        }
+        else
+            cmd = cmd->next;
     }
 	return (1);
 }

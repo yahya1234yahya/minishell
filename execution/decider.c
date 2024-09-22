@@ -346,4 +346,5 @@ void	decider(t_cmd *cmd)
 	}
 	else
 		executemultiple(cmd);
+		
 }
