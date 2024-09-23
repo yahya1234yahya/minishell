@@ -1,0 +1,3 @@
+hello
+bye && cat output.txt
+bye

@@ -13,4 +13,4 @@ t_env	*envsearch(t_env *env, char *name)
 		current = current->next;
 	}
 	return (NULL);
-};
+}

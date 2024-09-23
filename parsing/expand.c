@@ -140,7 +140,6 @@ char *expand_variables(t_env	*env, char    *input)
             }
             name[i] = '\0';
             env_value = envsearch(env, name)->value;
-
             if (env_value)
             {
                 while (*env_value)
