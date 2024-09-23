@@ -40,8 +40,8 @@ int count_word(char *input)
 
 int count_new_input(t_env	*env, char    *input)
 {
-    int count;
-    int count_name;
+    int count = 0;
+    int count_name = 0;
     int single_q = 0;
     int double_q = 0;
     int i = 0;
@@ -54,7 +54,16 @@ int count_new_input(t_env	*env, char    *input)
     {
         i = 0;
         check_quots(*input, &single_q, &double_q);
-        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
+        if (*input == '$' && *(input + 1) == '?' && single_q == 0)
+        {
+            input++;
+            name = ft_strdup("?");
+            env_value = envsearch(env, name)->value;
+            if (env_value)
+                count += strlen(env_value);
+            free(name);
+        }
+        else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
         {
             input++;
             name = malloc(count_word(input) + 1);
@@ -72,6 +81,8 @@ int count_new_input(t_env	*env, char    *input)
         }
         else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*input + 1)))
             input = input + 2;
+        else if (*input == '$' && *(input + 1) == '\'')
+            input++;
         else 
         {
             count++;
@@ -96,20 +107,33 @@ char *expand_variables(t_env	*env, char    *input)
     if (!input)
         return (0);
 	count = 0;
-    count = count_new_input(env, input);
-
-	
+    count = count_new_input(env, input);	
     new_input = malloc(count + 1);
     while (*input)
     {
         i = 0;
         check_quots(*input, &single_q, &double_q);
-        if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ||  *(input + 1) == '?') && single_q == 0)
+        if (*input == '$' && *(input + 1) == '?' && single_q == 0)
+        {
+            input++;
+            name = ft_strdup("?");
+            env_value = envsearch(env, name)->value;
+            if (env_value)
+            {
+                while (*env_value)
+                {
+                    new_input[j++] = *env_value;
+                    env_value++;
+                }
+            }
+            input++;
+        }
+        else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_') && single_q == 0)
         {
             input++;
             name = malloc(count_word(input) + 1);
             i = 0;
-            while(*input && ft_isdigit(*input) || ft_isalpha(*input) || *input == '_' || *(input) == '?' )
+            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_' ))
             {
                 name[i++] = *input;
                 input++;
@@ -126,8 +150,10 @@ char *expand_variables(t_env	*env, char    *input)
                 }
             }
         }
-        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*(input + 1))))
+        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*(input + 1)) ))
             input = input + 2;
+        else if (*input == '$' && *(input + 1) == '\'')
+            input++;
         else 
         {
             new_input[j++] = *input;
