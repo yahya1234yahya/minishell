@@ -59,6 +59,8 @@ int	ft_strcmp(const char	*s1, const char	*s2)
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
+	if (!s1 || !s2)
+		return (1);
 	ss1 = (unsigned char *)s1;
 	ss2 = (unsigned char *)s2;
 	i = 0;
@@ -72,6 +74,8 @@ int	ft_strncmp(const char	*s1, const char	*s2, size_t	n)
 	unsigned char	*ss1;
 	unsigned char	*ss2;
 
+	if (!s1 || !s2)
+		return (1);
 	ss1 = (unsigned char *)s1;
 	ss2 = (unsigned char *)s2;
 	i = 0;
@@ -164,6 +168,8 @@ size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize)
 
 	if (dstsize == 0)
 		return (ft_strlen(src));
+	if (!dst || !src)
+		return (0);
 	s = (char *)src;
 	i = 0;
 	while (src[i] && i < (dstsize -1))
@@ -185,6 +191,8 @@ char	*ft_strdup(char *s1)
 
 	i = 0;
 	lenofs = ft_strlen(s1)+1;
+	if(!s1)
+		return (NULL);
 	s2 = malloc(lenofs * sizeof(char));
 	if (!s2)
 		return (NULL);
