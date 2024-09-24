@@ -152,7 +152,6 @@ int main(int argc, char **argv, char **envp)
 		if (!(*input))
 			continue ;
         input = expand_variables(env, input);
-		// printf("input: %s\n", input);
         if(!input[0])
             continue ;
 		 if(check_complete(input) == 0)

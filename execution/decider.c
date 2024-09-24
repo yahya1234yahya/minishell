@@ -342,7 +342,7 @@ void	decider(t_cmd *cmd)
 				i++;
 			cmd->args = ft_strjoin("_=",	last_argument[i - 1]);
 		}
-		ft_export(cmd);
+		ft_export_status(cmd);
 	}
 	else
 		executemultiple(cmd);

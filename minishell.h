@@ -125,6 +125,7 @@ int		ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 int		ft_strcmp2(const char *s1, const char *s2);
 int		ft_tolower(int c);
 int		helper(t_cmd *cmd);
+int	ft_export_status(t_cmd *cmd);
 
 
 // echo with -n option
