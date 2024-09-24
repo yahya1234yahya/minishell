@@ -80,6 +80,7 @@ void	my_free(t_cmd *t);
 void	handle_heredoc(char *input, t_cmd *cmd);
 void	split_pipe(t_cmd *cmd, char *input, char **envp);
 char	**ft_strtok_all(char *str, char *delim);
+void    check_quots(char c, int *single_q, int  *double_q);
 
 //execution
 t_env 	*initenv(char **envp);

@@ -159,6 +159,8 @@ void	ft_unset(t_env	**env, t_cmd *cmd)
 	t_env *runner;
 	char **split;
 	
+	if (!cmd->args)
+		return ;
 	split = ft_split(cmd->args, '=');
 	tmp = *env;
 	if (!strncmp(tmp->name,split[0], ft_strlen(split[0]))) 

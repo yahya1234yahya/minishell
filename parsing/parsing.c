@@ -44,43 +44,44 @@ int is_valid_command(t_cmd *cmd, char *word)
     free(path_dup);
     return 0;
 }
-
-char    *add_space(char *input)
+char *add_space(char *input)
 {
     int i = 0;
     int count = 0;
     int j = 0;
-    while(input && input[i])
+    int s_quote = 0;
+    int d_quote = 0;
+    while (input && input[i])
     {
-        if (input[i] == '<' || input[i] == '>')
+        check_quots(input[i], &s_quote, &d_quote);
+        if (!s_quote && !d_quote && (input[i] == '<' || input[i] == '>'))
         {
             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
                 count += 2;
             count++;
-            i++;
-            continue ;
         }
-        i++;
         count++;
+        i++;
     }
     char *new_input = malloc(count + 1);
     i = 0;
-    while(input && input[i])
+    s_quote = 0;
+    d_quote = 0;
+    while (input && input[i])
     {
-        if (input[i] == '<' || input[i] == '>')
+        check_quots(input[i], &s_quote, &d_quote);
+        if (!s_quote && !d_quote && (input[i] == '<' || input[i] == '>'))
         {
             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
                 new_input[j++] = ' ';
             new_input[j++] = input[i++];
             if (input[i] != '<' && input[i] != '>')
                 new_input[j++] = ' ';
-            continue;
         }
         new_input[j++] = input[i++];
     }
     new_input[j] = '\0';
-    return (new_input);
-
+    return new_input;
 }
 
 
@@ -95,7 +96,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
    
     while(cmd)
     {
-        // cmd->input = add_space(input); to do
+        cmd->input = add_space(input);
         cmd->tokens = ft_strtok_all(cmd->input, " ");
         // printf("next_word : %s\n", next_word);
         if (!*(cmd->tokens)) return (0);
