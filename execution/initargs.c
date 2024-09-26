@@ -30,6 +30,7 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->path = NULL;
 	cmd->next = NULL;
 	cmd->hdoc_delimiter = NULL;
+	cmd->signal_exs_flag = 0;
 	return (cmd);
 };
 t_cmd	*init_cmd()

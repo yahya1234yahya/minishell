@@ -11,31 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdio.h>
-#include <string.h>
-
-// void ft_export(t_cmd *cmd)
-// {
-//     if (!cmd->args)
-// 		return;
-//     char *arg = cmd->args;
-//     char *equal_sign = strchr(arg, '=');
-//     if (!equal_sign)
-//         return;
-//     *equal_sign = '\0';
-//     char *var = arg;
-//     char *value = equal_sign + 1;
-//     setenv(var, value, 1);
-// };
-
-// static void	ft_lstdelone(t_env *env, void (*del)(void*))
-// {
-// 	if (!env || !del)
-// 		return ;
-// 	del (env->name);
-// 	free (env);
-// };
-
 
 static int plusaddpack(t_env **env, char *key, char *value)
 {
@@ -70,7 +45,6 @@ int exportsignal(int sig, t_cmd *cmd)
 {
 	char *str;
 
-	
 	str = ft_itoa(sig);
 	if (!str)
 		return(-1);
@@ -88,7 +62,7 @@ int	is_special_alpha(char c)
 	return (1);
 }
 
-int parse_export(t_cmd *cmd)
+static int parse_export(char *args)
 {
 	char	**split;
 	int		i;
@@ -99,41 +73,128 @@ int parse_export(t_cmd *cmd)
 	start = 1;
 
 	i = 0;
-	if (!cmd->args)
+	if (!args)
 		return (0);
-	if (cmd->args[0] == '=')
+	if (args[0] == '=')
 		{
-			printf("not a valid identifier\n");
+			// printf("not a valid identifier\n");
 			return (-1);
 			
 		}
 	
-	while(cmd->args[i])
+	while(args[i])
 	{
-		check_quots(cmd->args[i], &s_quote, &d_quote);
-		if (start == 0 && cmd->args[i] == ' ')
+		check_quots(args[i], &s_quote, &d_quote);
+		if (start == 0 && args[i] == ' ')
 			start = 1;
-		if (start == 1 && isdigit(cmd->args[i]) && !s_quote && !d_quote)
+		if (start == 1 && isdigit(args[i]) && !s_quote && !d_quote)
 		{
-			printf("not a valid identifier\n");
+			// printf("not a valid identifier\n");
 			return (-1);
 		}
-		if (is_special_alpha(cmd->args[i]) == 1 && !s_quote && !d_quote)
+		if (is_special_alpha(args[i]) == 1 && !s_quote && !d_quote)
 		{
-			printf("not a valid identifier\n");
+			// printf("not a valid identifier\n");
 			return (-1);
 		}
-		if (cmd->args[i] == '=')
+		if (args[i] == '=')
 		{
-
-			while (cmd->args[i] && cmd->args[i] != ' ')
+			while (args[i])
+			{
+				
+				// printf("args[%d] = %c\n",i, args[i]);
+				// printf("s_quote = %d\n", s_quote);
+				// printf("d_quote = %d\n", d_quote);
+				if (s_quote || d_quote)
+				{
+					i++;
+					continue;
+				}
+				if (args[i] == ' ')
+					break ;
+				check_quots(args[i], &s_quote, &d_quote);
 				i++;
+			}
 		}
+		if (args[i] == '\0')		
+			return (0);	
 		i++;
 	}
 	return (0);	
 }
 
+
+char *parse_export2(char *args)
+{
+	char		**splitted;
+	char		*ret;
+	char		*tmp;
+	int			i  = 0;
+
+	int quotes[2];
+	quotes[0] = 0;
+	quotes[1] = 0;
+	ret = ft_strdup("");
+
+	int r = 0;
+	while(args[r])
+	{
+		while (args[r])
+		{
+			check_quots(args[r], &quotes[0], &quotes[1]);
+			if (quotes[0] == 1 || quotes[1] == 1)
+			{
+					r++;
+					continue;
+			}
+			if (args[r] == ' ')
+				break;
+			r++;
+		}
+		r++;
+		ft_strlcpy(tmp, args + i, r - i);
+		i = r;
+		// printf("tmp = %s\n", tmp);
+		// printf("parse_export(tmp) = %d\n", parse_export(tmp));
+		if(parse_export(tmp) == -1)
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(tmp, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+		}
+		else
+		{
+			ret = ft_strjoin(ret, " ");
+			ret = ft_strjoin(ret, tmp);
+		}
+	}
+	
+	// 
+
+	// splitted = ft_split(args, ' ');
+
+	// exit(0);
+	// if (!splitted)
+	// 	return (NULL);
+	// i = 0;
+	// while (splitted[i])
+	// {
+		
+	// 	if(parse_export(splitted[i]) == -1)
+	// 	{
+	// 		ft_putstr_fd("minishell: export: `", 2);
+	// 		ft_putstr_fd(splitted[i], 2);
+	// 		ft_putstr_fd("': not a valid identifier\n", 2);
+	// 	}
+	// 	else
+	// 	{
+	// 		ret = ft_strjoin(ret, " ");
+	// 		ret = ft_strjoin(ret, splitted[i]);
+	// 	}
+	// 	i++;
+	// }
+	return (ret);
+};
 
 int	ft_export(t_cmd *cmd)
 {
@@ -143,9 +204,13 @@ int	ft_export(t_cmd *cmd)
 	//TODO parse the args before export
 	if (!cmd->args)
 		printenv(cmd->env, 0);
-	if (parse_export(cmd) == -1)
-		return (-1);
-	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
+	char *fff =  parse_export2(cmd->args);
+	cmd->args = fff;
+	// cmd->args = arg;
+	// printf("cmd->args = %s\n", cmd->args);
+	// cmd->args = parse_export2(cmd->args);
+	printf("cmd->args = %s\n", cmd->args);
+	if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
 		arg = ft_split(cmd->args, '+');
 		arg[1] = removeFirstChar(arg[1]);
@@ -174,7 +239,6 @@ int	ft_export_status(t_cmd *cmd)
 	//TODO parse the args before export
 	if (!cmd->args)
 		printenv(cmd->env, 0);
-	
 	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
 		arg = ft_split(cmd->args, '+');
@@ -190,7 +254,7 @@ int	ft_export_status(t_cmd *cmd)
 	return (0);
 };
 
-void	ft_unset(t_env	**env, t_cmd *cmd)
+int	ft_unset(t_env	**env, t_cmd *cmd)
 {
 	t_env *tmp;
 	t_env *runner;
@@ -202,7 +266,7 @@ void	ft_unset(t_env	**env, t_cmd *cmd)
 	{
 		*env = tmp->next;
 		free(tmp);
-		return ;
+		return (0);
 	}
 	while (tmp)
 	{
@@ -211,9 +275,10 @@ void	ft_unset(t_env	**env, t_cmd *cmd)
 		{
 			tmp->next = runner->next;
 			free(runner);
-			return ;
+			return (0);
 		}
 		else
 			tmp = tmp->next;
 	}
+	return (0);
 };

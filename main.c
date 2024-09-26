@@ -34,32 +34,71 @@ void print_commands(t_cmd *head)
 
 
 
+// void funcsign(int signum)
+// {
+//     if (signum == SIGINT)
+//     {
+// 		if (waitpid(-1, NULL, WNOHANG) != -1)
+// 		{
+// 			write(1, "\n", 1);
+// 			return;
+// 		}
+// 		write(1, "\n", 1);
+//         rl_on_new_line();
+//         rl_replace_line("", 0);
+//         rl_redisplay();
+// 		setandget(NULL)->exs = 1;
+//     }
+//     else if (signum == SIGQUIT)
+//     {
+//         if (waitpid(-1, NULL, WNOHANG) != -1)
+//             write(1, "Quit: 3\n", 8);
+// 	}
+// }
+
+
+
+
 void funcsign(int signum)
 {
-    if (signum == SIGINT)
-    {
+	// fprintf(stderr, "Received signal: %d\n", signum);
+
+	if (signum == SIGINT)
+	{
+		// fprintf(stderr, "Received SIGINT\n");
+
 		if (waitpid(-1, NULL, WNOHANG) != -1)
 		{
+			// fprintf(stderr, "Child process has exited\n");
 			write(1, "\n", 1);
-			setandget(NULL)->exs = 130;
 			return;
 		}
-		setandget(NULL)->exs = 130;
-        write(1, "\n", 1);
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-    }
-    else if (signum == SIGQUIT)
-    {
-        if (waitpid(-1, NULL, WNOHANG) != -1)
-		{
-			setandget(NULL)->exs = 131;
-            write(1, "Quit: 3\n", 8);
-		}
+
+		// fprintf(stderr, "No child process has exited\n");
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+
+		// if (setandget(NULL) == NULL)
+		// {
+			// fprintf(stderr, "setandget(NULL) returned NULL\n");
+		// }
+		// else
+		// {
+			// fprintf(stderr, "Setting status to 1\n");
+			setandget(NULL)->exs = 1;
+			// printf("exs: %d\n", setandget(NULL)->exs);
+		// }
+	}
+	else if (signum == SIGQUIT)
+	{
+		// fprintf(stderr, "Received SIGQUIT\n");
+
+		if (waitpid(-1, NULL, WNOHANG) != -1)
+			write(1, "Quit: 3\n", 8);
 	}
 }
-
 
 void ft_signals()
 {
@@ -134,14 +173,17 @@ int main(int argc, char **argv, char **envp)
 	else
 		env = initenv(envp);
 	cmd->first_run = 1;
+	int r = 0;
 	while (1)
 	{
 		set_cmd(cmd);
 		setandget(cmd);
+		// printf("exs-> %d-->(%d)\n",cmd->exs,r++);
 		ft_signals();
+		// printf("exs-> %d-->(d)\n",cmd->exs,r++);
 		cmd->env = env;
 		exportsignal(cmd->exs, cmd);
-		input = readline("minishell > ");
+		input = readline("minishell > "); ////////
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
@@ -152,7 +194,7 @@ int main(int argc, char **argv, char **envp)
 		if (!(*input))
 			continue ;
         input = expand_variables(env, input);
-        if(!input[0])
+         if(!input[0])
             continue ;
 		 if(check_complete(input) == 0)
     	{
@@ -172,8 +214,9 @@ int main(int argc, char **argv, char **envp)
 		// print_commands(cmd);
 		// printf("cmd->args: %s\n", cmd->input);
 		// printf("cmd->next->args: %s\n", cmd->next->input);
-		
+		// printf("exs before decider-> %d\n",cmd->exs);
 		decider(cmd);
+		// printf("exs-> after decider %d\n",cmd->exs);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
     }

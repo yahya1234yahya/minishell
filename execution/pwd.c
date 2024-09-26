@@ -36,7 +36,7 @@ static char	*ft_strstr(const char	*haystack, const char	*needle)
 	return (NULL);
 };
 
-void	ft_pwd(t_env *env)
+int	ft_pwd(t_env *env)
 {
 	t_env	*wd;
 	char 	*pwd;
@@ -47,8 +47,9 @@ void	ft_pwd(t_env *env)
 		pwd = getcwd(NULL, 0);
 		printf("%s\n", pwd);
 		free(pwd);
-		return ;
+		return 0;
 	}
 	printf("%s\n", wd->value);
+	return (1);
 }
 

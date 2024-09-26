@@ -60,8 +60,16 @@ typedef struct s_cmd
 	int		exs;
 	int 	first_run;
 	int		fd_hdoc;
+	int		signal_exs_flag;
 	struct 	s_cmd *next;
 } t_cmd;
+
+typedef struct s_export
+{
+	char				*str;
+	int					flag;
+	struct s_export	*next;
+}	t_export;
 
 // extern int g_signal;
 
@@ -90,11 +98,12 @@ t_env	*envset(t_env *env, char *name, char *value);
 t_env	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_env **lst, t_env *newnode);
 void	decider(t_cmd *cmd);
-void	ft_echo(t_cmd *cmd);
-void	ft_pwd(t_env *env);
+int		ft_echo(t_cmd *cmd);
+int		ft_pwd(t_env *env);
 int 	changedir(t_cmd *cmd);
-void	printenv(t_env *env, int flag);
-void	ft_unset(t_env **env, t_cmd *cmd);
+int		printenv(t_env *env, int flag);
+void	printenv2(t_env *current);
+int		ft_unset(t_env **env, t_cmd *cmd);
 int		redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
@@ -119,13 +128,15 @@ char	*ft_strdup(char *s1);
 char	*ft_strtrim(char  *s1, char  *set);
 char	*ft_strchr(const char *s, int c); //TODO
 char	*ft_itoa(int n);
+int		ft_atoi(const char *str);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 int		ft_strcmp2(const char *s1, const char *s2);
 int		ft_tolower(int c);
 int		helper(t_cmd *cmd);
-int	ft_export_status(t_cmd *cmd);
+int		ft_export_status(t_cmd *cmd);
+
 
 
 // echo with -n option

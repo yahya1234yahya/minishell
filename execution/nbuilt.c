@@ -27,6 +27,12 @@ char	**convert(t_cmd *cmd)
 		tmp = tmp->next;
 	};
 	ret = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!ret)
+	{
+		perror("malloc");
+		setandget(NULL)->exs = 1;
+		return (NULL);
+	}
 	j = 0;
 	tmp = cmd->env;
 	while (j < i)

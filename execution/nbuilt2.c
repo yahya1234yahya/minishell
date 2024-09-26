@@ -57,44 +57,49 @@ void ft_errorwrite(t_cmd *cmd)
 	}
 }
 
-
-int	execfromsystem(t_cmd *cmd, char **envp)
+int execfromsystem(t_cmd *cmd, char **envp)
 {
 	int pid;
 	int status;
 
 	cmd = preparecmd(cmd);
-
 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork");
-			setandget(NULL)->exs = 1;
-			return (-1);
+			return -1;
 		}
 		if (pid == 0)
 		{
 			if (execve(cmd->splited[0], cmd->splited, envp) < 0)
 			{
-				setandget(NULL)->exs = 1;
-				return (-1);
+				perror("execve");
+				return -1;
 			}
 		}
 		else
 		{
 			waitpid(pid, &status, 0);
-			if (WIFEXITED(status))
+			
+			if (WIFSIGNALED(status))
+			{
+				setandget(NULL)->exs = 128 + WTERMSIG(status);
+				return (128 + WTERMSIG(status));
+			}
+			else if (WIFEXITED(status))
+			{
 				setandget(NULL)->exs = WEXITSTATUS(status);
-			return (0);
+				return WEXITSTATUS(status);
+			}
 		}
 	}
 	else
 	{
 		ft_errorwrite(cmd);
-		return (-1);
+		return -1;
 	}
 	// printf("EXITED FROM HERE\n");
-	return (0);
+	return 0;
 }

@@ -19,7 +19,7 @@ static int echohelper(t_cmd *cmd)
 	return (0);
 }
 
-void ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
     int option;
     int i;
@@ -30,8 +30,8 @@ void ft_echo(t_cmd *cmd)
 	if (cmd->args == NULL)
 	{
 		if (write(STDOUT_FILENO, "\n", 1) == -1)
-			perror("write");
-		return ;
+			return(perror("write"), -1);
+		return (1);
 	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
     {
@@ -49,8 +49,9 @@ void ft_echo(t_cmd *cmd)
             break;
     }
     if(write(STDOUT_FILENO, &cmd->args[i], strlen(&cmd->args[i])) == -1)
-		perror("write");
+		return (perror("write"),-1);
 	if (!option)
-        if(write(1, "\n", 1) == -1)
-			perror("write");
+        if (write(1, "\n", 1) == -1)
+			return(perror("write"),-1);
+		return (1);
 }

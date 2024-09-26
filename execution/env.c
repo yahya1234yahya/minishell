@@ -56,12 +56,24 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 	last->next = newnode;
 };
 
-void printenv(t_env *env, int flag)
+void	printenv2(t_env *current)
+{
+	while (current)
+	{
+		printf("declare -x %s", current->key);
+		if(current->value)
+			printf("=%s\n", current->value);
+		else
+			printf("\n");
+		current = current->next;
+	}
+}
+
+int	printenv(t_env *env, int flag)
 {
 	t_env	*current;
 
 	current = env;
-
 	if (flag)
 	{
 		while (current)
@@ -71,29 +83,12 @@ void printenv(t_env *env, int flag)
 				printf("%s=", current->key);
 				printf("%s\n", current->value);
 			}
-			
 			current = current->next;
 		}
 	}
 	else
-	{
-		while (current)
-		{
-			printf("declare -x %s", current->key);
-			if(current->value)
-				printf("=%s\n", current->value);
-			else
-				printf("\n");
-			current = current->next;
-		}
-	}
-	
-	// while (current)
-	// {
-	// 	printf("%s=", current->key);
-	// 	printf("%s\n", current->value);
-	// 	current = current->next;
-	// }
+		printenv2(current);
+	return (0);
 };
 
 t_env	*envset(t_env *env, char *name, char *value)
