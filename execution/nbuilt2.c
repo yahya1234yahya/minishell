@@ -41,14 +41,14 @@ t_cmd *preparecmd(t_cmd *cmd)
 
 void ft_errorwrite(t_cmd *cmd)
 {
-	if (access(cmd->splited[0], F_OK) == -1)
+	if (access(cmd->splited[0], X_OK) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
-		ft_putstr_fd(" :command or file not found\n", 2);
+		ft_putstr_fd(" : command not found\n", 2);
 		setandget(NULL)->exs = 127;
 	}
-	else if (access(cmd->splited[0], X_OK) == -1)
+	else if (access(cmd->splited[0], F_OK) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->splited[0], 2);
@@ -98,7 +98,7 @@ int execfromsystem(t_cmd *cmd, char **envp)
 	else
 	{
 		ft_errorwrite(cmd);
-		return -1;
+		return 127;
 	}
 	// printf("EXITED FROM HERE\n");
 	return 0;

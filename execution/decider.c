@@ -129,6 +129,7 @@ int	executesingle(t_cmd *cmd , char **envp)
 	}
 	else if (retv == -1)
 		return (filedreset(input, output), -1);
+	filedreset(input, output);
 	// if (cmd->ft_in != input || cmd->ft_out != output)
 	// 	if (filedreset(input, output) == -1)
 	// 		return (-1);
