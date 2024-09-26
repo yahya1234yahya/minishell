@@ -41,6 +41,8 @@ int ft_strcmp2(const char *s1, const char *s2)
 
 // user sends data as a string i need to check if it is a number or not
 
+
+
 void ft_exit(char *data)
 {
 	int num;
@@ -50,8 +52,11 @@ void ft_exit(char *data)
 	{
 		num = 1;
 		i = 0;
+		if ((data[0] == '-' || data[0] == '+' || isdigit(data[0])) && ft_strlen(data) != 1)
+			i++;
 		while (num)
-		{
+		{	
+			
 			if (isdigit(data[i]) == 0)
 			{
 				if (data[i] == '\0')

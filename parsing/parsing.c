@@ -134,14 +134,16 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 cmd->tokens++;
                 if (*(cmd->tokens) == NULL)
                 {
-                    printf("\033[33merror: expected filename after redout \033[0m\n");
+                    ft_putstr_fd("minishell: ", 2);
+                    ft_putstr_fd("error: expected filename after redout\n", 2);
                     return (0);
                 }
                 flags = redouthelper(cmd);
                 cmd->ft_out = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_out == -1)
                 {
-                    printf("\033[33merror: can't open file \033[0m\n");
+                    ft_putstr_fd("minishell: ", 2);
+                    ft_putstr_fd("error: can't open file\n", 2);
                     return (0);
                 }
             
@@ -152,14 +154,16 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 cmd->tokens++;
                 if (*(cmd->tokens) == NULL)
                 {
-                    printf("\033[33merror: expected filename after redout \033[0m\n");
+                    ft_putstr_fd("minishell: ", 2);
+                    ft_putstr_fd("error: expected filename after redin\n", 2);
                     return (0);
                 }
                 flags = redouthelper(cmd);
                 cmd->ft_in = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_in == -1)
                 {
-                    printf("\033[33merror: can't open file \033[0m\n");
+                    ft_putstr_fd("minishell: ", 2);
+                    ft_putstr_fd("error: can't open file\n", 2);
                     return (0);
                 }   
             }

@@ -151,6 +151,8 @@ char *parse_export2(char *args)
 				break;
 			r++;
 		}
+		if (args[r] == '\0')
+			return (ret);
 		r++;
 		ft_strlcpy(tmp, args + i, r - i);
 		i = r;
@@ -203,13 +205,16 @@ int	ft_export(t_cmd *cmd)
 
 	//TODO parse the args before export
 	if (!cmd->args)
+	{
 		printenv(cmd->env, 0);
+		return (0);
+	}
 	char *fff =  parse_export2(cmd->args);
 	cmd->args = fff;
 	// cmd->args = arg;
 	// printf("cmd->args = %s\n", cmd->args);
 	// cmd->args = parse_export2(cmd->args);
-	printf("cmd->args = %s\n", cmd->args);
+	// printf("cmd->args = %s\n", cmd->args);
 	if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
 		arg = ft_split(cmd->args, '+');

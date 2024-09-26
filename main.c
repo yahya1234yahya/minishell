@@ -165,7 +165,7 @@ int main(int argc, char **argv, char **envp)
 	tcgetattr(0, &termstate);
 	if (!*envp)
 	{
-		printf("error: env not found\n");
+		ft_putstr_fd("no env\n", 2);
 		exit(1);
 		env = noenv();
 		cmd->env = env;
@@ -198,12 +198,12 @@ int main(int argc, char **argv, char **envp)
             continue ;
 		 if(check_complete(input) == 0)
     	{
-			printf("error: incomplete command\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			continue ;
     	}
 		if (input == NULL)
     	{
-          printf("error:  command not found\n");
+          ft_putstr_fd("command not found\n", 2);
           return (0);
     	}
 		// printf("input: %s\n", input);
