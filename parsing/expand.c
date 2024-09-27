@@ -67,6 +67,8 @@ int count_new_input(t_env	*env, char    *input)
         {
             input++;
             name = malloc(count_word(input) + 1);
+            if (!name)
+                return (0);
             i = 0;
             while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_') )
             {
@@ -74,7 +76,7 @@ int count_new_input(t_env	*env, char    *input)
                 input++;
             }
             name[i] = '\0';
-            env_value = envsearch(env, name)->value;
+            env_value = envsearch2(env, name);
             if (env_value)
                 count += strlen(env_value);
             free(name);
@@ -139,7 +141,7 @@ char *expand_variables(t_env	*env, char    *input)
                 input++;
             }
             name[i] = '\0';
-            env_value = envsearch(env, name)->value;
+            env_value = envsearch2(env, name);
             if (env_value)
             {
                 while (*env_value)
