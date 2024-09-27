@@ -50,20 +50,30 @@ void ft_exit(char *data)
 	
 	if (data)
 	{
+
 		num = 1;
 		i = 0;
 		if ((data[0] == '-' || data[0] == '+' || isdigit(data[0])) && ft_strlen(data) != 1)
 			i++;
 		while (num)
 		{	
-			
+			if (data[i] == ' ')
+            {
+                if (data[i+1] != 0)
+				{
+					write(2, "exit\n", 5);
+                    write(2, "minishell: exit", 16);
+                    write(2, ": too many arguments\n", 22);
+                    exit(1);
+                }
+            }
 			if (isdigit(data[i]) == 0)
 			{
 				if (data[i] == '\0')
 					break;
 				num = 0;
-				write(2, "exit\nminishell: exit: ", 23);
-				write(2, data, ft_strlen(data));
+				write(2, "exit\n", 5);
+				write(2, "minishell: exit", 16);
 				write(2, ": numeric argument required\n", 29);
 				exit(255);
 			}
@@ -133,7 +143,7 @@ int	executesingle(t_cmd *cmd , char **envp)
 	// if (cmd->ft_in != input || cmd->ft_out != output)
 	// 	if (filedreset(input, output) == -1)
 	// 		return (-1);
-	return (0);
+	return (retv);
 }
 
 int helper(t_cmd *cmd)
@@ -388,7 +398,7 @@ void	decider(t_cmd *cmd)
 		exs = executesingle(cmd, env);
 		if (exs == 0)
 			setandget(NULL)->exs = 0;
-		else if (exs == -1)
+		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
 		// if (cmd->args == NULL || cmd->args[0] == '\0')
 		// 	cmd->args = ft_strjoin("_=", cmd->cmd);

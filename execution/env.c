@@ -55,11 +55,16 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 		last = last->next;
 	last->next = newnode;
 };
-
+ // TODO env and export ls+color plus shlvl 
 void	printenv2(t_env *current)
 {
 	while (current)
 	{
+		if (ft_strcmp(current->key, "?") == 0)
+		{
+			current = current->next;
+			continue;
+		}
 		printf("declare -x %s", current->key);
 		if(current->value)
 			printf("=%s\n", current->value);
@@ -74,10 +79,20 @@ int	printenv(t_env *env, int flag)
 	t_env	*current;
 
 	current = env;
+	if (!current)
+	{
+		ft_putstr_fd("no env\n", 2);
+		return (1);
+	}
 	if (flag)
 	{
 		while (current)
 		{
+			if (ft_strcmp(current->key, "?") == 0)
+			{
+				current = current->next;
+				continue;
+			}
 			if (current->value != NULL)
 			{
 				printf("%s=", current->key);

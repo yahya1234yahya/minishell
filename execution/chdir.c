@@ -17,7 +17,7 @@ int changedir(t_cmd *cmd)
 {
 	char *oldpwd;
 	t_env *homeenv;
-
+	cmd->args = ft_split(cmd->args, ' ')[0];
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 	{

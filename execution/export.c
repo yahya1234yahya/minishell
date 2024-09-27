@@ -135,7 +135,6 @@ char *parse_export2(char *args)
 	quotes[0] = 0;
 	quotes[1] = 0;
 	ret = ft_strdup("");
-
 	int r = 0;
 	while(args[r])
 	{
@@ -151,15 +150,13 @@ char *parse_export2(char *args)
 				break;
 			r++;
 		}
-		if (args[r] == '\0')
-			return (ret);
 		r++;
 		ft_strlcpy(tmp, args + i, r - i);
 		i = r;
-		// printf("tmp = %s\n", tmp);
-		// printf("parse_export(tmp) = %d\n", parse_export(tmp));
+	
 		if(parse_export(tmp) == -1)
 		{
+			setandget(NULL)->exs = 1;
 			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(tmp, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
@@ -169,6 +166,8 @@ char *parse_export2(char *args)
 			ret = ft_strjoin(ret, " ");
 			ret = ft_strjoin(ret, tmp);
 		}
+		if (args[r - 1] == '\0')
+			return (ret);
 	}
 	
 	// 
@@ -202,14 +201,20 @@ int	ft_export(t_cmd *cmd)
 {
 	char	**arg;
 	t_env	*tmp;
+	int		i;
 
 	//TODO parse the args before export
+	i = 1;
 	if (!cmd->args)
 	{
 		printenv(cmd->env, 0);
 		return (0);
 	}
 	char *fff =  parse_export2(cmd->args);
+	fff = ft_strtrim(fff, " ");
+	// printf("%d\n", ft_strcmp(fff, cmd->args));
+	if (ft_strcmp(fff, cmd->args) == 0)
+		i = 0;
 	cmd->args = fff;
 	// cmd->args = arg;
 	// printf("cmd->args = %s\n", cmd->args);
@@ -234,7 +239,7 @@ int	ft_export(t_cmd *cmd)
 			arg++;
 		}
 	}
-	return (0);
+	return (i);
 };
 int	ft_export_status(t_cmd *cmd)
 {

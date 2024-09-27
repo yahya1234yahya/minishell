@@ -53,5 +53,5 @@ int	ft_echo(t_cmd *cmd)
 	if (!option)
         if (write(1, "\n", 1) == -1)
 			return(perror("write"),-1);
-		return (1);
+		return (0);
 }
