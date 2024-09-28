@@ -211,11 +211,13 @@ int	ft_export(t_cmd *cmd)
 		printenv(cmd->env, 0);
 		return (0);
 	}
-	parsed =  parse_export2(cmd->args);
-	parsed = ft_strtrim(parsed, " ");
-	if (ft_strcmp(parsed, cmd->args) == 0)
-		i = 0;
-	cmd->args = parsed;
+	
+	// parsed =  parse_export2(cmd->args);
+	// parsed = ft_strtrim(parsed, " ");
+	// if (ft_strcmp(parsed, cmd->args) == 0)
+		// i = 0;
+	// cmd->args = parsed;
+	// printf("cmd->args = %s\n", cmd->args);
 if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
 		arg = ft_split(cmd->args, '+');
@@ -228,10 +230,14 @@ if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	}
 	else
 	{
-		arg = ft_split(cmd->args, ' ');
+		arg = ft_strtok_all(cmd->args, " ");
+		// for (size_t i = 0; arg[i]; i++)
+			// printf("cmd->args[%zu] = %s\n", i, arg[i]);
+		// exit(0);
+		
 		while(arg && *arg)
 		{
-			ft_lstadd_back(&cmd->env, ft_lstnew(*arg));
+			ft_lstadd_back(&cmd->env, ft_lstnew(remove_quotes(*arg)));
 			arg++;
 		}
 	}
