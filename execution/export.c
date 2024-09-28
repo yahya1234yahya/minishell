@@ -200,6 +200,7 @@ char *parse_export2(char *args)
 int	ft_export(t_cmd *cmd)
 {
 	char	**arg;
+	char *parsed;
 	t_env	*tmp;
 	int		i;
 
@@ -210,17 +211,12 @@ int	ft_export(t_cmd *cmd)
 		printenv(cmd->env, 0);
 		return (0);
 	}
-	char *fff =  parse_export2(cmd->args);
-	fff = ft_strtrim(fff, " ");
-	// printf("%d\n", ft_strcmp(fff, cmd->args));
-	if (ft_strcmp(fff, cmd->args) == 0)
+	parsed =  parse_export2(cmd->args);
+	parsed = ft_strtrim(parsed, " ");
+	if (ft_strcmp(parsed, cmd->args) == 0)
 		i = 0;
-	cmd->args = fff;
-	// cmd->args = arg;
-	// printf("cmd->args = %s\n", cmd->args);
-	// cmd->args = parse_export2(cmd->args);
-	// printf("cmd->args = %s\n", cmd->args);
-	if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
+	cmd->args = parsed;
+if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
 		arg = ft_split(cmd->args, '+');
 		arg[1] = removeFirstChar(arg[1]);

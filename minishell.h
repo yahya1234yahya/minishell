@@ -109,7 +109,7 @@ char	**convert(t_cmd *cmd);
 t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
 int		filedreset(int input, int output);
 int		execfromsystem(t_cmd *cmd, char **envp);
-void	executemultiple(t_cmd *cmd);
+int		executemultiple(t_cmd *cmd);
 int		executesingle(t_cmd *cmd , char **envp);
 t_cmd	*preparecmd(t_cmd *cmd);
 void	ft_errorwrite(t_cmd *cmd);

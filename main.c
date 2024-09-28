@@ -161,6 +161,7 @@ int main(int argc, char **argv, char **envp)
 	t_env 	*env;
 	static struct termios	termstate;
 
+
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	tcgetattr(0, &termstate);
 	if (!*envp)

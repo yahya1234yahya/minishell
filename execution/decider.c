@@ -108,7 +108,10 @@ static int isbuiltin(t_cmd *cmd)
 	if (value == 5)
 		retv = changedir(cmd);
 	if (value == 6)
+	{
 		retv = ft_export(cmd);
+		// printf("retv = %d\n", retv);
+	}
 	if (value == 7)
 		retv = ft_unset(&cmd->env, cmd);
 	return (retv);
@@ -304,7 +307,7 @@ static void parent(int *input, int *pipefd)
 // 	while (wait(NULL) > 0)
 // 		;
 // }
-void executemultiple(t_cmd *cmd)
+int	executemultiple(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		input;
@@ -334,6 +337,7 @@ void executemultiple(t_cmd *cmd)
 	}
 	while (wait(NULL) > 0)
         ;
+	return (0);
 }
 
 // void executemultiple(t_cmd *cmd) 							//mine//

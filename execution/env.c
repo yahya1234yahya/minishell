@@ -67,7 +67,7 @@ void	printenv2(t_env *current)
 		}
 		printf("declare -x %s", current->key);
 		if(current->value)
-			printf("=%s\n", current->value);
+			printf("=\"%s\"\n", current->value);
 		else
 			printf("\n");
 		current = current->next;
