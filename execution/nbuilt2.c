@@ -39,7 +39,7 @@ t_cmd *preparecmd(t_cmd *cmd)
 	return (cmd);
 }
 
-void ft_errorwrite(t_cmd *cmd)
+int ft_errorwrite(t_cmd *cmd)
 {
 	if (access(cmd->splited[0], X_OK) == -1)
 	{
@@ -47,6 +47,7 @@ void ft_errorwrite(t_cmd *cmd)
 		ft_putstr_fd(cmd->splited[0], 2);
 		ft_putstr_fd(" : command not found\n", 2);
 		setandget(NULL)->exs = 127;
+		return (127);
 	}
 	else if (access(cmd->splited[0], F_OK) == -1)
 	{
@@ -54,7 +55,9 @@ void ft_errorwrite(t_cmd *cmd)
 		ft_putstr_fd(cmd->splited[0], 2);
 		ft_putstr_fd(" : Permission denied\n", 2);
 		setandget(NULL)->exs = 126;
+		return(126);
 	}
+	return (1);
 }
 
 
@@ -70,14 +73,14 @@ int execfromsystem(t_cmd *cmd, char **envp)
 		if (pid == -1)
 		{
 			perror("fork");
-			return -1;
+			return (1);
 		}
 		if (pid == 0)
 		{
 			if (execve(cmd->splited[0], cmd->splited, envp) < 0)
 			{
 				perror("execve");
-				return -1;
+				return (1);
 			}
 		}
 		else
@@ -97,8 +100,8 @@ int execfromsystem(t_cmd *cmd, char **envp)
 	}
 	else
 	{
-		ft_errorwrite(cmd);
-		return 127;
+		// ft_errorwrite(cmd);
+		return (ft_errorwrite(cmd));
 	}
 
 	

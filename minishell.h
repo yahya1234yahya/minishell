@@ -112,7 +112,7 @@ int		execfromsystem(t_cmd *cmd, char **envp);
 int		executemultiple(t_cmd *cmd);
 int		executesingle(t_cmd *cmd , char **envp);
 t_cmd	*preparecmd(t_cmd *cmd);
-void	ft_errorwrite(t_cmd *cmd);
+int		ft_errorwrite(t_cmd *cmd);
 int		exportsignal(int sig, t_cmd *cmd);
 t_cmd	*setandget(t_cmd *cmd);
 char	*envsearch2(t_env *env, char *name);
