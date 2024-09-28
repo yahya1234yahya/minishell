@@ -58,38 +58,12 @@ void ft_errorwrite(t_cmd *cmd)
 }
 
 
-void addshelllevel(t_cmd *cmd)
-{
-	unsigned long long shelllevel;
-
-	if (!ft_strcmp2(cmd->splited[0], "./minishell")
-		|| !ft_strcmp2(cmd->splited[0], "minishell")
-		||	!ft_strcmp2(cmd->splited[0], "/bin/./bash")
-		|| !ft_strcmp2(cmd->splited[0], "/bin/bash")
-		|| !ft_strcmp2(cmd->splited[0], "sh")
-		|| !ft_strcmp2(cmd->splited[0], "./sh")
-		|| !ft_strcmp2(cmd->splited[0], "zsh")
-		|| !ft_strcmp2(cmd->splited[0], "./zsh"))
-		{
-			shelllevel = ft_atoi(envsearch2(cmd->env, "SHLVL"));
-			if (shelllevel == 999)
-			{
-				envset(cmd->env, "SHLVL", " ");
-			}else
-			{
-				shelllevel++;
-				envset(cmd->env, "SHLVL", ft_itoa(shelllevel));
-			}
-		}	
-}
-
 int execfromsystem(t_cmd *cmd, char **envp)
 {
 	int pid;
 	int status;
 
 	cmd = preparecmd(cmd);
-	addshelllevel(cmd); // Work in progress
 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{
 		pid = fork();

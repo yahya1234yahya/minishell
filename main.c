@@ -154,6 +154,17 @@ t_env	*noenv()
 	return (env);
 }
 
+void	updateshlvl(t_env *env)
+{
+	int shelllevel;
+
+	shelllevel = ft_atoi(envsearch2(env, "SHLVL"));
+	if (shelllevel == 999)
+		envset(env, "SHLVL", " ");
+	else
+		envset(env, "SHLVL", ft_itoa(shelllevel + 1));
+}
+
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
@@ -173,6 +184,10 @@ int main(int argc, char **argv, char **envp)
 	}
 	else
 		env = initenv(envp);
+	
+	updateshlvl(env);
+
+	
 	cmd->first_run = 1;
 	int r = 0;
 	while (1)
@@ -213,11 +228,22 @@ int main(int argc, char **argv, char **envp)
         if(check == 0)
 			continue ;
 		// print_commands(cmd);
-		// printf("cmd->args: %s\n", cmd->input);
-		// printf("cmd->next->args: %s\n", cmd->next->input);
-		// printf("exs before decider-> %d\n",cmd->exs);
+
+		// if(cmd->redin != 0)
+		// {
+		// 	printf("yes in\n");
+		// }
+		// char *lol = malloc(sizeof(char) * 19);
+	
+		
+		// read(cmd->ft_in, lol, 100);
+		// lol[18] = '\0';
+		// printf("lol: %s\n", lol);
+
+		// exit(0);
+
+
 		decider(cmd);
-		// printf("exs-> after decider %d\n",cmd->exs);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
     }
