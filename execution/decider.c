@@ -135,8 +135,8 @@ int	executesingle(t_cmd *cmd , char **envp)
 	value = helper(cmd);
 	if (value == 1337)
 	{
-		if (execfromsystem(cmd, envp) == -1)
-			return (filedreset(input, output), -1);
+		retv = execfromsystem(cmd, envp);
+			return (filedreset(input, output), retv);
 	}
 	else
 		retv = isbuiltin(cmd, value);
@@ -222,6 +222,7 @@ int	executemultiple(t_cmd *cmd)
 	pid_t	pid;
 	int		input;
 	int		pipefd[2];
+	int		status;
 	
 	input = STDIN_FILENO;
 	while (cmd)
@@ -245,8 +246,15 @@ int	executemultiple(t_cmd *cmd)
 			parent(&input, pipefd);
         cmd = cmd->next;
 	}
-	while (wait(NULL) > 0)
+	while (wait(&status) > 0)
         ;
+	if(WIFSIGNALED(status))
+	{
+		setandget(NULL)->exs = 128 + WTERMSIG(status);
+		return (128 + WTERMSIG(status));
+	}
+	else if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (0);
 }
 

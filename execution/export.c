@@ -212,11 +212,11 @@ int	ft_export(t_cmd *cmd)
 		return (0);
 	}
 	
-	// parsed =  parse_export2(cmd->args);
-	// parsed = ft_strtrim(parsed, " ");
-	// if (ft_strcmp(parsed, cmd->args) == 0)
-		// i = 0;
-	// cmd->args = parsed;
+	parsed =  parse_export2(cmd->args);
+	parsed = ft_strtrim(parsed, " ");
+	if (ft_strcmp(parsed, cmd->args) == 0)
+		i = 0;
+	cmd->args = parsed;
 	// printf("cmd->args = %s\n", cmd->args);
 if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
 	{
@@ -262,7 +262,11 @@ int	ft_export_status(t_cmd *cmd)
 		}
 	}
 	else
-		ft_lstadd_back(&cmd->env, ft_lstnew(cmd->args));
+	{
+		t_env *tmp = ft_lstnew(cmd->args);
+
+		ft_lstadd_back(&cmd->env, tmp);
+	}
 	return (0);
 };
 

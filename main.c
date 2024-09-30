@@ -142,6 +142,7 @@ t_env	*noenv()
 {
 	t_env	*env;
 	char	*vallue;
+	char	*currenntwd;
 
 	env = (t_env *)malloc(sizeof(t_env));
 	if (!env)
@@ -149,8 +150,14 @@ t_env	*noenv()
 		perror("malloc");
 		exit(1);
 	}
-	env->key = ft_strdup("PWD");
+	env->name = ft_strdup("PWD");
 	env->value = getcwd(NULL, 0);
+	env->next = (t_env *)malloc(sizeof(t_env));
+	env->next->name = ft_strdup("SHLVL");
+	env->next->value = ft_strdup("1");
+	env->next->next = NULL;
+	//TODO $_
+
 	return (env);
 }
 
@@ -177,29 +184,23 @@ int main(int argc, char **argv, char **envp)
 	tcgetattr(0, &termstate);
 	if (!*envp)
 	{
-		ft_putstr_fd("no env\n", 2);
-		exit(1);
 		env = noenv();
-		cmd->env = env;
 	}
 	else
 		env = initenv(envp);
-	
 	updateshlvl(env);
 
-	
 	cmd->first_run = 1;
-	int r = 0;
+	// int r = 0;
 	while (1)
 	{
 		set_cmd(cmd);
 		setandget(cmd);
-		// printf("exs-> %d-->(%d)\n",cmd->exs,r++);
 		ft_signals();
-		// printf("exs-> %d-->(d)\n",cmd->exs,r++);
 		cmd->env = env;
 		exportsignal(cmd->exs, cmd);
-		input = readline("minishell > "); ////////
+		input = readline("minishell > ");
+		
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
@@ -227,7 +228,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)
 			continue ;
-		print_commands(cmd);
+		// print_commands(cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

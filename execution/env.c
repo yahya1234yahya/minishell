@@ -12,19 +12,61 @@
 
 #include "../minishell.h"
 
+size_t ft_min(size_t a, size_t b)
+{
+	if (a < b)
+	{
+		return (a);
+	}
+	else
+	{
+		return (b);
+	}
+}
+char	*ft_substr(char  *s, unsigned int start, size_t len)
+{
+	char	*substr;
+	size_t	s_len;
+	size_t	substr_len;
+
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	substr_len = ft_min(len, s_len - start);
+	substr = (char *)malloc((substr_len + 1) * sizeof(char));
+	if (!substr)
+		return (NULL);
+	ft_strlcpy(substr, s + start, substr_len + 1);
+	return (substr);
+}
+
 t_env	*ft_lstnew(void *content)
 {
 	t_env	*node;
 	char	**split;
+	int 	i;
+	char	*valuejoined;
+	char *typecast;
 
+	typecast = (char *)content;
 	node = malloc(sizeof(t_env));
 	if (!node)
 		return (NULL);
-	split = ft_split((char *)content , '=');
-	node->key = split[0];
-	node->value = split[1];
+	i = 0;
+	while (typecast[i] && typecast[i] != '=')
+		i++;
+	node->key = ft_substr(typecast, 0, i);
+	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
 	node->name = content;
 	node->next = NULL;
+
+	// split = ft_split((char *)content , '='); 
+	// node->key = split[0];
+	// node->value = split[1];
+	// node->name = content;
+	// node->next = NULL;
 	return (node);
 };
 
@@ -32,15 +74,16 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
 
+
 	if (!*lst)
 	{
 		*lst = newnode;
 		return ;
 	}
+
 	last = *lst;
 	while (last)
 	{
-
 		if (ft_strcmp(last->key, newnode->key) == 0)  //l9inah
 		{
 			if (last->value && newnode->value == NULL)
