@@ -27,11 +27,11 @@ int	ft_echo(t_cmd *cmd)
 	
 	i = 0;
 	option = 0;
-	if (cmd->args == NULL)
+	if (cmd->args == NULL || cmd->args[0] == '\0')
 	{
 		if (write(STDOUT_FILENO, "\n", 1) == -1)
 			return(perror("write"), -1);
-		return (1);
+		return (0);
 	}
     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
     {

@@ -33,15 +33,20 @@ char	**convert(t_cmd *cmd)
 		setandget(NULL)->exs = 1;
 		return (NULL);
 	}
+	ret[i] = NULL;
 	j = 0;
 	tmp = cmd->env;
-	while (j < i)
+	while (j < i && tmp)
 	{
 		ret[j] = ft_strjoin(tmp->key, "=");
 		ret[j] = ft_strjoin(ret[j], tmp->value);
-		j++;
 		tmp = tmp->next;
+		j++;
 	};
-	ret[j] = NULL;
+
+	// exit(0);
+		
+
 	return (ret);
 }
+

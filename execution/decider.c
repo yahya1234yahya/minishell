@@ -284,17 +284,17 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
-		// if (cmd->args == NULL || cmd->args[0] == '\0')
-		// 	cmd->args = ft_strjoin("_=", cmd->cmd);
-		// else
-		// {
-		// 	i = 0;
-		// 	last_argument = ft_split(cmd->args, ' ');
-		// 	while (last_argument[i])
-		// 		i++;
-		// 	cmd->args = ft_strjoin("_=",	last_argument[i - 1]);
-		// }
-		// ft_export_status(cmd);
+		if (!cmd->args)
+			envset(cmd->env, "_", cmd->cmd);
+		else
+		{
+			i = 0;
+			last_argument = ft_split(cmd->args, ' ');
+			while (last_argument[i])
+				i++;
+			envset(cmd->env, "_", last_argument[i - 1]);
+		}
+		//  ft_export_status(cmd);
 	}
 	else
 		executemultiple(cmd);
