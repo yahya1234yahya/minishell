@@ -16,6 +16,8 @@
 #include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <sys/stat.h>
+#include <sys/errno.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
@@ -106,16 +108,16 @@ void	printenv2(t_env *current);
 int		ft_unset(t_env **env, t_cmd *cmd);
 int		redirectchange(t_cmd *cmd);
 char	**convert(t_cmd *cmd);
-t_cmd 	*hdoc(char *delimiter, t_cmd *cmd);
 int		filedreset(int input, int output);
 int		execfromsystem(t_cmd *cmd, char **envp);
 int		executemultiple(t_cmd *cmd);
 int		executesingle(t_cmd *cmd , char **envp);
-t_cmd	*preparecmd(t_cmd *cmd);
+int		preparecmd(t_cmd *cmd);
 int		ft_errorwrite(t_cmd *cmd);
 int		exportsignal(int sig, t_cmd *cmd);
 t_cmd	*setandget(t_cmd *cmd);
 char	*envsearch2(t_env *env, char *name);
+int check_command(char *command);
 
 
 //tools

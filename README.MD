@@ -1,1 +1,2 @@
-Welcome to Mini-SHELL
+opened
+ to Mini-SHELL

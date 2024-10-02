@@ -47,7 +47,9 @@ int changedir(t_cmd *cmd)
 	else if (chdir(cmd->args) == -1)
 	{
 		setandget(NULL)->exs = 1; //lll
-		perror("chdir");
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(cmd->args, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return -1;
 	};
 	envset(cmd->env, "OLDPWD", oldpwd);

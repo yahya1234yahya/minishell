@@ -174,6 +174,8 @@ int helper(t_cmd *cmd)
 
 int child(t_cmd *cmd, int input, int *pipefd)
 {
+	int check;
+
     close(pipefd[0]);
     if (cmd->redin != 0)
         dup2(cmd->ft_in, STDIN_FILENO);
@@ -191,20 +193,18 @@ int child(t_cmd *cmd, int input, int *pipefd)
 		}
 	else
 	{
-		cmd = preparecmd(cmd);
-		if (access(cmd->splited[0], X_OK | F_OK) == 0)
-		{
-			if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
-			{ 
-				perror("execve");
-				return (-1);
-			}
-		}
-		else
-		{
-			ft_errorwrite(cmd);
+		check =  preparecmd(cmd);
+		if (check)
+			return (check);
+		check = check_command(cmd->splited[0]);
+		if (check)
+			return (check);
+		if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
+		{ 
+			perror("execve");
 			return (-1);
 		}
+		
 	}
     exit(EXIT_SUCCESS);
 }
@@ -246,15 +246,17 @@ int	executemultiple(t_cmd *cmd)
 			parent(&input, pipefd);
         cmd = cmd->next;
 	}
-	while (wait(&status) > 0)
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+		{
+			setandget(NULL)->exs = 128 + WTERMSIG(status);
+		}
+		else if (WIFEXITED(status))
+		{
+			setandget(NULL)->exs = WEXITSTATUS(status);
+		}
+	while (wait(NULL) > 0)
         ;
-	if(WIFSIGNALED(status))
-	{
-		setandget(NULL)->exs = 128 + WTERMSIG(status);
-		return (128 + WTERMSIG(status));
-	}
-	else if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
 	return (0);
 }
 
