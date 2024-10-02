@@ -157,8 +157,15 @@ t_env	*envset(t_env *env, char *name, char *value)
 	{
 		if (ft_strnstr(current->name, name, ft_strlen(name)))
 		{
+			if ( ft_strcmp(name, "_") == 0 && ft_strcmp(current->name, name) == 0)
+			{	
 			current->value = value;
-			return (env);
+			return (env);}
+			else if (ft_strcmp(name, "_"))
+			{
+				current->value = value;
+				return (env);
+			}
 		}
 		current = current->next;
 	}

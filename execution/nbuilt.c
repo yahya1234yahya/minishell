@@ -35,7 +35,9 @@ char	**convert(t_cmd *cmd)
 	}
 	ret[i] = NULL;
 	j = 0;
+	free(tmp);
 	tmp = cmd->env;
+	
 	while (j < i && tmp)
 	{
 		ret[j] = ft_strjoin(tmp->key, "=");
@@ -43,6 +45,7 @@ char	**convert(t_cmd *cmd)
 		tmp = tmp->next;
 		j++;
 	};
+	ret[j] = NULL;
 
 	// exit(0);
 		
