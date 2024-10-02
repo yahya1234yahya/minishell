@@ -67,10 +67,10 @@ int execfromsystem(t_cmd *cmd, char **envp)
 	int status;
 
 	cmd = preparecmd(cmd);
-	for (int i = 0; cmd->splited[i]; i++)
-	{
-		printf("splited[%d]: %s\n", i, cmd->splited[i]);
-	}
+	// for (int i = 0; cmd->splited[i]; i++)
+	// {
+	// 	printf("splited[%d]: %s\n", i, cmd->splited[i]);
+	// }
 	
 	if (access(cmd->splited[0], X_OK | F_OK) == 0)
 	{

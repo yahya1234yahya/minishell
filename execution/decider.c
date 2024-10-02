@@ -278,6 +278,7 @@ void	decider(t_cmd *cmd)
 	{
 		if (cmd->cmd == NULL)
 			return ;
+		
 		env = convert(cmd);
 		exs = executesingle(cmd, env);
 		if (exs == 0)

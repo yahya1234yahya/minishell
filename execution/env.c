@@ -59,7 +59,7 @@ t_env	*ft_lstnew(void *content)
 		i++;
 	node->key = ft_substr(typecast, 0, i);
 	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
-	node->value[ft_strlen(node->value) - 1] = '\0';
+	node->value[ft_strlen(node->value)] = '\0';
 	node->name = content;
 	node->next = NULL;
 
