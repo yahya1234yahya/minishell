@@ -51,14 +51,56 @@ int is_valid_command(t_cmd *cmd, char *word)
     return 0;
 }
 
+// char    *add_space(char *input)
+// {
+//     int i = 0;
+//     int count = 0;
+//     int j = 0;
+//     while(input && input[i])
+//     {
+//         if (input[i] == '<' || input[i] == '>')
+//         {
+//             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+//                 count += 2;
+//             count++;
+//             i++;
+//             continue ;
+//         }
+//         i++;
+//         count++;
+//     }
+//     char *new_input = malloc(count + 1);
+//     i = 0;
+//     while(input && input[i])
+//     {
+//         if (input[i] == '<' || input[i] == '>')
+//         {
+//             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+//                 new_input[j++] = ' ';
+//             new_input[j++] = input[i++];
+//             if (input[i] != '<' && input[i] != '>')
+//                 new_input[j++] = ' ';
+//             continue;
+//         }
+//         new_input[j++] = input[i++];
+//     }
+//     new_input[j] = '\0';
+//     return (new_input);
+
+// }
+
 char    *add_space(char *input)
 {
     int i = 0;
     int count = 0;
+    int s_quote = 0;
+    int d_quote = 0;
     int j = 0;
+
     while(input && input[i])
     {
-        if (input[i] == '<' || input[i] == '>')
+        check_quots(input[i], &s_quote, &d_quote);
+        if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
         {
             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
                 count += 2;
@@ -73,7 +115,8 @@ char    *add_space(char *input)
     i = 0;
     while(input && input[i])
     {
-        if (input[i] == '<' || input[i] == '>')
+       check_quots(input[i], &s_quote, &d_quote);
+        if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
         {
             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
                 new_input[j++] = ' ';
@@ -101,8 +144,8 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
    
     while(cmd)
     {
-        // cmd->input = add_space(input); to do
-        cmd->tokens = ft_strtok_all(cmd->input, " ");
+        cmd->input = add_space(cmd->input);
+		cmd->tokens = ft_strtok_all(cmd->input, " ");
         // printf("next_word : %s\n", next_word);
         if (!*(cmd->tokens)) return (0);
 
@@ -143,7 +186,9 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 if (cmd->ft_out == -1)
                 {
                     ft_putstr_fd("minishell: ", 2);
-                    ft_putstr_fd("error: can't open file\n", 2);
+                    // ft_putstr_fd("error: can't open file\n", 2);
+					ft_putstr_fd("No such file or directory\n", 2);
+					setandget(NULL)->exs = 1;
                     return (0);
                 }
             
@@ -163,7 +208,9 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 if (cmd->ft_in == -1)
                 {
                     ft_putstr_fd("minishell: ", 2);
-                    ft_putstr_fd("error: can't open file\n", 2);
+                    // ft_putstr_fd("error: can't open file\n", 2);
+					ft_putstr_fd("No such file or directory\n", 2);
+					setandget(NULL)->exs = 1;
                     return (0);
                 }   
             }

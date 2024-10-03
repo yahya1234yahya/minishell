@@ -229,6 +229,7 @@ int main(int argc, char **argv, char **envp)
         if(check == 0)
 			continue ;
 		// print_commands(cmd);
+		// exit(0);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
