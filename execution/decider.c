@@ -18,8 +18,6 @@ int redirectchange(t_cmd *cmd)
 		return (-1);
 	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
 		return (-1);
-	printf("STDOUT_FILENO = %d\n", STDOUT_FILENO);
-	printf("STDIN_FILENO = %d\n", STDIN_FILENO);
 	return (0);
 };
 int ft_tolower(int c)
