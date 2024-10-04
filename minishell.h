@@ -63,6 +63,7 @@ typedef struct s_cmd
 	int 	first_run;
 	int		fd_hdoc;
 	int		signal_exs_flag;
+	int		skip;
 	struct 	s_cmd *next;
 } t_cmd;
 

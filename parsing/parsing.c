@@ -189,7 +189,11 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     // ft_putstr_fd("error: can't open file\n", 2);
 					ft_putstr_fd("No such file or directory\n", 2);
 					setandget(NULL)->exs = 1;
-                    return (0);
+                    cmd->skip = 1;
+                    if (cmd->next)
+                        break ;
+                    else
+                        return (0);
                 }
             
             }
@@ -211,7 +215,11 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     // ft_putstr_fd("error: can't open file\n", 2);
 					ft_putstr_fd("No such file or directory\n", 2);
 					setandget(NULL)->exs = 1;
-                    return (0);
+                     cmd->skip = 1;
+                    if (cmd->next)
+                        break ;
+                    else
+                        return (0);
                 }   
             }
             else if (strcmp(*(cmd->tokens), "<<") == 0 )

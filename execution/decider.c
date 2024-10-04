@@ -122,6 +122,9 @@ int	executesingle(t_cmd *cmd , char **envp)
 	int retv;
 	int	value;
 
+	if (cmd->skip == 1)
+		return (-42);
+
 	if (cmd->redout != 0 || cmd->redin != 0)
 	{
 		input = dup(STDIN_FILENO);
@@ -177,6 +180,8 @@ int child(t_cmd *cmd, int input, int *pipefd)
 	int check;
 
     close(pipefd[0]);
+	if (cmd->skip == 1)
+			exit(1) ;
     if (cmd->redin != 0)
         dup2(cmd->ft_in, STDIN_FILENO);
 	else

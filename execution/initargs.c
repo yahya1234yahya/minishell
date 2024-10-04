@@ -22,6 +22,7 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->input = NULL;
 	cmd->cmd = NULL;
 	cmd->args = NULL;
+	cmd->skip = 0;
 	cmd->pipe = 0;
 	cmd->redout = 0;
 	cmd->redin = 0;
@@ -45,6 +46,7 @@ t_cmd	*init_cmd()
 	}
 	new_cmd->input = NULL;
 	new_cmd->cmd = NULL;
+	new_cmd->skip = 0;
 	new_cmd->args = NULL;
 	new_cmd->pipe = 0;
 	new_cmd->redout = 0;
