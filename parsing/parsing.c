@@ -182,6 +182,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     return (0);
                 }
                 flags = redouthelper(cmd);
+                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
                 cmd->ft_out = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_out == -1)
                 {
@@ -208,6 +209,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                     return (0);
                 }
                 flags = redouthelper(cmd);
+                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
                 cmd->ft_in = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_in == -1)
                 {

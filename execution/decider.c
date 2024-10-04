@@ -18,6 +18,8 @@ int redirectchange(t_cmd *cmd)
 		return (-1);
 	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
 		return (-1);
+	printf("STDOUT_FILENO = %d\n", STDOUT_FILENO);
+	printf("STDIN_FILENO = %d\n", STDIN_FILENO);
 	return (0);
 };
 int ft_tolower(int c)
@@ -124,7 +126,6 @@ int	executesingle(t_cmd *cmd , char **envp)
 
 	if (cmd->skip == 1)
 		return (-42);
-
 	if (cmd->redout != 0 || cmd->redin != 0)
 	{
 		input = dup(STDIN_FILENO);
