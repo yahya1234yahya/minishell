@@ -268,7 +268,8 @@ int check_command(char *command)
 		{
             ft_putstr_fd("minishell: ", 2);
             ft_putstr_fd(command, 2);
-            ft_putstr_fd(": command not found\n", 2);
+            // ft_putstr_fd(": command not found\n", 2);
+            ft_putstr_fd(": No such file or directory\n", 2);
             return (setandget(NULL)->exs = 127, 127);
         }
 		else
