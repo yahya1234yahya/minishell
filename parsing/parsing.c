@@ -2,14 +2,24 @@
 
 static int redouthelper(t_cmd *cmd)
 {
-	if (cmd->redin == 1)
-		return (O_RDONLY);
-	else if (cmd->redout == 2)
+	if (cmd->redout == 2)
+	{
 		return (O_RDWR | O_CREAT | O_TRUNC);
+	}
 	else if (cmd->redout == 3)
+	{
 		return (O_RDWR | O_CREAT | O_APPEND);
+	}
 	return (0);
 };
+// static int redinhelper(t_cmd *cmd)
+// {
+// 	if (cmd->redin == 1)
+// 	{
+// 		return (O_RDONLY);
+// 	}
+	
+// };
 
 char *skip_whitespace(char *str)
 {
@@ -210,7 +220,7 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 }
                 flags = redouthelper(cmd);
                 *(cmd->tokens) = remove_quotes(*(cmd->tokens));
-                cmd->ft_in = open(*(cmd->tokens), flags, 0644);
+                cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
                 if (cmd->ft_in == -1)
                 {
                     ft_putstr_fd("minishell: ", 2);

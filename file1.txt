@@ -1,0 +1,15 @@
+Makefile
+README.MD
+TODOLIST.txt
+debug.txt
+execution
+file1.txt
+file2.txt
+j
+main.c
+main.o
+minishell
+minishell.h
+minishell_tester
+parsing
+test.c
