@@ -226,7 +226,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("input: %s\n", input);
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
-        if(check == 0)
+        if(check == 0)   
 			continue ;
 		// print_commands(cmd);
 		// exit(0);
