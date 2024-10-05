@@ -196,9 +196,26 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 cmd->ft_out = open(*(cmd->tokens), flags, 0644);
                 if (cmd->ft_out == -1)
                 {
-                    ft_putstr_fd("minishell: ", 2);
-                    // ft_putstr_fd("error: can't open file\n", 2);
-					ft_putstr_fd("No such file or directory\n", 2);
+                   if (errno == EACCES )
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Permission denied\n", 2);
+                    }
+                    else if (errno == EISDIR)
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Is a directory\n", 2);
+                    }
+                    else if (errno == ENOENT)
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: No such file or directory\n", 2);
+                    }
+                    else
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Can't open file\n", 2);
+                    }
 					setandget(NULL)->exs = 1;
                     cmd->skip = 1;
                     if (cmd->next)
@@ -223,9 +240,26 @@ int parse(t_cmd *cmd, char *input, char **envp, int rec)
                 cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
                 if (cmd->ft_in == -1)
                 {
-                    ft_putstr_fd("minishell: ", 2);
-                    // ft_putstr_fd("error: can't open file\n", 2);
-					ft_putstr_fd("No such file or directory\n", 2);
+                    if (errno == EACCES )
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Permission denied\n", 2);
+                    }
+                    else if (errno == EISDIR)
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Is a directory\n", 2);
+                    }
+                    else if (errno == ENOENT)
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: No such file or directory\n", 2);
+                    }
+                    else
+                    {
+                        ft_putstr_fd("minishell: ", 2);
+                        ft_putstr_fd("error: Can't open file\n", 2);
+                    }
 					setandget(NULL)->exs = 1;
                      cmd->skip = 1;
                     if (cmd->next)

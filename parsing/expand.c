@@ -83,7 +83,7 @@ int count_new_input(t_env	*env, char    *input)
         }
         else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*input + 1)))
             input = input + 2;
-        else if (*input == '$' && single_q == 0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
+        else if (*input == '$' && single_q == 0 && double_q ==0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
             input++;
         else 
         {
@@ -153,7 +153,7 @@ char *expand_variables(t_env	*env, char    *input)
         }
         else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*(input + 1)) ))
             input = input + 2;
-        else if (*input == '$' && single_q == 0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
+        else if (*input == '$' && single_q == 0 && double_q ==0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
             input++;
         else 
         {
