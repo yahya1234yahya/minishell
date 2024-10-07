@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:49:43 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/07 16:07:52 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:28:31 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ static int is_valid_variable_name(char *str)
 	
 	if (str == NULL || *str == '\0')
 	{
-        return (1);
+		return (1);
 	}
 	if (!isalpha(*str) && *str != '_')
 	{
-        return (1);
+		return (1);
 	}
 
-    i = 0;
+	i = 0;
 	while (i < ft_strlen(str))
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
@@ -51,29 +51,54 @@ static int is_valid_variable_name(char *str)
 	return 0;
 }
 
-
-#include "../minishell.h"
-
-int	ft_unset(t_env	**env, t_cmd *cmd)
+static void remove_quotes_and_trim(char **tokens)
 {
-	t_env *tmp;
-	t_env *runner;
-	char **tokens;
-	char **split;
-	int i;
-	int ret = 0;
-	
-	if (!cmd->args)
-		return (0);
-	tokens = ft_strtok_all(cmd->args, " ");
-	
-	i = 0;
+	int i = 0;
 	while (tokens[i])
 	{
 		tokens[i] = remove_quotes(tokens[i]);
 		tokens[i] = ft_strtrim(tokens[i], " ");
 		i++;
 	}
+}
+
+static void remove_env_variable(t_env **env, char *variable)
+{
+	t_env *tmp;
+	t_env *runner;
+	char **split;
+
+	tmp = *env;
+	split = ft_split(variable, '=');
+	if (!strncmp(tmp->name, split[0], ft_strlen(split[0])))
+	{
+		*env = tmp->next;
+		free(tmp);
+	}
+	while (tmp)
+	{
+		runner = tmp->next;
+		if (runner && !strncmp(runner->name, split[0], ft_strlen(split[0])))
+		{
+			tmp->next = runner->next;
+			free(runner);
+		}
+		else
+			tmp = tmp->next;
+	}
+}
+
+int	ft_unset(t_env	**env, t_cmd *cmd)
+{
+	char **tokens;
+	int i;
+	int ret;
+	
+	ret = 0;
+	if (!cmd->args)
+		return (0);
+	tokens = ft_strtok_all(cmd->args, " ");
+	remove_quotes_and_trim(tokens);
 	i = 0;
 	while (tokens[i])
 	{
@@ -86,32 +111,8 @@ int	ft_unset(t_env	**env, t_cmd *cmd)
 			ret = 1;
 		}
 		else
-		{
-			split = ft_split(tokens[i], '=');
-			tmp = *env;
-			if (!strncmp(tmp->name,split[0], ft_strlen(split[0])))
-			{
-				*env = tmp->next;
-				free(tmp);
-				if (ret != 1)
-					ret = 0;
-			}
-			while (tmp)
-			{
-				runner = tmp->next;
-				if (runner && !strncmp(runner->name, split[0], ft_strlen(split[0])))
-				{
-					tmp->next = runner->next;
-					free(runner);
-					if (ret != 1)
-						ret = 0;
-				}
-				else
-					tmp = tmp->next;
-			}	
-		}
+			remove_env_variable(env, tokens[i]);
 		i++;
 	}
-	setandget(NULL)->exs = ret;
-	return (ret);
+	return (setandget(NULL), ret);
 }
