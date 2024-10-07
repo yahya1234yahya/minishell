@@ -30,7 +30,7 @@ static int plusaddpack(t_env **env, char *key, char *value)
 		}
 		tmp = tmp->next;
 	}
-	return -1;
+	return (-1);
 };
 
 static char *removeFirstChar(const char* str)
@@ -55,147 +55,82 @@ int exportsignal(int sig, t_cmd *cmd)
 	return (0);
 }
 
-int	is_special_alpha(char c)
+
+
+
+
+
+
+
+
+int parsename(char *name)
 {
-	if (ft_isalpha(c) || c == '_' || c == '+' || ft_isdigit(c) || c == '=' )
+	int i;
+	int ret;
+
+	i = 0;
+	if (name[i] && (name[i] != '_' && !ft_isalpha(name[i])))
 		return (0);
+	while (name[i])
+	{
+		if (name[i] != '_' && !ft_isalpha(name[i]) && !ft_isdigit(name[i]))
+			return (0);
+		i++;
+	}
 	return (1);
 }
 
-static int parse_export(char *args)
+int checkvalue(char *value)
 {
-	char	**split;
-	int		i;
-	int		start;
-	int 	s_quote = 0;
-	int		d_quote = 0;
+	if (!value)
+		return (1);
+	else if (value[0] == '+')
+		return (2);
+	else
+		return (3);
+}
 
-	start = 1;
+static char **preparetokens(char *str)
+{
+	int i;
+	char **ret;
 
 	i = 0;
-	if (!args)
-		return (0);
-	if (args[0] == '=')
-		{
-			// printf("not a valid identifier\n");
-			return (-1);
-			
-		}
-	
-	while(args[i])
+	ret = ft_strtok_all(str, " ");
+	while (ret[i])
 	{
-		check_quots(args[i], &s_quote, &d_quote);
-		if (start == 0 && args[i] == ' ')
-			start = 1;
-		if (start == 1 && isdigit(args[i]) && !s_quote && !d_quote)
-		{
-			// printf("not a valid identifier\n");
-			return (-1);
-		}
-		if (is_special_alpha(args[i]) == 1 && !s_quote && !d_quote)
-		{
-			// printf("not a valid identifier\n");
-			return (-1);
-		}
-		if (args[i] == '=')
-		{
-			while (args[i])
-			{
-				
-				// printf("args[%d] = %c\n",i, args[i]);
-				// printf("s_quote = %d\n", s_quote);
-				// printf("d_quote = %d\n", d_quote);
-				if (s_quote || d_quote)
-				{
-					i++;
-					continue;
-				}
-				if (args[i] == ' ')
-					break ;
-				check_quots(args[i], &s_quote, &d_quote);
-				i++;
-			}
-		}
-		if (args[i] == '\0')		
-			return (0);	
+		ret[i] = remove_quotes(ret[i]);
 		i++;
 	}
-	return (0);	
+	i = 0;
+	while (ret[i])
+	{
+		ret[i] = ft_strtrim(ret[i], " ");
+		i++;
+	}
+	return (ret);
 }
 
 
-char *parse_export2(char *args)
+static int checkplus(char *str)
 {
-	char		**splitted;
-	char		*ret;
-	char		*tmp;
-	int			i  = 0;
+	int i;
 
-	int quotes[2];
-	quotes[0] = 0;
-	quotes[1] = 0;
-	ret = ft_strdup("");
-	int r = 0;
-	while(args[r])
+	i = ft_strlen(str) - 1;
+	if (str[i] == '+')
 	{
-		while (args[r])
-		{
-			check_quots(args[r], &quotes[0], &quotes[1]);
-			if (quotes[0] == 1 || quotes[1] == 1)
-			{
-					r++;
-					continue;
-			}
-			if (args[r] == ' ')
-				break;
-			r++;
-		}
-		r++;
-		ft_strlcpy(tmp, args + i, r - i);
-		i = r;
-	
-		if(parse_export(tmp) == -1)
-		{
-			setandget(NULL)->exs = 1;
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(tmp, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-		}
-		else
-		{
-			ret = ft_strjoin(ret, " ");
-			ret = ft_strjoin(ret, tmp);
-		}
-		if (args[r - 1] == '\0')
-			return (ret);
+		return (1);
 	}
-	
-	// 
+	return (0);
+}
 
-	// splitted = ft_split(args, ' ');
-
-	// exit(0);
-	// if (!splitted)
-	// 	return (NULL);
-	// i = 0;
-	// while (splitted[i])
-	// {
-		
-	// 	if(parse_export(splitted[i]) == -1)
-	// 	{
-	// 		ft_putstr_fd("minishell: export: `", 2);
-	// 		ft_putstr_fd(splitted[i], 2);
-	// 		ft_putstr_fd("': not a valid identifier\n", 2);
-	// 	}
-	// 	else
-	// 	{
-	// 		ret = ft_strjoin(ret, " ");
-	// 		ret = ft_strjoin(ret, splitted[i]);
-	// 	}
-	// 	i++;
-	// }
-	return (ret);
-};
+int hardcodecheck(char *str, char *str2)
+{
+	str = ft_strjoin("=", str);
+	if (ft_strcmp(str, str2) == 0)
+		return (1);
+	return (0);
+}
 
 int	ft_export(t_cmd *cmd)
 {
@@ -203,45 +138,78 @@ int	ft_export(t_cmd *cmd)
 	char *parsed;
 	t_env	*tmp;
 	int		i;
+	char **token;
+	int ret;
+	char **split;
+	int plus;
 
-	//TODO parse the args before export
-	i = 1;
+	plus = 0;
+
+	ret = 0;
+
+	
 	if (!cmd->args)
 	{
 		printenv(cmd->env, 0);
 		return (0);
 	}
-	
-	parsed =  parse_export2(cmd->args);
-	parsed = ft_strtrim(parsed, " ");
-	if (ft_strcmp(parsed, cmd->args) == 0)
-		i = 0;
-	cmd->args = parsed;
-	// printf("cmd->args = %s\n", cmd->args);
-if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
+	token = preparetokens(cmd->args);
+	i = 0;
+	while (token[i])
 	{
-		arg = ft_split(cmd->args, '+');
-		arg[1] = removeFirstChar(arg[1]);
-		if (plusaddpack(&cmd->env, arg[1], arg[0]) == -1)
+		split = ft_split(token[i], '=');
+		if (split[0] == NULL || hardcodecheck(split[0], token[i]))
 		{
-			arg[0] = ft_strjoin(arg[0], "=");
-			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(arg[0], arg[1])));
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(token[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			setandget(NULL)->exs = 1;
+			ret = 1;
+			return (ret);
 		}
-	}
-	else
-	{
-		arg = ft_strtok_all(cmd->args, " ");
-		// for (size_t i = 0; arg[i]; i++)
-			// printf("cmd->args[%zu] = %s\n", i, arg[i]);
-		// exit(0);
 		
-		while(arg && *arg)
+		if (checkplus(split[0]))
+			plus = 1;
+		if (plus)
 		{
-			ft_lstadd_back(&cmd->env, ft_lstnew(remove_quotes(*arg)));
-			arg++;
+			int r = 0;
+			while (split[0][r])
+				r++;			
+			split[0][r-1] = '\0';
+		}		
+		if (!parsename(split[0]))
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(token[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			setandget(NULL)->exs = 1;
+			ret = 1;
 		}
+		if (split[1] == NULL)
+		{
+			ft_lstadd_back(&cmd->env, ft_lstnew(token[i]));
+		}
+		else if(plus == 1)
+		{
+			if (plusaddpack(&cmd->env, split[1], split[0]) == -1)
+			{
+				split[0] = ft_strjoin(split[0], "=");
+				ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(split[0], split[1])));
+			}
+		}
+		else
+		{
+			split[0] = ft_strjoin(split[0], "=");
+			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(split[0], split[1])));
+		}
+		
+
+
+		i++;
 	}
-	return (i);
+	setandget(NULL)->exs = ret;
+return (ret);
+
 };
 int	ft_export_status(t_cmd *cmd)
 {

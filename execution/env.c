@@ -70,13 +70,11 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
 
-
 	if (!*lst)
 	{
 		*lst = newnode;
 		return ;
 	}
-
 	last = *lst;
 	while (last)
 	{

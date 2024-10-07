@@ -63,10 +63,7 @@ static int isbuiltin(t_cmd *cmd, int value, int flag)
 	if (value == 5)
 		retv = changedir(cmd);
 	if (value == 6)
-	{
 		retv = ft_export(cmd);
-		// printf("retv = %d\n", retv);
-	}
 	if (value == 7)
 		retv = ft_unset(&cmd->env, cmd);
 	return (retv);
