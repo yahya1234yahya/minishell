@@ -18,6 +18,7 @@
 # include <readline/history.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
+#include <limits.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
@@ -119,6 +120,7 @@ int		exportsignal(int sig, t_cmd *cmd);
 t_cmd	*setandget(t_cmd *cmd);
 char	*envsearch2(t_env *env, char *name);
 int check_command(char *command);
+void ft_exit(char *data, int flag);
 
 
 //tools

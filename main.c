@@ -54,47 +54,23 @@ void print_commands(t_cmd *head)
 //         if (waitpid(-1, NULL, WNOHANG) != -1)
 //             write(1, "Quit: 3\n", 8);
 // 	}
-// }
-
-
-
-
 void funcsign(int signum)
 {
-	// fprintf(stderr, "Received signal: %d\n", signum);
-
 	if (signum == SIGINT)
 	{
-		// fprintf(stderr, "Received SIGINT\n");
-
 		if (waitpid(-1, NULL, WNOHANG) != -1)
 		{
-			// fprintf(stderr, "Child process has exited\n");
 			write(1, "\n", 1);
 			return;
 		}
-
-		// fprintf(stderr, "No child process has exited\n");
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-
-		// if (setandget(NULL) == NULL)
-		// {
-			// fprintf(stderr, "setandget(NULL) returned NULL\n");
-		// }
-		// else
-		// {
-			// fprintf(stderr, "Setting status to 1\n");
-			setandget(NULL)->exs = 1;
-			// printf("exs: %d\n", setandget(NULL)->exs);
-		// }
+		setandget(NULL)->exs = 1;
 	}
 	else if (signum == SIGQUIT)
 	{
-		// fprintf(stderr, "Received SIGQUIT\n");
-
 		if (waitpid(-1, NULL, WNOHANG) != -1)
 			write(1, "Quit: 3\n", 8);
 	}
@@ -118,8 +94,6 @@ t_cmd	*setandget(t_cmd *cmd)
 		cmd2 = cmd;
 	return (cmd2);
 }
-
-// |ls hadi makhashach douz
 
 // free_cmd(t_cmd *cmd)
 // {
@@ -191,7 +165,6 @@ int main(int argc, char **argv, char **envp)
 	updateshlvl(env);
 
 	cmd->first_run = 1;
-	// int r = 0;
 	while (1)
 	{
 		set_cmd(cmd);
@@ -204,7 +177,7 @@ int main(int argc, char **argv, char **envp)
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
-			exit(0);
+			exit(setandget(NULL)->exs);
 		}
 		if (input != NULL && *input != '\0')
 			add_history(input);

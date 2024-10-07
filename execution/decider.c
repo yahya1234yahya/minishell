@@ -39,58 +39,97 @@ int ft_strcmp2(const char *s1, const char *s2)
 	return (ft_tolower(*s1) - ft_tolower(*s2));
 }
 
-// user sends data as a string i need to check if it is a number or not
+
+char convertexit(int num)
+{
+	if (num < 0)
+		return (256 + num);
+	else
+	num = (unsigned char )num;
+	return (num);
+}
 
 
 
-void ft_exit(char *data)
+void ft_exit(char *data, int flag)
 {
 	int num;
 	int i;
-	
-	if (data)
-	{
+	int j;
 
-		num = 1;
-		i = 0;
-		if ((data[0] == '-' || data[0] == '+' || isdigit(data[0])) && ft_strlen(data) != 1)
-			i++;
-		while (num)
-		{	
-			if (data[i] == ' ')
-            {
-                if (data[i+1] != 0)
-				{
-					write(2, "exit\n", 5);
-                    write(2, "minishell: exit", 16);
-                    write(2, ": too many arguments\n", 22);
-                    exit(1);
-                }
-            }
-			if (isdigit(data[i]) == 0)
+
+	if (!data)
+	{
+		if (flag == 1)
+			ft_putstr_fd("exit\n", 1);
+		exit(setandget(NULL)->exs);		
+	}
+	char **str = ft_strtok_all(data, " ");
+	for (int i = 0; str[i]; i++)
+		str[i] = remove_quotes(str[i]);
+	for (size_t i = 0; str[i]; i++)
+	{
+		str[i] = ft_strtrim(str[i], " ");
+	}
+	// printf("str[0] = %s\n", str[0]);
+	j = 0;
+	i = 0;
+	if (str[i] && str[i][j] && (str[i][j] == '-' || str[i][j] == '+'))
+		j++;
+	while (str[i][j])
+	{
+		if (ft_isdigit(str[i][j]) == 0)
+		{
+			if (flag)
 			{
-				if (data[i] == '\0')
-					break;
-				num = 0;
-				write(2, "exit\n", 5);
-				write(2, "minishell: exit", 16);
-				write(2, ": numeric argument required\n", 29);
-				exit(255);
+				ft_putstr_fd("exit\n", 1);
 			}
-			else
-				i++;
+			write(2, "minishell: exit", 16);
+			write(2, ": numeric argument required\n", 29);
+			setandget(NULL)->exs = 255;
+			exit(255);
 		}
-		ft_putstr_fd("exit\n", 1);
-		exit(ft_atoi(data));
+		j++;
+	}
+	// while (str[i] && str[i][j])
+	// {
+	// 	if (ft_isdigit(str[i][j]) == 0)
+	// 	{
+	// 		printf("str[i][j] = %c\n", str[i][j]);
+	// 		if (flag)
+	// 		{
+	// 			ft_putstr_fd("exit\n", 1);
+	// 		}
+	// 		write(2, "minishell: exit", 16);
+	// 		write(2, ": numeric argument required\n", 29);
+	// 		setandget(NULL)->exs = 255;
+	// 		exit(255);
+	// 	}
+	// 	j = 0;
+	// 	i++;
+	// }
+	if (str[1])
+	{
+		if (flag)
+		{
+			ft_putstr_fd("exit\n", 2);
+		}
+		write(2, "minishell: exit", 16);
+		write(2, ": too many arguments\n", 22);
+		setandget(NULL)->exs = 1;
+		return ;
 	}
 	else
 	{
-		ft_putstr_fd("exit\n", 1);
-		exit(0);
+		if (flag)
+			ft_putstr_fd("exit\n", 1);
+		num = ft_atoi(str[0]);
+		exit(convertexit(num));
 	}
+	exit(0);
 }
 
-static int isbuiltin(t_cmd *cmd, int value)
+static int isbuiltin(t_cmd *cmd, int value, int flag)
 {
 	int	retv;
 
@@ -102,7 +141,7 @@ static int isbuiltin(t_cmd *cmd, int value)
 	if (value == 3)
 		retv = printenv(cmd->env, 1);
 	if (value == 4)
-		ft_exit(cmd->args);
+		ft_exit(cmd->args, flag);
 	if (value == 5)
 		retv = changedir(cmd);
 	if (value == 6)
@@ -141,7 +180,7 @@ int	executesingle(t_cmd *cmd , char **envp)
 			return (filedreset(input, output), retv);
 	}
 	else
-		retv = isbuiltin(cmd, value);
+		retv = isbuiltin(cmd, value, 1);
 	return (filedreset(input, output), retv);
 }
 
@@ -166,7 +205,7 @@ int helper(t_cmd *cmd)
 		i = 7;
 	else
 		return (1337);
-	if (i && i != 6 && i != 7)
+	if (i && i != 6 && i != 7 && i != 4)
 	{
 		cmd->args = remove_quotes(cmd->args);
 	}
@@ -192,7 +231,7 @@ int child(t_cmd *cmd, int input, int *pipefd)
     close(pipefd[1]);
 	if(helper(cmd)!= 1337)
 		{
-			isbuiltin(cmd, helper(cmd));
+			isbuiltin(cmd, helper(cmd), 0);
 			exit(0);
 		}
 	else
@@ -307,3 +346,57 @@ void	decider(t_cmd *cmd)
 		executemultiple(cmd);
 		
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// if (data)
+	// {
+
+	// 	num = 1;
+	// 	i = 0;
+	// 	if ((data[0] == '-' || data[0] == '+' || isdigit(data[0])) && ft_strlen(data) != 1)
+	// 		i++;
+	// 	while (num)
+	// 	{	
+	// 		if (data[i] == ' ')
+    //         {
+    //             if (data[i+1] != 0)
+	// 			{
+	// 				write(2, "exit\n", 5);
+    //                 write(2, "minishell: exit", 16);
+    //                 write(2, ": too many arguments\n", 22);
+    //                 exit(1);
+    //             }
+    //         }
+	// 		if (isdigit(data[i]) == 0)
+	// 		{
+	// 			if (data[i] == '\0')
+	// 				break;
+	// 			num = 0;
+	// 			write(2, "exit\n", 5);
+	// 			write(2, "minishell: exit", 16);
+	// 			write(2, ": numeric argument required\n", 29);
+	// 			exit(255);
+	// 		}
+	// 		else
+	// 			i++;
+	// 	}
+	// 	ft_putstr_fd("exit\n", 1);
+	// 	exit(ft_atoi(data));
+	// }
+	// else
+	// {
+	// 	ft_putstr_fd("exit\n", 1);
+	// 	exit(setandget(NULL)->exs);
+	// }
