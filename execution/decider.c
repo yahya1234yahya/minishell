@@ -40,94 +40,12 @@ int ft_strcmp2(const char *s1, const char *s2)
 }
 
 
-char convertexit(int num)
-{
-	if (num < 0)
-		return (256 + num);
-	else
-	num = (unsigned char )num;
-	return (num);
-}
 
 
 
-void ft_exit(char *data, int flag)
-{
-	int num;
-	int i;
-	int j;
 
 
-	if (!data)
-	{
-		if (flag == 1)
-			ft_putstr_fd("exit\n", 1);
-		exit(setandget(NULL)->exs);		
-	}
-	char **str = ft_strtok_all(data, " ");
-	for (int i = 0; str[i]; i++)
-		str[i] = remove_quotes(str[i]);
-	for (size_t i = 0; str[i]; i++)
-	{
-		str[i] = ft_strtrim(str[i], " ");
-	}
-	// printf("str[0] = %s\n", str[0]);
-	j = 0;
-	i = 0;
-	if (str[i] && str[i][j] && (str[i][j] == '-' || str[i][j] == '+'))
-		j++;
-	while (str[i][j])
-	{
-		if (ft_isdigit(str[i][j]) == 0)
-		{
-			if (flag)
-			{
-				ft_putstr_fd("exit\n", 1);
-			}
-			write(2, "minishell: exit", 16);
-			write(2, ": numeric argument required\n", 29);
-			setandget(NULL)->exs = 255;
-			exit(255);
-		}
-		j++;
-	}
-	// while (str[i] && str[i][j])
-	// {
-	// 	if (ft_isdigit(str[i][j]) == 0)
-	// 	{
-	// 		printf("str[i][j] = %c\n", str[i][j]);
-	// 		if (flag)
-	// 		{
-	// 			ft_putstr_fd("exit\n", 1);
-	// 		}
-	// 		write(2, "minishell: exit", 16);
-	// 		write(2, ": numeric argument required\n", 29);
-	// 		setandget(NULL)->exs = 255;
-	// 		exit(255);
-	// 	}
-	// 	j = 0;
-	// 	i++;
-	// }
-	if (str[1])
-	{
-		if (flag)
-		{
-			ft_putstr_fd("exit\n", 2);
-		}
-		write(2, "minishell: exit", 16);
-		write(2, ": too many arguments\n", 22);
-		setandget(NULL)->exs = 1;
-		return ;
-	}
-	else
-	{
-		if (flag)
-			ft_putstr_fd("exit\n", 1);
-		num = ft_atoi(str[0]);
-		exit(convertexit(num));
-	}
-	exit(0);
-}
+
 
 static int isbuiltin(t_cmd *cmd, int value, int flag)
 {
