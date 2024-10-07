@@ -270,35 +270,3 @@ int	ft_export_status(t_cmd *cmd)
 	return (0);
 };
 
-int	ft_unset(t_env	**env, t_cmd *cmd)
-{
-	t_env *tmp;
-	t_env *runner;
-	char **split;
-	
-	if (!cmd->args)
-	{
-		return (0);
-	}
-	split = ft_split(cmd->args, '=');
-	tmp = *env;
-	if (!strncmp(tmp->name,split[0], ft_strlen(split[0]))) 
-	{
-		*env = tmp->next;
-		free(tmp);
-		return (0);
-	}
-	while (tmp)
-	{
-		runner = tmp->next;
-		if (runner && !strncmp(runner->name, split[0], ft_strlen(split[0])))
-		{
-			tmp->next = runner->next;
-			free(runner);
-			return (0);
-		}
-		else
-			tmp = tmp->next;
-	}
-	return (0);
-};
