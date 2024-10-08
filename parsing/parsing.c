@@ -1,324 +1,134 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/08 09:10:01 by ymouigui          #+#    #+#             */
+/*   Updated: 2024/10/08 09:10:01 by ymouigui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-static int redouthelper(t_cmd *cmd)
+static int	calculate_space(char *input)
 {
-	if (cmd->redout == 2)
+	int	i;
+	int	count;
+	int	s_quote;
+	int	d_quote;
+
+	i = 0;
+	count = 0;
+	s_quote = 0;
+	d_quote = 0;
+	while (input && input[i])
 	{
-		return (O_RDWR | O_CREAT | O_TRUNC);
+		check_quots(input[i], &s_quote, &d_quote);
+		if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
+		{
+			if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+				count += 2;
+			count++;
+			i++;
+			continue ;
+		}
+		i++;
+		count++;
 	}
-	else if (cmd->redout == 3)
+	return (count);
+}
+
+char	*add_space(char *input)
+{
+	int		i;
+	int		j;
+	int		s_quote;
+	int		d_quote;
+	char	*new_input;
+
+	(1) && (i = 0, j = 0, s_quote = 0, d_quote = 0);
+	new_input = malloc(calculate_space(input) + 1);
+	while (input && input[i])
 	{
-		return (O_RDWR | O_CREAT | O_APPEND);
+		check_quots(input[i], &s_quote, &d_quote);
+		if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
+		{
+			if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
+				new_input[j++] = ' ';
+			new_input[j++] = input[i++];
+			if (input[i] != '<' && input[i] != '>')
+				new_input[j++] = ' ';
+			continue ;
+		}
+		new_input[j++] = input[i++];
 	}
-	return (0);
-};
-// static int redinhelper(t_cmd *cmd)
-// {
-// 	if (cmd->redin == 1)
-// 	{
-// 		return (O_RDONLY);
-// 	}
-	
-// };
-
-char *skip_whitespace(char *str)
-{
-    while (isspace(*str)) str++;
-    return (str);
+	new_input[j] = '\0';
+	return (new_input);
 }
 
-int is_valid_command(t_cmd *cmd, char *word)
+char	**handle_redirection_out(t_cmd *cmd, char **tokens)
 {
-    t_env *tmp = envsearch(cmd->env, "PATH");
-    char *path_env;
-    if (!tmp)
-    {
-        return 0;
-    }
-    path_env = tmp->name; //TODO WE HAVE TO CHANGE HERE
-    if (!path_env) {
-        exit (0);
-    }
-    char *path_dup = strdup(path_env);
-    if (!path_dup) {
-        perror("strdup");
-        exit(1);
-    }
-    char *dir = strtok(path_dup, ":");
-    while (dir)
-    {
-        char full_path[1024];
-        snprintf(full_path, sizeof(full_path), "%s/%s", dir, word);
-        if (access(full_path, X_OK) == 0) {
-            cmd->path = strdup(full_path); 
-            free(path_dup);
-            return 1;
-        }
-        dir = strtok(NULL, ":");
-    }
-
-    free(path_dup);
-    return 0;
+	cmd->redout = index_char(*(cmd->tokens));
+	cmd->tokens++;
+	if (*(cmd->tokens) == NULL)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("error: expected filename after redout\n", 2);
+		return (0);
+	}
+	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
+	cmd->ft_out = open(*(cmd->tokens), redouthelper(cmd), 0644);
+	return (cmd->tokens);
 }
 
-// char    *add_space(char *input)
-// {
-//     int i = 0;
-//     int count = 0;
-//     int j = 0;
-//     while(input && input[i])
-//     {
-//         if (input[i] == '<' || input[i] == '>')
-//         {
-//             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
-//                 count += 2;
-//             count++;
-//             i++;
-//             continue ;
-//         }
-//         i++;
-//         count++;
-//     }
-//     char *new_input = malloc(count + 1);
-//     i = 0;
-//     while(input && input[i])
-//     {
-//         if (input[i] == '<' || input[i] == '>')
-//         {
-//             if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
-//                 new_input[j++] = ' ';
-//             new_input[j++] = input[i++];
-//             if (input[i] != '<' && input[i] != '>')
-//                 new_input[j++] = ' ';
-//             continue;
-//         }
-//         new_input[j++] = input[i++];
-//     }
-//     new_input[j] = '\0';
-//     return (new_input);
-
-// }
-
-char    *add_space(char *input)
+char	**handle_redirection_in(t_cmd *cmd, char **tokens)
 {
-    int i = 0;
-    int count = 0;
-    int s_quote = 0;
-    int d_quote = 0;
-    int j = 0;
-
-    while(input && input[i])
-    {
-        check_quots(input[i], &s_quote, &d_quote);
-        if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
-        {
-            if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
-                count += 2;
-            count++;
-            i++;
-            continue ;
-        }
-        i++;
-        count++;
-    }
-    char *new_input = malloc(count + 1);
-    i = 0;
-    while(input && input[i])
-    {
-       check_quots(input[i], &s_quote, &d_quote);
-        if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
-        {
-            if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
-                new_input[j++] = ' ';
-            new_input[j++] = input[i++];
-            if (input[i] != '<' && input[i] != '>')
-                new_input[j++] = ' ';
-            continue;
-        }
-        new_input[j++] = input[i++];
-    }
-    new_input[j] = '\0';
-    return (new_input);
-
+	cmd->redin = 1;
+	cmd->tokens++;
+	if (*(cmd->tokens) == NULL)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("error: expected filename after redout\n", 2);
+		return (0);
+	}
+	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
+	cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
+	return (cmd->tokens);
 }
 
-
-int parse(t_cmd *cmd, char *input, char **envp, int rec)
+int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
-    char *next_word;
-    int flags;
-    next_word = NULL;
-    char    *delimiter;
-    char    *tmp_args;
+	char	*next_word;
+	int		flags;
+	char	*delimiter;
+	char	*tmp_args;
 
-   
-    while(cmd)
-    {
-        cmd->input = add_space(cmd->input);
+	while (cmd)
+	{
+		cmd->input = add_space(cmd->input);
 		cmd->tokens = ft_strtok_all(cmd->input, " ");
-        // printf("next_word : %s\n", next_word);
-        if (!*(cmd->tokens)) return (0);
-
-        // printf("\n\nnext_word : %s\n\n", next_word);
-
-        // if (!is_valid_command(cmd, next_word) && strcmp("exit", next_word) && strcmp("unset", next_word) && strcmp("export", next_word) && strcmp("set", next_word))
-        // {
-        //     printf("\033[33merror: not a command\033[0m\n");
-        //     return (0);
-        // }
-        if (strcmp(*(cmd->tokens), ">")  && strcmp(*(cmd->tokens), ">>") && strcmp(*(cmd->tokens), "<") && strcmp(*(cmd->tokens), "<<"))
-        {
-                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
-                is_valid_command(cmd, *(cmd->tokens));
-                cmd->cmd = ft_strdup(*(cmd->tokens)); 
-                cmd->tokens++;
-        }
-        cmd->ft_in = 1;
-        while (cmd->tokens && *(cmd->tokens))
-        {
-            if (strcmp(*(cmd->tokens), "|") == 0)
-            {
-                cmd->pipe = 1;
-                break;
-            }
-            else if (strcmp(*(cmd->tokens), ">") == 0 || strcmp(*(cmd->tokens), ">>") == 0)
-            {
-                cmd->redout = index_char(*(cmd->tokens));
-                cmd->tokens++;
-                if (*(cmd->tokens) == NULL)
-                {
-                    ft_putstr_fd("minishell: ", 2);
-                    ft_putstr_fd("error: expected filename after redout\n", 2);
-                    return (0);
-                }
-                flags = redouthelper(cmd);
-                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
-                cmd->ft_out = open(*(cmd->tokens), flags, 0644);
-                if (cmd->ft_out == -1)
-                {
-                   if (errno == EACCES )
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Permission denied\n", 2);
-                    }
-                    else if (errno == EISDIR)
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Is a directory\n", 2);
-                    }
-                    else if (errno == ENOENT)
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: No such file or directory\n", 2);
-                    }
-                    else
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Can't open file\n", 2);
-                    }
-					setandget(NULL)->exs = 1;
-                    cmd->skip = 1;
-                    if (cmd->next)
-                        break ;
-                    else
-                        return (0);
-                }
-            
-            }
-            else if (strcmp(*(cmd->tokens), "<") == 0)
-            {
-                cmd->redin = index_char(*(cmd->tokens));
-                cmd->tokens++;
-                if (*(cmd->tokens) == NULL)
-                {
-                    ft_putstr_fd("minishell: ", 2);
-                    ft_putstr_fd("error: expected filename after redin\n", 2);
-                    return (0);
-                }
-                flags = redouthelper(cmd);
-                *(cmd->tokens) = remove_quotes(*(cmd->tokens));
-                cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
-                if (cmd->ft_in == -1)
-                {
-                    if (errno == EACCES )
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Permission denied\n", 2);
-                    }
-                    else if (errno == EISDIR)
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Is a directory\n", 2);
-                    }
-                    else if (errno == ENOENT)
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: No such file or directory\n", 2);
-                    }
-                    else
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd("error: Can't open file\n", 2);
-                    }
-					setandget(NULL)->exs = 1;
-                     cmd->skip = 1;
-                    if (cmd->next)
-                        break ;
-                    else
-                        return (0);
-                }   
-            }
-            else if (strcmp(*(cmd->tokens), "<<") == 0 )
-            {
-                cmd->tokens++;
-                cmd->redin = 1;
-                if (cmd->ft_in == 1)
-                {
-                    cmd->ft_in = open("tmp_hdoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-                }
-                cmd->hdoc_delimiter = ft_strdup(*(cmd->tokens));
-                handle_heredoc(*(cmd->tokens), cmd);
-				cmd->ft_in = open("tmp_hdoc", O_RDWR , 0644);
-            }
-            else
-            {
-               
-                // prinft("cmd->tokens : %s\n", *(cmd->tokens));
-                if (cmd->args == NULL) 
-                    cmd->args = ft_strdup(*(cmd->tokens));
-                else
-                {
-                    cmd->args = ft_strjoin(cmd->args, " ");
-                    cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
-                }
-            }
-            // printf("cmd->args : %s\n", cmd->args);
-            cmd->tokens++;
-        }
-      
-        if (ft_strcmp(cmd->cmd, "export") == 0 && !cmd->args )
-        {
-            t_cmd *tmp;
-            
-            if (cmd->next)
-                tmp = cmd->next;
-            
-            cmd->next = init_cmd();
-            if (cmd->redout == 2 || cmd->redout == 3)
-            {
-                cmd->next->redout = cmd->ft_out;
-                cmd->next->ft_out = cmd->ft_out;
-                cmd->ft_out = 1;
-                cmd->redout = 0;
-            }
-            cmd = cmd->next;
-            cmd->env = initenv(envp);
-            cmd->input = ft_strdup("sort");
-            if (tmp)
-                cmd->next = tmp;
-        }
-        else
-            cmd = cmd->next;
-    }
+		if (strcmp(*(cmd->tokens), ">") && strcmp(*(cmd->tokens), ">>")
+			&& strcmp(*(cmd->tokens), "<") && strcmp(*(cmd->tokens), "<<"))
+		{
+			check_cmd(cmd);
+		}
+		while (cmd->tokens && *(cmd->tokens))
+		{
+			check_cases(cmd);
+			if ((cmd->ft_out == -1 || cmd->ft_in == -1) && fd_error(cmd) == 0)
+			{
+				if (cmd->next)
+					break ;
+				return (0);
+			}
+			cmd->tokens++;
+		}
+		if (ft_strcmp(cmd->cmd, "export") == 0 && !cmd->args)
+			handle_export_sort(cmd, envp);
+		else
+			cmd = cmd->next;
+	}
 	return (1);
 }

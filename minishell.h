@@ -92,7 +92,21 @@ void	my_free(t_cmd *t);
 void	handle_heredoc(char *input, t_cmd *cmd);
 void	split_pipe(t_cmd *cmd, char *input, char **envp);
 char	**ft_strtok_all(char *str, char *delim);
-void    check_quots(char c, int *single_q, int  *double_q);
+void	check_quots(char c, int *single_q, int  *double_q);
+int		redouthelper(t_cmd *cmd);
+void	handle_args(t_cmd *cmd);
+int		fd_error(t_cmd *cmd);
+void	herdoc(t_cmd *cmd);
+void	check_cmd(t_cmd *cmd);
+void	check_cases(t_cmd *cmd);
+char	*skip_whitespace(char *str);
+int		is_valid_command(t_cmd *cmd, char *word);
+void	handle_redirection_error(void);
+void	handle_export_sort(t_cmd *cmd, char	**envp);
+char	**handle_redirection_in(t_cmd *cmd, char **tokens);
+char	**handle_redirection_out(t_cmd *cmd, char **tokens);
+
+
 
 //execution
 t_env 	*initenv(char **envp);

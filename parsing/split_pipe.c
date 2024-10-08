@@ -12,7 +12,7 @@ void    split_pipe(t_cmd *cmd, char *input, char **envp)
         {
             cmd->next = init_cmd();
             cmd = cmd->next;
-            cmd->env = initenv(envp);//TODO we cange here
+            cmd->env = initenv(envp);
         }
     }
 }
