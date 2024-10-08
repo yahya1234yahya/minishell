@@ -38,7 +38,7 @@ t_cmd	*init_cmd()
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	new_cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	if (!new_cmd)
 	{
 		perror("malloc");

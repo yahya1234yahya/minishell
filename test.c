@@ -8,7 +8,7 @@
 char **ft_strtok_all(char *str, char *delim)
 {
     int dquote = 0, squote = 0, token_count = 0;
-    char **tokens = malloc(10 * sizeof(char *));
+    char **tokens = safe_malloc(10 * sizeof(char *), 'a');
     char *current_token;
 
     if (!tokens)
@@ -33,7 +33,7 @@ char **ft_strtok_all(char *str, char *delim)
         }
 
         int token_len = str - current_token;
-        tokens[token_count] = malloc((token_len + 1) * sizeof(char));
+        tokens[token_count] = safe_malloc((token_len + 1) * sizeof(char), 'a');
         strncpy(tokens[token_count], current_token, token_len);
         tokens[token_count][token_len] = '\0';
         token_count++;
@@ -65,7 +65,7 @@ char *remove_quotes(char *input)
         return (NULL);
     int length = strlen(input);
     char quote;
-    char *new_input = (char *)malloc(length + 1);
+    char *new_input = (char *)safe_malloc(length + 1, 'a');
     int i = 0;
     int j = 0;
     while (i <= length)

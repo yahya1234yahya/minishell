@@ -35,7 +35,7 @@ char	*ft_substr(char  *s, unsigned int start, size_t len)
 	if (start >= s_len)
 		return (ft_strdup(""));
 	substr_len = ft_min(len, s_len - start);
-	substr = (char *)malloc((substr_len + 1) * sizeof(char));
+	substr = (char *)safe_malloc((substr_len + 1) * sizeof(char), 'a');
 	if (!substr)
 		return (NULL);
 	ft_strlcpy(substr, s + start, substr_len + 1);
@@ -51,7 +51,7 @@ t_env	*ft_lstnew(void *content)
 	char *typecast;
 
 	typecast = (char *)content;
-	node = malloc(sizeof(t_env));
+	node = safe_malloc(sizeof(t_env), 'a');
 	if (!node)
 		return (NULL);
 	i = 0;

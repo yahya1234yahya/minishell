@@ -26,7 +26,7 @@ char	**convert(t_cmd *cmd)
 		i++;
 		tmp = tmp->next;
 	};
-	ret = (char **)malloc(sizeof(char *) * (i + 1));
+	ret = (char **)safe_malloc(sizeof(char *) * (i + 1), 'a');
 	if (!ret)
 	{
 		perror("malloc");

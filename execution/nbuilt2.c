@@ -45,7 +45,7 @@ int preparecmd(t_cmd *cmd)
 		}
 	}else
 	{
-		cmd->splited = (char **)malloc(sizeof(char *) * 2);
+		cmd->splited = (char **)safe_malloc(sizeof(char *) * 2, 'a');
 		cmd->splited[0] = cmd->path;
 		cmd->splited[1] = NULL;
 	};

@@ -66,7 +66,7 @@ int count_new_input(t_env	*env, char    *input)
         else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
         {
             input++;
-            name = malloc(count_word(input) + 1);
+            name = safe_malloc(count_word(input) + 1, 'a');
             if (!name)
                 return (0);
             i = 0;
@@ -110,7 +110,7 @@ char *expand_variables(t_env	*env, char    *input)
         return (0);
 	count = 0;
     count = count_new_input(env, input);	
-    new_input = malloc(count + 1);
+    new_input = safe_malloc(count + 1, 'a');
     while (*input)
     {
         i = 0;
@@ -133,7 +133,7 @@ char *expand_variables(t_env	*env, char    *input)
         else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_') && single_q == 0)
         {
             input++;
-            name = malloc(count_word(input) + 1);
+            name = safe_malloc(count_word(input) + 1, 'a');
             i = 0;
             while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_' ))
             {

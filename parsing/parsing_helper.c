@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:25:59 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/08 09:27:36 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/08 10:33:21 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ int	is_valid_command(t_cmd *cmd, char *word)
 	if (!tmp)
 		return (0);
 	path_env = tmp->name;
-	if (!path_env)
-		exit (0);
 	path_dup = ft_strdup(path_env);
 	dir = ft_strtok(path_dup, ":");
 	while (dir)

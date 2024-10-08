@@ -43,7 +43,7 @@ char	*ft_strtrim(char  *s1, char  *set)
 		i++;
 	while (i < len && check_char(set, s1[len - 1]) == 1)
 		len--;
-	ptr = (char *)malloc(len - i + 1);
+	ptr = (char *)safe_malloc(len - i + 1, 'a');
 	if (ptr == NULL)
 		return (NULL);
 	j = 0;
@@ -153,7 +153,7 @@ char	*ft_strjoin(char	*s1, char	*s2)
 		return (ft_strdup(s1));
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
-	str = (char *)malloc(s1len + s2len + 1);
+	str = (char *)safe_malloc(s1len + s2len + 1, 'a');
 	if (!str)
 		return ( NULL);
 	ft_strlcpy (str, s1, s1len + 1);
@@ -193,7 +193,7 @@ char	*ft_strdup(char *s1)
 	lenofs = ft_strlen(s1)+1;
 	if(!s1)
 		return (NULL);
-	s2 = malloc(lenofs * sizeof(char));
+	s2 = safe_malloc(lenofs * sizeof(char), 'a');
 	if (!s2)
 		return (NULL);
 	while (s1[i])
@@ -251,7 +251,7 @@ char	*ft_itoa(int n)
 	}
 	if (n < 0)
 		count++;
-	ret = (char *)malloc(sizeof(char) * count + 1);
+	ret = (char *)safe_malloc(sizeof(char) * count + 1, 'a');
 	if (!ret)
 		return (NULL);
 	ret = filler(ret, count, n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 17:44:46 by mboughra          #+#    #+#             */
-/*   Updated: 2024/08/20 13:36:05 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/08 10:24:45 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 // 		splited = ft_split(command, ' ');
 // 	}else
 // 	{
-// 		splited = (char **)malloc(sizeof(char *) * 2);
+// 		splited = (char **)safe_malloc(sizeof(char *) * 2);
 // 		splited[0] = cmd->path;
 // 		splited[1] = NULL;
 // 	}
@@ -58,7 +58,7 @@
 // 	}
 // 	else
 // 	{
-// 		splited = (char **)malloc(sizeof(char *) * 2);
+// 		splited = (char **)safe_malloc(sizeof(char *) * 2);
 // 		splited[0] = cmd->path;
 // 		splited[1] = NULL;
 // 	}
@@ -120,7 +120,7 @@
 //         command = ft_strjoin(command, cmd->args);
 //         splited = ft_split(command, ' ');
 //     } else {
-//         splited = (char **)malloc(sizeof(char *) * 2);
+//         splited = (char **)safe_malloc(sizeof(char *) * 2);
 //         splited[0] = cmd->path;
 //         splited[1] = NULL;
 //     }
@@ -144,7 +144,7 @@
 //         command = ft_strjoin(command, cmd->args);
 //         splited = ft_split(command, ' ');
 //     } else {
-//         splited = (char **)malloc(sizeof(char *) * 2);
+//         splited = (char **)safe_malloc(sizeof(char *) * 2);
 //         splited[0] = cmd->path;
 //         splited[1] = NULL;
 //     }

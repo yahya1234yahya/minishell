@@ -34,7 +34,7 @@ static void	lenth(int *len1, int *len2, char const *s1, char const *s2)
 // 	len1 = 0;
 // 	len2 = 0;
 // 	lenth(&len1, &len2, s1, s2);
-// 	str = (char *)malloc(len1 + len2 + 1);
+// 	str = (char *)safe_malloc(len1 + len2 + 1);
 // 	if (str == NULL)
 // 		return (NULL);
 // 	while (i < len1 && len1 != 0)

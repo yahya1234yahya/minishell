@@ -49,7 +49,7 @@ char	*add_space(char *input)
 	char	*new_input;
 
 	(1) && (i = 0, j = 0, s_quote = 0, d_quote = 0);
-	new_input = malloc(calculate_space(input) + 1);
+	new_input = safe_malloc(calculate_space(input) + 1, 'a');
 	while (input && input[i])
 	{
 		check_quots(input[i], &s_quote, &d_quote);

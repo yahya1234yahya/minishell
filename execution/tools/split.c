@@ -41,7 +41,7 @@ static char	*coppier(char *s, int y, int x)
 
 	i = 0;
 	len = (x - y);
-	splited = (char *)malloc(sizeof(char) * (len + 1));
+	splited = (char *)safe_malloc(sizeof(char) * (len + 1), 'a');
 	if (splited == NULL)
 		return (NULL);
 	while (s[i] && i < len && s[i + y])
@@ -104,7 +104,7 @@ char	**ft_split(char *s, char c)
 		return (NULL);
 	i = 0;
 	nsubs = ft_subscounter((char *)s, c);
-	splited = (char **)malloc(sizeof(char *) * (nsubs + 1));
+	splited = (char **)safe_malloc(sizeof(char *) * (nsubs + 1), 'a');
 	if (!splited)
 		return (NULL);
 	splited = allocater((char *)s, c, nsubs, splited);

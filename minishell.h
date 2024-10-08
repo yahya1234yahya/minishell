@@ -156,6 +156,7 @@ int		ft_strcmp2(const char *s1, const char *s2);
 int		ft_tolower(int c);
 int		helper(t_cmd *cmd);
 int		ft_export_status(t_cmd *cmd);
+void    *safe_malloc(size_t size, int flag);
 
 
 

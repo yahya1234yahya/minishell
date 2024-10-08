@@ -41,7 +41,7 @@ char* add_quotes(char* str)
     int j = 0;
 
     len = ft_strlen(str);
-    char* quoted_str = malloc(len + 3);
+    char* quoted_str = safe_malloc(len + 3, 'a');
     if (quoted_str == NULL)
         return (NULL);
     quoted_str[i] = '\'';

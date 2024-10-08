@@ -118,7 +118,7 @@ t_env	*noenv()
 	char	*vallue;
 	char	*currenntwd;
 
-	env = (t_env *)malloc(sizeof(t_env));
+	env = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	if (!env)
 	{
 		perror("malloc");
@@ -126,7 +126,7 @@ t_env	*noenv()
 	}
 	env->name = ft_strdup("PWD");
 	env->value = getcwd(NULL, 0);
-	env->next = (t_env *)malloc(sizeof(t_env));
+	env->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	env->next->name = ft_strdup("SHLVL");
 	env->next->value = ft_strdup("1");
 	env->next->next = NULL;
@@ -146,6 +146,8 @@ void	updateshlvl(t_env *env)
 		envset(env, "SHLVL", ft_itoa(shelllevel + 1));
 }
 
+void f(){system("leaks minishell");}
+
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
@@ -153,8 +155,7 @@ int main(int argc, char **argv, char **envp)
 	t_env 	*env;
 	static struct termios	termstate;
 
-
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
 	if (!*envp)
 	{
@@ -177,6 +178,7 @@ int main(int argc, char **argv, char **envp)
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
+			safe_malloc(0, 'f');
 			exit(setandget(NULL)->exs);
 		}
 		if (input != NULL && *input != '\0')
