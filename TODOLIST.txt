@@ -62,3 +62,11 @@ ______________________________________
 
 the getcwd return an allocated pointer it does not work with the garbage collecter it has to be freed mannualy
 
+______________________________________
+
+cat | << hh 
+or 
+<< h | cat
+not the same behaviour chack bash
+
+______________________________________

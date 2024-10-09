@@ -76,7 +76,6 @@ int count_new_input(t_env	*env, char    *input)
                 input++;
             }
             name[i] = '\0';
-            printf("%s\n", name);
             env_value = envsearch3(env, name);
             if (env_value)
                 count += strlen(env_value);
@@ -113,7 +112,8 @@ char *expand_variables(t_env	*env, char    *input)
         return (0);
     tmp = input; 
 	count = 0;
-    count = count_new_input(env, input);	
+    count = count_new_input(env, input);
+    // printf("%d\n", count);
     new_input = safe_malloc(count + 1, 'a');
     while (*input)
     {
@@ -146,6 +146,7 @@ char *expand_variables(t_env	*env, char    *input)
             }
             name[i] = '\0';
             env_value = envsearch3(env, name);
+            // printf("%s\n", env_value);
             if (env_value)
             {
                 while (*env_value)
