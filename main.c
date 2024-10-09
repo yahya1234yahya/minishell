@@ -117,7 +117,9 @@ t_env	*noenv()
 	t_env	*env;
 	char	*vallue;
 	char	*currenntwd;
+	char arr[PATH_MAX];
 
+	getcwd(arr, PATH_MAX);
 	env = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	if (!env)
 	{
@@ -125,7 +127,7 @@ t_env	*noenv()
 		exit(1);
 	}
 	env->name = ft_strdup("PWD");
-	env->value = getcwd(NULL, 0);
+	env->value = strdup(arr);
 	env->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	env->next->name = ft_strdup("SHLVL");
 	env->next->value = ft_strdup("1");
@@ -184,27 +186,28 @@ int main(int argc, char **argv, char **envp)
 		if (input != NULL && *input != '\0')
 			add_history(input);
 		if (!(*input))
+		{
+			free(input);
 			continue ;
+		}
         input = expand_variables(env, input);
          if(!input[0])
+		 {
             continue ;
+		 }
 		 if(check_complete(input) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			continue ;
     	}
-		if (input == NULL)
-    	{
-          ft_putstr_fd("command not found\n", 2);
-          return (0);
-    	}
 		// printf("input: %s\n", input);
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
+		// printf("check: %d\n", check);
+		free(input);
         if(check == 0)   
 			continue ;
-		// print_commands(cmd);
-		// exit(0);
+		print_commands(cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

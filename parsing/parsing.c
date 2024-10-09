@@ -125,10 +125,7 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 			}
 			cmd->tokens++;
 		}
-		if (ft_strcmp(cmd->cmd, "export") == 0 && !cmd->args)
-			handle_export_sort(cmd, envp);
-		else
-			cmd = cmd->next;
+		cmd = cmd->next;
 	}
 	return (1);
 }

@@ -17,8 +17,11 @@ int changedir(t_cmd *cmd)
 {
 	char *oldpwd;
 	t_env *homeenv;
-	cmd->args = ft_split(cmd->args, ' ')[0];
+
+	if (ft_split(cmd->args, ' '))
+		cmd->args = ft_split(cmd->args, ' ')[0];
 	oldpwd = getcwd(NULL, 0);
+		
 	if (!oldpwd)
 	{
 		setandget(NULL)->exs = 1;

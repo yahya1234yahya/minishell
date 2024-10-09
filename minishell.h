@@ -135,6 +135,7 @@ t_cmd	*setandget(t_cmd *cmd);
 char	*envsearch2(t_env *env, char *name);
 int check_command(char *command);
 void ft_exit(char *data, int flag);
+char	*envsearch3(t_env *env, char *name);
 
 
 //tools

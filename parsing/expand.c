@@ -58,7 +58,7 @@ int count_new_input(t_env	*env, char    *input)
         {
             input++;
             name = ft_strdup("?");
-            env_value = envsearch(env, name)->value;
+            env_value = envsearch3(env, name);
             if (env_value)
                 count += strlen(env_value);
             free(name);
@@ -76,7 +76,8 @@ int count_new_input(t_env	*env, char    *input)
                 input++;
             }
             name[i] = '\0';
-            env_value = envsearch2(env, name);
+            printf("%s\n", name);
+            env_value = envsearch3(env, name);
             if (env_value)
                 count += strlen(env_value);
             free(name);
@@ -105,9 +106,12 @@ char *expand_variables(t_env	*env, char    *input)
     char    *name;
     char    *env_value;
     char    *new_input;
+    char    *tmp;
+
 
     if (!input)
         return (0);
+    tmp = input; 
 	count = 0;
     count = count_new_input(env, input);	
     new_input = safe_malloc(count + 1, 'a');
@@ -119,7 +123,7 @@ char *expand_variables(t_env	*env, char    *input)
         {
             input++;
             name = ft_strdup("?");
-            env_value = envsearch(env, name)->value;
+            env_value = envsearch3(env, name);
             if (env_value)
             {
                 while (*env_value)
@@ -141,7 +145,7 @@ char *expand_variables(t_env	*env, char    *input)
                 input++;
             }
             name[i] = '\0';
-            env_value = envsearch2(env, name);
+            env_value = envsearch3(env, name);
             if (env_value)
             {
                 while (*env_value)
@@ -162,5 +166,6 @@ char *expand_variables(t_env	*env, char    *input)
         }
     }
     new_input[j] = '\0';
+    free(tmp);
     return (new_input);
 }

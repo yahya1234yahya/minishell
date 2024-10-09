@@ -1,0 +1,64 @@
+export tt
+should not display in env just export:
+
+______________________________________
+export += sould display error
+export +=fdfh sould display error
+
+______________________________________
+_="/Users/ymouigui/Desktop/mini/./minishell"
+should not print in export;
+
+______________________________________
+
+in minishell 
+
+echo "" "" "" | cat -e
+$
+
+in bash 
+
+bash-3.2$ echo "" "" "" | cat -e
+  $
+
+______________________________________
+
+in minishell 
+
+minishell > echo "-n "
+minishell > 
+
+in bash 
+
+bash-3.2$ echo "-n "
+-n 
+______________________________________
+
+first command : mkdir -p 1/2/3
+second command : cd 1/2/3
+
+
+bash-3.2$ cd 1/2/3/
+bash-3.2$ pwd
+/Users/ymouigui/Desktop/mini/1/2/3
+bash-3.2$ cd ..
+bash: cd: ..: No such file or directory
+bash-3.2$ pwd
+/Users/ymouigui/Desktop/mini/1/2/3
+bash-3.2$ cd ..
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+bash-3.2$ pwd
+/Users/ymouigui/Desktop/mini/1/2/3/..
+bash-3.2$ cd ..
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+bash-3.2$ pwd
+/Users/ymouigui/Desktop/mini/1/2/3/../..
+bash-3.2$ cd ..
+bash-3.2$ pwd
+/Users/ymouigui/Desktop/mini
+bash-3.2$ 
+
+______________________________________
+
+the getcwd return an allocated pointer it does not work with the garbage collecter it has to be freed mannualy
+

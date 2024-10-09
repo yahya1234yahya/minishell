@@ -117,7 +117,7 @@ char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 		j = 0;
 		while (haystack[i + j] == needle[j] && (i + j) < len)
 		{
-			if (needle[j + 1] == '\0')
+			if (needle[j + 1] == '\0' )
 				return ((char *)(haystack + i));
 			j++;
 		}

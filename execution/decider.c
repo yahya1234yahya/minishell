@@ -187,7 +187,10 @@ int	executemultiple(t_cmd *cmd)
 	{
 		//TODO make updates of the old env for the new usage in case changed :'(
 		if (cmd->cmd == NULL)
-			break;
+		{
+			cmd = cmd->next;
+			continue;
+		}
 		pipe(pipefd);
 		pid = fork();
 		if (pid == -1)

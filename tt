@@ -1,0 +1,16 @@
+Makefile
+README.MD
+TODOLIST.txt
+execution
+main.c
+main.o
+minishell
+minishell.h
+minishell_tester
+parsing
+test.c
+test_result.txt
+tester.py
+tmp_hdoc
+tt
+ttt

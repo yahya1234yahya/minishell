@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/08 09:33:20 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:10:35 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	herdoc(t_cmd *cmd)
 {
 	cmd->tokens++;
 	cmd->redin = 1;
-	if (cmd->ft_in == 1)
+	if (cmd->ft_in == 0)
 		cmd->ft_in = open("tmp_hdoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	cmd->hdoc_delimiter = ft_strdup(*(cmd->tokens));
 	handle_heredoc(*(cmd->tokens), cmd);
