@@ -56,19 +56,14 @@ int exportsignal(int sig, t_cmd *cmd)
 }
 
 
-
-
-
-
-
-
-
 int parsename(char *name)
 {
 	int i;
 	int ret;
 
 	i = 0;
+	if (ft_strcmp(name, "\0") == 0)
+		return (0);
 	if (name[i] && (name[i] != '_' && !ft_isalpha(name[i])))
 		return (0);
 	while (name[i])
@@ -147,7 +142,6 @@ int	ft_export(t_cmd *cmd)
 
 	ret = 0;
 
-	
 	if (!cmd->args)
 	{
 		printenv(cmd->env, 0);
@@ -176,7 +170,8 @@ int	ft_export(t_cmd *cmd)
 			while (split[0][r])
 				r++;			
 			split[0][r-1] = '\0';
-		}		
+		}
+
 		if (!parsename(split[0]))
 		{
 			ft_putstr_fd("minishell: export: `", 2);
@@ -186,9 +181,7 @@ int	ft_export(t_cmd *cmd)
 			ret = 1;
 		}
 		if (split[1] == NULL)
-		{
 			ft_lstadd_back(&cmd->env, ft_lstnew(token[i]));
-		}
 		else if(plus == 1)
 		{
 			if (plusaddpack(&cmd->env, split[1], split[0]) == -1)

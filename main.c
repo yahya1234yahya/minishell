@@ -206,7 +206,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("check: %d\n", check);
         if(check == 0)   
 			continue ;
-		// print_commands(cmd);
+		print_commands(cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

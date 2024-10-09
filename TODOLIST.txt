@@ -1,14 +1,18 @@
 export tt
-should not display in env just export:
+should not display in env just export: 
+
+**DONE**
 
 ______________________________________
 export += sould display error
 export +=fdfh sould display error
 
+**DONE**
 ______________________________________
 _="/Users/ymouigui/Desktop/mini/./minishell"
 should not print in export;
 
+**DONE**
 ______________________________________
 
 in minishell 

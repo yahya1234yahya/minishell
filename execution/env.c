@@ -60,9 +60,10 @@ t_env	*ft_lstnew(void *content)
 	node->key = ft_substr(typecast, 0, i);
 	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
 	node->value[ft_strlen(node->value)] = '\0';
+	if (strcmp(node->value,"\0") == 0)
+		node->value = NULL;
 	node->name = content;
 	node->next = NULL;
-
 	return (node);
 };
 
@@ -78,7 +79,7 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 	last = *lst;
 	while (last)
 	{
-		if (ft_strcmp(last->key, newnode->key) == 0)  //l9inah
+		if (ft_strcmp(last->key, newnode->key) == 0)
 		{
 			if (last->value && newnode->value == NULL)
 				return ;
@@ -170,6 +171,34 @@ t_env	*envset(t_env *env, char *name, char *value)
 	return (env);
 };
 
+// t_env	*envset(t_env *env, char *name, char *value)
+// {
+// 	t_env	*current;
+// 	char	*new;
+// 	int		i;
+
+// 	i = 0;
+// 	current = env;
+// 	while (current)
+// 	{
+// 		if (ft_strnstr(current->key, name, ft_strlen(current->key)))
+// 		{
+// 			if (!ft_strcmp(name, "_") && !ft_strcmp(current->key, name))
+// 			{	
+// 				current->value = value;
+// 				return (env);
+// 			}
+// 			else if (ft_strcmp(name, "_"))
+// 			{
+// 				current->value = value;
+// 				return (env);
+// 			}
+// 		}
+// 		current = current->next;
+// 	}
+// 	return (env);
+// };
+
 t_env	*initenv(char **envp)
 {
 	t_env	*env;
@@ -180,10 +209,11 @@ t_env	*initenv(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		current = ft_lstnew(envp[i]);
+		current = ft_lstnew(envp[i]); 
 		if (!current)
 			return (NULL);
-		ft_lstadd_back(&env, current);
+		if (ft_strcmp(current->key, "_"))
+			ft_lstadd_back(&env, current);
 		i++;
 	}
 	return (env);

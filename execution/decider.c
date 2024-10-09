@@ -40,13 +40,6 @@ int ft_strcmp2(const char *s1, const char *s2)
 }
 
 
-
-
-
-
-
-
-
 static int isbuiltin(t_cmd *cmd, int value, int flag)
 {
 	int	retv;
@@ -248,21 +241,27 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
-		if (!cmd->args)
-			envset(cmd->env, "_", cmd->cmd);
-		else
-		{
-			i = 0;
-			last_argument = ft_split(cmd->args, ' ');
-			while (last_argument[i])
-				i++;
-			envset(cmd->env, "_", last_argument[i - 1]);
-		}
-		//  ft_export_status(cmd);
+		exportlastcommand(cmd);		
 	}
 	else
 		executemultiple(cmd);
 		
+}
+
+void	exportlastcommand(t_cmd *cmd)
+{
+	if (cmd->args == NULL)
+	{
+		envset(cmd->env, "_", cmd->cmd);
+	}
+	else
+	{
+		int i = 0;
+		char **last_argument = ft_split(cmd->args, ' ');
+		while (last_argument[i])
+			i++;
+		envset(cmd->env, "_", last_argument[i - 1]);
+	}
 }
 
 
