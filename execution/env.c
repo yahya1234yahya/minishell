@@ -103,6 +103,11 @@ void	printenv2(t_env *current)
 			current = current->next;
 			continue;
 		}
+		if (ft_strcmp(current->key, "_") == 0)
+		{
+			current = current->next;
+			continue;
+		}
 		printf("declare -x %s", current->key);
 		if(current->value)
 			printf("=\"%s\"\n", current->value);
@@ -127,6 +132,11 @@ int	printenv(t_env *env, int flag)
 		while (current)
 		{
 			if (ft_strcmp(current->key, "?") == 0)
+			{
+				current = current->next;
+				continue;
+			}
+			if (ft_strcmp(current->key, "_") == 0)
 			{
 				current = current->next;
 				continue;
@@ -156,7 +166,7 @@ t_env	*envset(t_env *env, char *name, char *value)
 	{
 		if (ft_strnstr(current->name, name, ft_strlen(name)))
 		{
-			if ( ft_strcmp(name, "_") == 0 && ft_strcmp(current->name, name) == 0)
+			if (ft_strcmp(name, "_") == 0 && ft_strcmp(current->name, name) == 0)
 			{	
 			current->value = value;
 			return (env);}
@@ -170,6 +180,25 @@ t_env	*envset(t_env *env, char *name, char *value)
 	}
 	return (env);
 };
+
+t_env *envset2(t_env *env, char *key, char *value)
+{
+	t_env *temp;
+
+	temp = env;
+	while (temp)
+	{
+		if (ft_strcmp(temp->key, key) == 0)
+		{
+			temp->value = ft_strdup(value);
+			return (env);
+		}
+		temp = temp->next;
+	}
+	ft_lstadd_back(&env, ft_lstnew(ft_strjoin(ft_strjoin(key, "="), value)));
+	return (env);
+}
+
 
 // t_env	*envset(t_env *env, char *name, char *value)
 // {

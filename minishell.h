@@ -136,7 +136,8 @@ char	*envsearch2(t_env *env, char *name);
 int check_command(char *command);
 void ft_exit(char *data, int flag);
 char	*envsearch3(t_env *env, char *name);
-void	exportlastcommand(t_cmd *cmd);
+// void	exportlastcommand(t_cmd *cmd);
+t_env *envset2(t_env *env, char *key, char *value);
 
 
 //tools

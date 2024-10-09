@@ -241,28 +241,23 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
-		exportlastcommand(cmd);		
+		if (cmd->args == NULL)
+			envset2(cmd->env, "_", cmd->cmd);
+		else
+		{
+			last_argument = ft_split(cmd->args, ' ');
+			i = 0;
+			while (last_argument[i])
+				i++;
+			envset2(cmd->env, "_", last_argument[i - 1]);
+		}
 	}
 	else
 		executemultiple(cmd);
 		
 }
 
-void	exportlastcommand(t_cmd *cmd)
-{
-	if (cmd->args == NULL)
-	{
-		envset(cmd->env, "_", cmd->cmd);
-	}
-	else
-	{
-		int i = 0;
-		char **last_argument = ft_split(cmd->args, ' ');
-		while (last_argument[i])
-			i++;
-		envset(cmd->env, "_", last_argument[i - 1]);
-	}
-}
+
 
 
 

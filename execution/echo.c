@@ -127,3 +127,6 @@ int	ft_echo(t_cmd *cmd)
 	return (0);
 
 }
+
+
+//TODO protect write

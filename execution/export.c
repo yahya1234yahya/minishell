@@ -179,6 +179,7 @@ int	ft_export(t_cmd *cmd)
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			setandget(NULL)->exs = 1;
 			ret = 1;
+			return (ret);
 		}
 		if (split[1] == NULL)
 			ft_lstadd_back(&cmd->env, ft_lstnew(token[i]));

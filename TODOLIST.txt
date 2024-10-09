@@ -25,6 +25,8 @@ in bash
 bash-3.2$ echo "" "" "" | cat -e
   $
 
+
+**NOT YET**
 ______________________________________
 
 in minishell 
@@ -36,6 +38,8 @@ in bash
 
 bash-3.2$ echo "-n "
 -n 
+
+**DONE**
 ______________________________________
 
 first command : mkdir -p 1/2/3
