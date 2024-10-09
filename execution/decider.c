@@ -97,23 +97,23 @@ int helper(t_cmd *cmd)
 	int i;
 	
 	i = 0;
-	if (ft_strcmp2(cmd->cmd, "echo") == 0)
+	if (ft_strcmp2(cmd->cmd, "echo") == 0) //don't remove the quotes
 		i = 1;
 	else if (ft_strcmp2(cmd->cmd, "pwd") == 0)
 		i = 2;
 	else if (ft_strcmp2(cmd->cmd, "env") == 0)
 		i = 3;
-	else if (ft_strcmp2(cmd->cmd, "exit") == 0)
+	else if (ft_strcmp2(cmd->cmd, "exit") == 0) //don't remove the quotes
 		i = 4; 
 	else if (ft_strcmp2(cmd->cmd, "cd") == 0)
 		i = 5; 
-	else if (ft_strcmp(cmd->cmd, "export") == 0)
+	else if (ft_strcmp(cmd->cmd, "export") == 0) //don't remove the quotes
 		i = 6;
-	else if (ft_strcmp(cmd->cmd, "unset") == 0)
+	else if (ft_strcmp(cmd->cmd, "unset") == 0) //don't remove the quotes
 		i = 7;
 	else
 		return (1337);
-	if (i && i != 6 && i != 7 && i != 4)
+	if (i && i != 6 && i != 7 && i != 4 && i != 1)
 	{
 		cmd->args = remove_quotes(cmd->args);
 	}
