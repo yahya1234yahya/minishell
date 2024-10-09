@@ -30,11 +30,42 @@ char *ft_strtok(char *str, char *delim)
     }
     return (current_token);
 }
+int count_tokens(char *str, char *delim)
+{
+    int dquote = 0, squote = 0, token_count = 0;
+    int count = 0;
 
+
+    while (*str) {
+        while (*str && strchr(delim, *str) != NULL)
+            str++;
+        if (!(*str))
+            break;
+
+
+        while (*str) {
+            if (*str == '"' && squote == 0)
+                dquote = !dquote;
+            else if (*str == '\'' && dquote == 0)
+                squote = !squote;
+            else if (strchr(delim, *str) != NULL && dquote == 0 && squote == 0)
+                break;
+            str++;
+        }
+
+        count++;
+
+        if (*str)
+            str++;
+    }
+    return (count);
+}
 char **ft_strtok_all(char *str, char *delim)
 {
     int dquote = 0, squote = 0, token_count = 0;
-    char **tokens = safe_malloc(10 * sizeof(char *), 'a');
+
+    
+    char **tokens = safe_malloc(count_tokens(str, delim) * sizeof(char *), 'a');
     char *current_token;
 
     if (!tokens)
@@ -64,13 +95,9 @@ char **ft_strtok_all(char *str, char *delim)
         tokens[token_count][token_len] = '\0';
         token_count++;
 
-        if (token_count == 10)
-            break;
-
         if (*str)
             str++;
     }
-
     tokens[token_count] = NULL;
-    return tokens;
+    return (tokens);
 }

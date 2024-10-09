@@ -109,8 +109,9 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 	{
 		cmd->input = add_space(cmd->input);
 		cmd->tokens = ft_strtok_all(cmd->input, " ");
-		if (strcmp(*(cmd->tokens), ">") && strcmp(*(cmd->tokens), ">>")
-			&& strcmp(*(cmd->tokens), "<") && strcmp(*(cmd->tokens), "<<"))
+		int i = 0;
+		if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
+			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<"))
 		{
 			check_cmd(cmd);
 		}

@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/09 11:10:35 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/09 13:08:26 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	check_cmd(t_cmd *cmd)
 
 void	check_cases(t_cmd *cmd)
 {
-	if (strcmp(*(cmd->tokens), ">") == 0 || strcmp(*(cmd->tokens), ">>") == 0
-		|| strcmp(*(cmd->tokens), "<") == 0)
+	if (ft_strcmp(*(cmd->tokens), ">") == 0 || ft_strcmp(*(cmd->tokens), ">>") == 0
+		|| ft_strcmp(*(cmd->tokens), "<") == 0)
 	{
-		if (strcmp(*(cmd->tokens), "<") == 0)
+		if (ft_strcmp(*(cmd->tokens), "<") == 0)
 			cmd->tokens = handle_redirection_in(cmd, cmd->tokens);
 		else
 			cmd->tokens = handle_redirection_out(cmd, cmd->tokens);

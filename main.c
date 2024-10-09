@@ -204,10 +204,9 @@ int main(int argc, char **argv, char **envp)
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
 		// printf("check: %d\n", check);
-		free(input);
         if(check == 0)   
 			continue ;
-		print_commands(cmd);
+		// print_commands(cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
