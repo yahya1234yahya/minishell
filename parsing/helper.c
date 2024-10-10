@@ -103,14 +103,7 @@ void    handle_heredoc(char *input,t_cmd *cmd)
     }
 	dup2(tmp_fd, STDIN_FILENO); //i added this  to reset the stdin
 	signal(SIGINT, funcsign); //i added this to return the normal behaviour of signal
-	if (g_signal == 1)
-	{
-		// setandget(NULL)->exs = 1; // i added this to set the exit status to 1 (DIDN'T WORK because status gets changed after this )
-		// printf("setandget(NULL)->exs = %d\n", setandget(NULL)->exs);
-
-		g_signal = 0;
-		(//return int to stop execution)
-	}
+	g_signal = 0;
 }
 int is_all_space(char *input)
 {
