@@ -78,3 +78,9 @@ or
 not the same behaviour chack bash
 
 ______________________________________
+
+
+int handle_heredoc when NULL is recieved in readline should return an int to quit the entire execution
+
+
+________________________________________

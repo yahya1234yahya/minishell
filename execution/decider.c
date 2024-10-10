@@ -76,10 +76,7 @@ int	executesingle(t_cmd *cmd , char **envp)
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
 		if (input == -1 || output == -1 || redirectchange(cmd) == -1)
-		{
-			write(2, "dup or dup2 failed\n", 21);
-			return (-1);
-		}
+			return (write(2, "dup or dup2 failed\n", 21), -1);
 	}
 	value = helper(cmd);
 	if (value == 1337)
@@ -113,7 +110,7 @@ int helper(t_cmd *cmd)
 		i = 7;
 	else
 		return (1337);
-	if (i && i != 6 && i != 7 && i != 4 && i != 1)
+	if (i == 2 || i == 3)
 	{
 		cmd->args = remove_quotes(cmd->args);
 	}
@@ -254,7 +251,6 @@ void	decider(t_cmd *cmd)
 	}
 	else
 		executemultiple(cmd);
-		
 }
 
 

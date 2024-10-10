@@ -123,7 +123,7 @@ int	ft_echo(t_cmd *cmd)
 	str = ft_strnstr(cmd->args, tok[i], ft_strlen(cmd->args));
 	ft_putstr_fd(str, 1);
 	if (!flag)
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd("\n", 1);
 	return (0);
 
 }

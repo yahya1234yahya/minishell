@@ -75,7 +75,7 @@ typedef struct s_export
 	struct s_export	*next;
 }	t_export;
 
-// extern int g_signal;
+int g_signal;
 
 int 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
@@ -138,6 +138,7 @@ void ft_exit(char *data, int flag);
 char	*envsearch3(t_env *env, char *name);
 // void	exportlastcommand(t_cmd *cmd);
 t_env *envset2(t_env *env, char *key, char *value);
+void funcsign(int signum);
 
 
 //tools

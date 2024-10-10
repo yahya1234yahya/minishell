@@ -56,18 +56,35 @@ char* add_quotes(char* str)
     return (quoted_str);
 }
 
+void signalhandlerherdoc(int signum)
+{
+	if (signum == SIGINT)
+	{
+		g_signal = 1;
+		close(STDIN_FILENO);
+	}
+}
+
 void    handle_heredoc(char *input,t_cmd *cmd)
 {
     char *line;
     int is_quoted = 0;
     int i = 0;
+	int tmp_fd;
 
-
+	tmp_fd = dup(STDIN_FILENO); // i added this to remmember the fd of STDIN
+	signal(SIGINT, signalhandlerherdoc); // i added this to modify the signal behaviour in the heredoc 
     if (cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '\'' || cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '"')
         is_quoted = 1;
     cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
-    while (1) {
+    while (1)
+	{
         line = readline("> ");
+		if (line == NULL)
+		{
+			close(cmd->ft_in);		//i added this to close the file descriptor when ctrl + D is pressed
+			break;
+		}
         if (is_quoted)
             line = add_quotes(line);
         line = expand_variables(cmd->env, line);
@@ -75,6 +92,8 @@ void    handle_heredoc(char *input,t_cmd *cmd)
             line = remove_quotes(line);
         if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
         {
+			setandget(NULL)->exs = 0;
+			// free(line);
 			close(cmd->ft_in);
             break;
         }
@@ -82,6 +101,16 @@ void    handle_heredoc(char *input,t_cmd *cmd)
         free(line);
         line = NULL;
     }
+	dup2(tmp_fd, STDIN_FILENO); //i added this  to reset the stdin
+	signal(SIGINT, funcsign); //i added this to return the normal behaviour of signal
+	if (g_signal == 1)
+	{
+		// setandget(NULL)->exs = 1; // i added this to set the exit status to 1 (DIDN'T WORK because status gets changed after this )
+		// printf("setandget(NULL)->exs = %d\n", setandget(NULL)->exs);
+
+		g_signal = 0;
+		(//return int to stop execution)
+	}
 }
 int is_all_space(char *input)
 {
