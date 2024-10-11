@@ -32,26 +32,6 @@ void print_commands(t_cmd *head)
 	}
 } 
 
-// void funcsign(int signum)
-// {
-//     if (signum == SIGINT)
-//     {
-// 		if (waitpid(-1, NULL, WNOHANG) != -1)
-// 		{
-// 			write(1, "\n", 1);
-// 			return;
-// 		}
-// 		write(1, "\n", 1);
-//         rl_on_new_line();
-//         rl_replace_line("", 0);
-//         rl_redisplay();
-// 		setandget(NULL)->exs = 1;
-//     }
-//     else if (signum == SIGQUIT)
-//     {
-//         if (waitpid(-1, NULL, WNOHANG) != -1)
-//             write(1, "Quit: 3\n", 8);
-// 	}
 void funcsign(int signum)
 {
 	if (signum == SIGINT)
@@ -82,8 +62,6 @@ void ft_signals()
 }
 
 
-// |ls hadi makhashach douz
-
 t_cmd	*setandget(t_cmd *cmd)
 {
 	static t_cmd *cmd2;
@@ -92,23 +70,6 @@ t_cmd	*setandget(t_cmd *cmd)
 		cmd2 = cmd;
 	return (cmd2);
 }
-
-// free_cmd(t_cmd *cmd)
-// {
-// 	t_cmd *tmp;
-
-// 	while (cmd)
-// 	{
-// 		tmp = cmd;
-// 		cmd = cmd->next;
-// 		free(tmp->input);
-// 		free(tmp->cmd);
-// 		free(tmp->args);
-// 		free(tmp->path);
-// 		free(tmp->splited);
-// 		free(tmp);
-// 	}
-// }
 
 t_env	*noenv()
 {
@@ -199,10 +160,8 @@ int main(int argc, char **argv, char **envp)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			continue ;
     	}
-		// printf("input: %s\n", input);
 		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
-		// printf("check: %d\n", check);
         if(check == 0)   
 			continue ;
 		// print_commands(cmd);
