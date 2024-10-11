@@ -1,6 +1,5 @@
 #include "../minishell.h"
 
-
 t_env	*envsearch(t_env *env, char *name)
 {
 	t_env	*current;
@@ -14,6 +13,7 @@ t_env	*envsearch(t_env *env, char *name)
 	}
 	return (NULL);
 }
+
 char	*envsearch2(t_env *env, char *name)
 {
 	t_env	*current;
@@ -27,6 +27,7 @@ char	*envsearch2(t_env *env, char *name)
 	}
 	return (NULL);
 }
+
 char	*envsearch3(t_env *env, char *name)
 {
 	t_env	*current;

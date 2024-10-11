@@ -7,7 +7,7 @@ int check_complete(char *input)
     int		found;
 	char	quote_char;
 
-	len = strlen(input);
+	len = ft_strlen(input);
     if (!len)
 		return (0);
     while (len > 0 && isspace(input[len - 1]))

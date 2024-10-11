@@ -32,8 +32,6 @@ void print_commands(t_cmd *head)
 	}
 } 
 
-
-
 // void funcsign(int signum)
 // {
 //     if (signum == SIGINT)

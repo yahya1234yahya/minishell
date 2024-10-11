@@ -30,6 +30,7 @@ char *ft_strtok(char *str, char *delim)
     }
     return (current_token);
 }
+
 int count_tokens(char *str, char *delim)
 {
     int dquote = 0, squote = 0, token_count = 0;
@@ -60,6 +61,7 @@ int count_tokens(char *str, char *delim)
     }
     return (count);
 }
+
 char **ft_strtok_all(char *str, char *delim)
 {
     int dquote = 0, squote = 0, token_count = 0;
