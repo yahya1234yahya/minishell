@@ -1,2 +1,0 @@
-opened
- to Mini-SHELL
