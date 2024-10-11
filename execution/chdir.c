@@ -46,7 +46,9 @@ static void printerror(char *path, int error)
 static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
 {
 	int i;
+	char *cwd;
 
+	cwd = getcwd(NULL, 0);
 	i = chdir(destination);
 	if (i == -1)
 	{
@@ -55,56 +57,85 @@ static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
 		return (setandget(NULL)->exs = 1, -1);
 	}
 	envset2(cmd->env, "OLDPWD", current_path);
-	envset2(cmd->env, "PWD", getcwd(NULL, 0));
+	envset2(cmd->env, "PWD", cwd);
+	free(cwd);
 	return (0);
 }
-// Function to manually update PWD when getcwd() fails
-// static void update_virtual_pwd(t_cmd *cmd, char *current_path, char *destination)
-// {
-//     char *last_slash;
-
-//     // Simulate the behavior of `cd ..` by removing the last directory from the path
-//     last_slash = strrchr(current_path, '/');
-//     if (last_slash)
-//         *last_slash = '\0';  // Cut off the last directory in the path
-//     else
-//         strcpy(current_path, "/");  // Fallback to root if no slash found
-
-//     envset2(cmd->env, "PWD", current_path);
-// }
-
-// // Updated checkiffail function
-// static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
-// {
-//     int i;
-
-//     i = chdir(destination);
-//     if (i == -1)
-//     {
-//         printerror(destination, errno);
-//         setandget(NULL)->exs = 1;
-//         return (-1);
-//     }
-
-//     char *new_path = getcwd(NULL, 0);
-//     if (!new_path)  // If getcwd fails, manually handle PWD update
-//     {
-//         ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
-//         update_virtual_pwd(cmd, current_path, destination);  // Handle manually
-//         free(current_path);
-//     }
-//     else
-//     {
-//         envset2(cmd->env, "OLDPWD", current_path);
-//         envset2(cmd->env, "PWD", new_path);
-//         free(new_path);
-//     }
-//     return (0);
-// }
 
 
+static char	*ft_strrchr(char	*s, int c)
+{
+	size_t			i;
+	unsigned char	*str;
+	unsigned char	c_char;
 
+	i = ft_strlen(s);
+	str = (unsigned char *)s;
+	c_char = (unsigned char)c;
+	if (c_char == '\0')
+		return ((char *)&str[i]);
+	while (i > 0)
+	{
+		i--;
+		if (str[i] == c_char)
+			return ((char *)&str[i]);
+	}
+	return (NULL);
+}
 
+static char *get_directory_path(char *path)
+{
+	char *last_slash;
+	
+	last_slash = ft_strrchr(path, '/');
+	if (last_slash)
+	{
+		*last_slash = '\0';
+		return (path);
+	}
+	return (NULL);
+}
+
+int handledeletedfile(t_cmd *cmd)
+{
+	char *destination;
+	char *current_path;
+
+	ft_putstr_fd("current file is not accesisble\n", 2);
+	ft_putstr_fd("trying to go back to the last valid directory\n", 2);
+	current_path = envsearch3(cmd->env, "PWD");
+	if (!current_path)
+	{
+		ft_putstr_fd("failed to get the current last directory from env trying to go Home\n", 2);
+		if (access(envsearch3(cmd->env, "HOME"), F_OK) == 0)
+		{
+			chdir(envsearch3(cmd->env, "HOME"));
+			envset2(cmd->env, "OLDPWD", envsearch3(cmd->env, "HOME"));
+			envset2(cmd->env, "PWD", envsearch3(cmd->env, "HOME"));
+			return (setandget(NULL)->exs = 1);
+		}
+		else
+		{
+			ft_putstr_fd("HOME not set exiting the program\n", 2);
+			exit(1);
+			return (setandget(NULL)->exs = 1);
+		}
+		
+		return (setandget(NULL)->exs = 1);
+	}
+	while (1)
+	{
+		current_path = get_directory_path(current_path);
+		if (access(current_path, F_OK) == 0)
+		{
+			chdir(current_path);	
+			break;
+		}
+	}
+	envset2(cmd->env, "OLDPWD", current_path);
+	envset2(cmd->env, "PWD", current_path);
+	return (0);
+}
 
 
 int changedir(t_cmd *cmd)
@@ -116,9 +147,8 @@ int changedir(t_cmd *cmd)
 	current_path = getcwd(NULL, 0);
 	if (!current_path)
 	{
-		setandget(NULL)->exs = 1;
-		perror("getcwd");
-		return (-1);
+		handledeletedfile(cmd);
+		return (setandget(NULL)->exs = 1, 1);
 	}
 	if (cmd->args == NULL)
 	{
@@ -127,7 +157,7 @@ int changedir(t_cmd *cmd)
 		if(chdir(home) == -1)
 		{
 			printerror(home, errno);
-			return (setandget(NULL)->exs = 1, -1);
+			return (free(current_path), setandget(NULL)->exs = 1, -1);
 		}
 		envset2(cmd->env, "OLDPWD", current_path);
 		envset2(cmd->env, "PWD", getcwd(NULL, 0));
@@ -136,7 +166,7 @@ int changedir(t_cmd *cmd)
 	{
 		destination = preparearcd(cmd);
 		if (checkiffail(cmd, destination, current_path) == -1)
-			return (-1);
+			return ((current_path), -1);
 	}
 	free(current_path);
 	return (0);

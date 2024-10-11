@@ -66,9 +66,11 @@ bash-3.2$ pwd
 /Users/ymouigui/Desktop/mini
 bash-3.2$ 
 
+**HANDLED DIFFERENTLY**
 ______________________________________
 
 the getcwd return an allocated pointer it does not work with the garbage collecter it has to be freed mannualy
+
 
 ______________________________________
 
@@ -82,5 +84,9 @@ ______________________________________
 
 int handle_heredoc when NULL is recieved in readline should return an int to quit the entire execution
 
+___________________________________________
 
-________________________________________
+
+unlink herdoc file
+
+____________________________________________
