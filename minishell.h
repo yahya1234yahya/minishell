@@ -22,12 +22,6 @@
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 
-typedef struct s_strtok
-{
-    char *current_token;
-    int dquote;
-	int squote;
-}   t_strtok;
 
 typedef struct s_garbage
 {
