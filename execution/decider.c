@@ -172,21 +172,13 @@ int	executemultiple(t_cmd *cmd)
 	int		pipefd[2];
 	int		status;
 	
-	if(cmd->cmd == NULL)
-		cmd->cmd = ft_strdup("/usr/bin/true");
 	input = STDIN_FILENO;
 	while (cmd)
 	{
 		//TODO make updates of the old env for the new usage in case changed :'(
 		if (cmd->cmd == NULL)
 		{
-			if (cmd->next)
-			{
-				cmd = cmd->next;
-				continue;
-			}
-			else
-				break;
+			cmd->cmd = ft_strdup("/usr/bin/true");
 		}
 		pipe(pipefd);
 		pid = fork();
@@ -238,7 +230,6 @@ void	decider(t_cmd *cmd)
 	{
 		if (cmd->cmd == NULL)
 			return ;
-		
 		env = convert(cmd);
 		exs = executesingle(cmd, env);
 		if (exs == 0)
