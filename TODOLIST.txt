@@ -91,3 +91,15 @@ ___________________________________________
 unlink herdoc file
 
 ____________________________________________
+
+
+tab should be parsed like space examle
+
+minishell > ls  > a
+minishell: ls   : command not found
+
+/t
+
+____________________________________________
+
+

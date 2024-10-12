@@ -90,7 +90,26 @@ static char **preparetokecho(char *str)
 	return (tok);
 }
 
+static int allspace(char *str)
+{
+	int i;
 
+	i = 0;
+	if (str == NULL)
+	{
+		ft_putstr_fd("\n", 1);
+		return (1);
+	}
+	
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\'' || str[i] == '\"')
+		i++;
+	if (i == ft_strlen(str))
+	{
+		ft_putstr_fd("\n", 1);
+		return (1);
+	}
+	return (0);
+}
 
 int	ft_echo(t_cmd *cmd)
 {
@@ -100,7 +119,9 @@ int	ft_echo(t_cmd *cmd)
 	char	*str;
 
 	flag = 0;
-	if (cmd->args == NULL || cmd->args[0] == '\0')
+	if (allspace(cmd->args))
+		return (0);
+	if (cmd->args == NULL || cmd->args[0] == '\0' )
 	{
 		if (write(STDOUT_FILENO, "\n", 1) == -1)
 			return (perror("write"), setandget(NULL)->exs = 1,  -1);
