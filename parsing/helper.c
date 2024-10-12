@@ -98,7 +98,6 @@ void    handle_heredoc(char *input,t_cmd *cmd)
             break;
         }
         ft_putendl_fd(line, cmd->ft_in);
-        free(line);
         line = NULL;
     }
 	dup2(tmp_fd, STDIN_FILENO); //i added this  to reset the stdin

@@ -166,6 +166,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		// print_commands(cmd);
 		decider(cmd);
+		unlink("tmp_hdoc");
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
     }
