@@ -108,7 +108,7 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 	while (cmd)
 	{
 		cmd->input = add_space(cmd->input);
-		cmd->tokens = ft_strtok_all(cmd->input, " ");
+		cmd->tokens = ft_strtok_all(cmd->input, " \t");
 		int i = 0;
 		if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
 			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<"))
