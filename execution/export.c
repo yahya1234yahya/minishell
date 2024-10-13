@@ -127,11 +127,15 @@ int hardcodecheck(char *str, char *str2)
 	return (0);
 }
 
+void printerrorexport(char *str)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
 int	ft_export(t_cmd *cmd)
 {
-	char	**arg;
-	char *parsed;
-	t_env	*tmp;
 	int		i;
 	char **token;
 	int ret;
@@ -139,14 +143,9 @@ int	ft_export(t_cmd *cmd)
 	int plus;
 
 	plus = 0;
-
 	ret = 0;
-
 	if (!cmd->args)
-	{
-		printenv(cmd->env, 0);
-		return (0);
-	}
+		return (printenv(cmd->env, 0), 0);
 	token = preparetokens(cmd->args);
 	i = 0;
 	while (token[i])
@@ -171,7 +170,6 @@ int	ft_export(t_cmd *cmd)
 				r++;			
 			split[0][r-1] = '\0';
 		}
-
 		if (!parsename(split[0]))
 		{
 			ft_putstr_fd("minishell: export: `", 2);
@@ -196,15 +194,14 @@ int	ft_export(t_cmd *cmd)
 			split[0] = ft_strjoin(split[0], "=");
 			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(split[0], split[1])));
 		}
-		
-
-
 		i++;
 	}
-	setandget(NULL)->exs = ret;
-return (ret);
+return (setandget(NULL)->exs = ret, ret);
 
-};
+}
+
+
+
 int	ft_export_status(t_cmd *cmd)
 {
 	char	**arg;

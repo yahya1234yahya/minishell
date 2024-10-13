@@ -74,25 +74,28 @@ t_cmd	*setandget(t_cmd *cmd)
 t_env	*noenv()
 {
 	t_env	*env;
-	char	*vallue;
 	char	*currenntwd;
-	char arr[PATH_MAX];
-
-	getcwd(arr, PATH_MAX);
+	t_env	*tmp;
+	
+	currenntwd = getcwd(NULL, 0);
 	env = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	if (!env)
 	{
 		perror("malloc");
 		exit(1);
 	}
-	env->name = ft_strdup("PWD");
-	env->value = strdup(arr);
-	env->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
-	env->next->name = ft_strdup("SHLVL");
-	env->next->value = ft_strdup("1");
-	env->next->next = NULL;
-	//TODO $_
-
+	tmp = env;
+	tmp->value = currenntwd;
+	tmp->key = ft_strdup("PWD");
+	tmp->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
+	tmp = tmp->next;
+	tmp->key = ft_strdup("SHLVL");
+	tmp->value = ft_strdup("1");
+	tmp->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
+	tmp = tmp->next;
+	tmp->key = ft_strdup("PATH");
+	tmp->value = ft_strdup("/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin");
+	tmp->next = NULL;
 	return (env);
 }
 
@@ -119,13 +122,17 @@ int main(int argc, char **argv, char **envp)
 
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
-	if (!*envp)
+	if (*envp)
 	{
-		env = noenv();
+		env = initenv(envp);
+		updateshlvl(env);
 	}
 	else
-		env = initenv(envp);
-	updateshlvl(env);
+		env = noenv();
+
+
+	
+
 
 	cmd->first_run = 1;
 	while (1)
@@ -164,7 +171,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		// print_commands(cmd);
+		print_commands(cmd);
 		unlink("tmp_hdoc");
 		decider(cmd);
 		env = cmd->env;
