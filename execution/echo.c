@@ -110,6 +110,70 @@ static int allspace(char *str)
 	}
 	return (0);
 }
+	
+// int	ft_echo(t_cmd *cmd)
+// {
+// 	int		flag;
+// 	int		i;
+// 	char	**tok;
+// 	char	*str;
+
+// 	flag = 0;
+// 	if (cmd->args == NULL || cmd->args[0] == '\0' )
+// 		if (write(STDOUT_FILENO, "\n", 1) == -1)
+// 			return (perror("write"), setandget(NULL)->exs = 1,  -1);
+// 		else
+// 			return (0);
+// 	tok = preparetokecho(cmd->args);
+// 	i = 0;
+// 	while (tok[i])
+// 	{
+// 		if (check_string(tok[i]))
+// 		{
+// 			flag = 1;
+// 			i++;
+// 		}else
+// 			break;
+// 	}
+// 	if (tok[i] == NULL)
+// 		return (0);
+// 	cmd->args = remove_quotes(cmd->args);
+// 	str = ft_strnstr(cmd->args, tok[i], ft_strlen(cmd->args));
+// 	ft_putstr_fd(str, 1);
+// 	if (!flag)
+// 		ft_putstr_fd("\n", 1);
+// 	return (0);
+// }
+
+
+int	handle_write_error(void)
+{
+	if (write(STDOUT_FILENO, "\n", 1) == -1)
+	{
+		perror("write");
+		setandget(NULL)->exs = 1;
+		return (-1);
+	}
+	return (0);
+}
+
+int	handle_flags(char **tok, int *flag)
+{
+	int	i;
+
+	i = 0;
+	while (tok[i])
+	{
+		if (check_string(tok[i]))
+		{
+			*flag = 1;
+			i++;
+		}
+		else
+			break;
+	}
+	return (i);
+}
 
 int	ft_echo(t_cmd *cmd)
 {
@@ -121,23 +185,10 @@ int	ft_echo(t_cmd *cmd)
 	flag = 0;
 	if (allspace(cmd->args))
 		return (0);
-	if (cmd->args == NULL || cmd->args[0] == '\0' )
-	{
-		if (write(STDOUT_FILENO, "\n", 1) == -1)
-			return (perror("write"), setandget(NULL)->exs = 1,  -1);
-		return (0);
-	}
+	if (cmd->args == NULL || cmd->args[0] == '\0')
+		return (handle_write_error());
 	tok = preparetokecho(cmd->args);
-	i = 0;
-	while (tok[i])
-	{
-		if (check_string(tok[i]))
-		{
-			flag = 1;
-			i++;
-		}else
-			break;
-	}
+	i = handle_flags(tok, &flag);
 	if (tok[i] == NULL)
 		return (0);
 	cmd->args = remove_quotes(cmd->args);
@@ -146,7 +197,6 @@ int	ft_echo(t_cmd *cmd)
 	if (!flag)
 		ft_putstr_fd("\n", 1);
 	return (0);
-
 }
 
 

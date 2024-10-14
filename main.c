@@ -191,6 +191,8 @@ int main(int argc, char **argv, char **envp)
 		env = noenv();
 
 	cmd->first_run = 1;
+	setandget(cmd);
+	setandget(NULL)->exs = 0;
 	while (1)
 	{
 		set_cmd(cmd);
@@ -199,7 +201,6 @@ int main(int argc, char **argv, char **envp)
 		cmd->env = env;
 		exportsignal(cmd->exs, cmd);
 		input = readline("minishell > ");
-		
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);

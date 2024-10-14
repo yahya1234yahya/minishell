@@ -21,6 +21,8 @@ char	*envsearch2(t_env *env, char *name)
 	current = env;
 	while (current)
 	{
+		// if(current->name == NULL || current->value == NULL || current->key == NULL) 
+		// 	return (NULL);
 		if (ft_strnstr(current->name, name, ft_strlen(name)))
 			return (current->value);
 		current = current->next;

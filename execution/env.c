@@ -83,7 +83,7 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 		{
 			if (last->value && newnode->value == NULL)
 				return ;
-			envset(*lst, newnode->key, newnode->value);
+			envset2(*lst, newnode->key, newnode->value);
 			return ;
 		}
 		last = last->next;
