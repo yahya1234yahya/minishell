@@ -146,7 +146,7 @@ static int allspace(char *str)
 // }
 
 
-int	handle_write_error(void)
+static int	handle_write_error(void)
 {
 	if (write(STDOUT_FILENO, "\n", 1) == -1)
 	{
@@ -157,7 +157,7 @@ int	handle_write_error(void)
 	return (0);
 }
 
-int	handle_flags(char **tok, int *flag)
+static int	handle_flags(char **tok, int *flag)
 {
 	int	i;
 

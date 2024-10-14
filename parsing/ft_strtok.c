@@ -100,6 +100,7 @@ char **ft_strtok_all(char *str, char *delim)
         if (*str)
             str++;
     }
+	
     tokens[token_count] = NULL;
-    return (tokens);
+	return (tokens);
 }

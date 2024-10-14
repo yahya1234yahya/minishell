@@ -14,12 +14,23 @@ READLINEDIR  =  $(shell brew --prefix readline)
 
 all: $(NAME)
 %.o: %.c $(HEADER)
-	$(CC) -c $< -o $@ -I $(READLINEDIR)/include
+	$(CC) -c $< -o $@ -I $(READLINEDIR)/include -g -fsanitize=address
 $(NAME): $(OBJS)
-	$(CC)   $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g -O0 -fsanitize=address
+	$(CC)   $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g -fsanitize=address
 clean:
 	rm -f $(OBJS)
 fclean: clean
 	rm -f $(NAME)
 re: fclean all
 .PHONY: clean
+
+
+# lldb
+# lldb ./minishell
+# b function name or line number
+# r
+# n for next
+# s for step to see inside the function
+# p variable name to print the value
+# q to quit
+# x/s print the string
