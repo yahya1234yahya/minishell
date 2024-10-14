@@ -80,7 +80,7 @@ int g_signal;
 int 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
-int		check_complete(char *input);
+int		check_complete(t_cmd *cmd);
 char	*ft_strjoin(char  *s1, char  *s2);
 t_env	*envsearch(t_env *env, char *key);
 char    *remove_quotes(char *input);

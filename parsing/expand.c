@@ -94,6 +94,24 @@ int count_new_input(t_env	*env, char    *input)
     return (count);
 }
 
+// int check_ambigous(char *input, char *env_value, int j, char    *name) 
+// {
+//     if (!env_value)
+//     {
+//         while(input[j] && input[j] != ' ' && input[j] != '\t')
+//             j--;
+//         if (input[j] == '<' || input[j] == '>')
+//         {
+//             ft_putstr_fd("minishell: ", 2);
+//             ft_putstr_fd(name, 2);
+//              ft_putstr_fd(": ambiguous redirect\n", 2);
+//             setandget(NULL)->exs = 1;
+//             return (1);
+//         }
+//     }
+//     return (0);
+// }
+
 char *expand_variables(t_env	*env, char    *input)
 {
     int count;
@@ -106,10 +124,12 @@ char *expand_variables(t_env	*env, char    *input)
     char    *env_value;
     char    *new_input;
     char    *tmp;
+    char    *tmp2;
 
 
     if (!input)
         return (0);
+    tmp2 = ft_strdup(input);
     tmp = input; 
 	count = 0;
     count = count_new_input(env, input);
@@ -146,6 +166,9 @@ char *expand_variables(t_env	*env, char    *input)
             }
             name[i] = '\0';
             env_value = envsearch3(env, name);
+            // int j = ft_strlen(ft_strnstr(tmp2, name, ft_strlen(name))) - ft_strlen(tmp2);
+            // if (check_ambigous(input , env_value, j, name) == 1)
+            //    return (NULL);
             // printf("%s\n", env_value);
             if (env_value)
             {

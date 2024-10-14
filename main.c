@@ -98,7 +98,66 @@ t_env	*noenv()
 	tmp->next = NULL;
 	return (env);
 }
+int	check_pipe(char	*input)
+{
+	int i = 0;
+	int d_quote = 0;
+	int s_quote = 0;
+	
+	input = ft_strtrim(input, " \t");
+	i = ft_strlen(input) - 1;
+	if (input[i] == '|' || input[0] == '|')
+      return (0);
+	i = 0;
+	while(input[i])
+	{
+		check_quots(input[i], &d_quote, &s_quote);
+		if (input[i] == '|' && d_quote == 0 && s_quote == 0)
+		{
+			i++;
+			while(input[i] == ' ' || input[i] == '\t')
+				i++;
+			if (input[i] == '|' || input[i] == '\0')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
 
+}
+
+int	check_ambigous(char *input, char *ambigous)
+{
+	int i = 0;
+	int j = 0;
+	int d_quote = 0;
+	int s_quote = 0;
+	
+	input = ft_strtrim(input, " \t");
+	ambigous = ft_strtrim(ambigous, " \t");
+	printf("%s ---- %s\n", input, ambigous);
+	if (ft_strcmp(input, ambigous) != 0)
+	{
+		while(input[i] && ambigous[i])
+		{
+			if (input[i] != ambigous[i] &&( input[i] == ' ' || input[i] == '\t'))
+			{
+				printf("hello\n");
+				j = i - 1;
+				while(input[i] == ' ' || input[j] == '\t')
+					j--;
+				if (input[j] == '>' || input[j] == '<')
+				{
+					ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+					setandget(NULL)->exs = 1;
+					return (0);
+				}
+			}
+			i++;
+		}
+	}
+	return (1);
+}
 void	updateshlvl(t_env *env)
 {
 	int shelllevel;
@@ -118,6 +177,8 @@ int main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	char	*input;
 	t_env 	*env;
+	char	*input_res;
+	char	*ambigous;
 	static struct termios	termstate;
 
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
@@ -129,10 +190,6 @@ int main(int argc, char **argv, char **envp)
 	}
 	else
 		env = noenv();
-
-
-	
-
 
 	cmd->first_run = 1;
 	while (1)
@@ -157,21 +214,26 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
+		ambigous = ft_strdup(input);
         input = expand_variables(env, input);
          if(!input[0])
 		 {
             continue ;
 		 }
-		 if(check_complete(input) == 0)
+		// if (!check_ambigous(input, ambigous))
+		// 	continue ;
+		input_res = ft_strdup(input);
+		split_pipe(cmd, input, envp);
+		 if(check_complete(cmd) == 0 || check_pipe(input_res) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);
+			setandget(NULL)->exs = 2;
 			continue ;
     	}
-		split_pipe(cmd, input, envp);
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		print_commands(cmd);
+		// print_commands(cmd);
 		unlink("tmp_hdoc");
 		decider(cmd);
 		env = cmd->env;
