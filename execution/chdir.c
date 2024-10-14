@@ -162,6 +162,10 @@ int changedir(t_cmd *cmd)
 		envset2(cmd->env, "OLDPWD", current_path);
 		envset2(cmd->env, "PWD", getcwd(NULL, 0));
 	}
+	else if(ft_strcmp(cmd->args, "\"\"") == 0)
+	{
+		return (free(current_path), setandget(NULL)->exs = 0, 0);
+	}
 	else
 	{
 		destination = preparearcd(cmd);

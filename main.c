@@ -171,7 +171,6 @@ void	updateshlvl(t_env *env)
 
 void f(){system("leaks minishell");}
 
-
 int main(int argc, char **argv, char **envp)
 {  
 	t_cmd	*cmd;
