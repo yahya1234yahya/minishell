@@ -7,7 +7,7 @@ t_env	*envsearch(t_env *env, char *name)
 	current = env;
 	while (current)
 	{
-		if (ft_strnstr(current->name, name, ft_strlen(name)))
+		if (ft_strnstr(current->key, name, ft_strlen(name)))
 			return (current);
 		current = current->next;
 	}

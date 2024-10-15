@@ -94,7 +94,7 @@ t_env	*noenv()
 	tmp->next = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	tmp = tmp->next;
 	tmp->key = ft_strdup("PATH");
-	tmp->value = ft_strdup("/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin");
+	tmp->value = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:");
 	tmp->next = NULL;
 	return (env);
 }
@@ -189,7 +189,6 @@ int main(int argc, char **argv, char **envp)
 	}	//comment this see the segfault
 	else //comment this to see the segfault
 		env = noenv();
-
 	cmd->first_run = 1;
 	setandget(cmd);
 	setandget(NULL)->exs = 0;

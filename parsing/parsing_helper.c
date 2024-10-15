@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:25:59 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/14 18:46:39 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:59:40 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	is_valid_command(t_cmd *cmd, char *word)
 	char	*path_dup;
 
 	tmp = envsearch(cmd->env, "PATH");
-	if (!tmp)
+	if (!tmp || tmp->key == NULL)
 		return (0);
 	if (!word || !*word)
 		return (0);
@@ -54,7 +54,7 @@ int	is_valid_command(t_cmd *cmd, char *word)
 		}
 		return (0);
 	}
-	path_env = tmp->name;
+	path_env = tmp->value;
 	path_dup = ft_strdup(path_env);
 	dir = ft_strtok(path_dup, ":");
 	while (dir)
