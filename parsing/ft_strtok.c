@@ -67,7 +67,8 @@ char **ft_strtok_all(char *str, char *delim)
     int dquote = 0, squote = 0, token_count = 0;
 
     
-    char **tokens = safe_malloc(count_tokens(str, delim) * sizeof(char *), 'a');
+    char **tokens = safe_malloc((count_tokens(str, delim) + 1) * sizeof(char *), 'a');
+    tokens[count_tokens(str, delim)] = NULL;
     char *current_token;
 
     if (!tokens)
