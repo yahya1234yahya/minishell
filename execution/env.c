@@ -42,13 +42,40 @@ char	*ft_substr(char  *s, unsigned int start, size_t len)
 	return (substr);
 }
 
+// t_env	*ft_lstnew(void *content)
+// {
+// 	t_env	*node;
+// 	char	**split;
+// 	int 	i;
+// 	char	*valuejoined;
+// 	char *typecast;
+
+// 	typecast = (char *)content;
+// 	node = safe_malloc(sizeof(t_env), 'a');
+// 	if (!node)
+// 		return (NULL);
+// 	i = 0;
+// 	while (typecast[i] && typecast[i] != '=')
+// 		i++;
+// 	node->key = ft_substr(typecast, 0, i);
+// 	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
+// 	if (!node->value)
+// 	{
+// 		node->value = ft_strdup("");
+// 	}
+// 	node->value[ft_strlen(node->value)] = '\0';
+// 	if (strcmp(node->value,"\0") == 0)
+// 		node->value = NULL;
+// 	node->name = content;
+// 	node->next = NULL;
+// 	return (node);
+// };
+
 t_env	*ft_lstnew(void *content)
 {
 	t_env	*node;
-	char	**split;
-	int 	i;
-	char	*valuejoined;
-	char *typecast;
+	char	*typecast;
+	int		i;
 
 	typecast = (char *)content;
 	node = safe_malloc(sizeof(t_env), 'a');
@@ -57,15 +84,18 @@ t_env	*ft_lstnew(void *content)
 	i = 0;
 	while (typecast[i] && typecast[i] != '=')
 		i++;
-	node->key = ft_substr(typecast, 0, i);
-	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
-	node->value[ft_strlen(node->value)] = '\0';
-	if (strcmp(node->value,"\0") == 0)
-		node->value = NULL;
+	node->key = ft_substr(typecast, 0, i); // Extract the key part
+	
+	if (typecast[i] == '=' && typecast[i + 1] == '\0')  // Case: key with no value
+		node->value = ft_strdup("");  // Set value as empty string
+	else
+		node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1); // Extract the value part
+
 	node->name = content;
 	node->next = NULL;
 	return (node);
-};
+}
+
 
 void	ft_lstadd_back(t_env **lst, t_env *newnode)
 {
@@ -136,11 +166,11 @@ int	printenv(t_env *env, int flag)
 				current = current->next;
 				continue;
 			}
-			if (ft_strcmp(current->key, "_") == 0)
-			{
-				current = current->next;
-				continue;
-			}
+			// if (ft_strcmp(current->key, "_") == 0)
+			// {
+			// 	current = current->next;
+			// 	continue;
+			// }
 			if (current->value != NULL)
 			{
 				printf("%s=", current->key);

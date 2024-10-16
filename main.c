@@ -182,12 +182,12 @@ int main(int argc, char **argv, char **envp)
 
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
-	if (*envp)  //comment this see the segfault
-	{			//comment this see the segfault
-		env = initenv(envp); //comment this see the segfault
-		updateshlvl(env);	//cpmment this see the segfault
-	}	//comment this see the segfault
-	else //comment this to see the segfault
+	if (*envp)
+	{
+		env = initenv(envp);
+		updateshlvl(env);
+	}
+	else
 		env = noenv();
 	cmd->first_run = 1;
 	setandget(cmd);
