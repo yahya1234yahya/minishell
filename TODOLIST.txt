@@ -23,3 +23,15 @@ minishell: ls   : command not found
 ____________________________________________
 
 
+ls | sdfsdf
+
+< gfgf  | cat 
+
+cat | < jkdhd
+
+export a+=====
+
+export a+=+=======
+
+signal gerdoc should close fd 0 so the readline exits 
+

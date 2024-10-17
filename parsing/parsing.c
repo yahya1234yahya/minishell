@@ -23,6 +23,8 @@ static int	calculate_space(char *input)
 	count = 0;
 	s_quote = 0;
 	d_quote = 0;
+	if (input[0] == '<' || input[0] == '>')
+		count = 1;
 	while (input && input[i])
 	{
 		check_quots(input[i], &s_quote, &d_quote);

@@ -1,4 +1,4 @@
-#include "../minishell.h"
+ #include "../minishell.h"
 
 void    check_quots(char c, int *single_q, int  *double_q)
 {
