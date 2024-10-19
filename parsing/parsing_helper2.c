@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/10 15:55:15 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/19 14:55:44 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	check_cmd(t_cmd *cmd)
 	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
 	is_valid_command(cmd, *(cmd->tokens));
 	cmd->cmd = ft_strdup(*(cmd->tokens));
-	cmd->tokens++;
 }
 
 void	check_cases(t_cmd *cmd)
 {
+	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
 	if (ft_strcmp(*(cmd->tokens), ">") == 0 || ft_strcmp(*(cmd->tokens), ">>") == 0
 		|| ft_strcmp(*(cmd->tokens), "<") == 0)
 	{
@@ -60,7 +60,7 @@ void	check_cases(t_cmd *cmd)
 		else
 			cmd->tokens = handle_redirection_out(cmd, cmd->tokens);
 	}
-	else if (strcmp(*(cmd->tokens), "<<") == 0)
+	else if (ft_strcmp(*(cmd->tokens), "<<") == 0)
 		herdoc(cmd);
 	else
 		handle_args(cmd);

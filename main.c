@@ -214,7 +214,6 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		ambigous = ft_strdup(input);
-        input = expand_variables(env, input);
          if(!input[0])
 		 {
             continue ;
@@ -223,7 +222,7 @@ int main(int argc, char **argv, char **envp)
 		// 	continue ;
 		input_res = ft_strdup(input);
 		split_pipe(cmd, input, envp);
-		 if(check_complete(cmd) == 0 || check_pipe(input_res) == 0)
+		if(check_pipe(input_res) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			setandget(NULL)->exs = 2;
@@ -233,6 +232,7 @@ int main(int argc, char **argv, char **envp)
         if(check == 0)   
 			continue ;
 		// print_commands(cmd);
+		// exit(0);
 		unlink("tmp_hdoc");
 		decider(cmd);
 		env = cmd->env;

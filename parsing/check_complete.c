@@ -1,24 +1,22 @@
 #include "../minishell.h"
 
-int check_complete(t_cmd *cmd)
+int check_complete(char *input)
 {
 	int		len;
     int		i;
     int		found;
 	char	quote_char;
-    char    *input;
-    t_cmd	*tmp;
 
-    tmp = cmd;
-    while(tmp)
-    {
-        input = ft_strtrim(tmp->input, " \t");
+
         // printf("input: %s\n", input);
+        input = ft_strtrim(input, " \t");
         len = ft_strlen(input);
-        if (!len)
+        if (!len || input[len - 1] == '|' || input[len - 1] == '<' || input[len - 1] == '>' || input[len - 1] == '\\')
+        {
+            ft_putstr_fd("minishell: syntax error\n", 2);
+			setandget(NULL)->exs = 2;
             return (0);
-        if (input[len - 1] == '|' || input[len - 1] == '<' || input[len - 1] == '>' || input[len - 1] == '\\')
-            return (0);
+        }
         i = 0;
         while (i < len)
         {
@@ -36,12 +34,14 @@ int check_complete(t_cmd *cmd)
                     i++;
                 }
                 if (!found)
+                {
+                    ft_putstr_fd("minishell: syntax error\n", 2);
+			        setandget(NULL)->exs = 2;
                     return (0);
+                }
             }
             i++;
         }
-        tmp = tmp->next;
-    }
     return (1);
 }
 

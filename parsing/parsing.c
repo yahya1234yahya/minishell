@@ -99,6 +99,60 @@ char	**handle_redirection_in(t_cmd *cmd, char **tokens)
 	cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
 	return (cmd->tokens);
 }
+int is_there_space(char *input)
+{
+	int i = 0;
+	int s_quote = 0;
+	int d_quote = 0;
+	while(input[i])
+	{
+		check_quots(input[i], &s_quote, &d_quote);
+		if (input[i] == ' ' || input[i] == '\t' && !s_quote && !d_quote)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+char	*expand_main(t_env *env, char *input)
+{
+	int i = 0;
+	char	*tmp;
+	char **tokens = ft_strtok_all(input, " \t");
+
+	while(tokens && tokens[i])
+	{
+		tokens[i] = expand_variables(env, tokens[i]);
+		if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0 || ft_strcmp(tokens[i], "<") == 0)
+		{
+			i++;
+			tmp = ft_strdup(tokens[i]);
+			if (tokens && tokens[i])
+				tokens[i] = expand_variables(env, tokens[i]);
+			else
+				break;
+			if(!tokens || !tokens[i][0] || (is_there_space(tokens[i]) && ft_strcmp(tmp, tokens[i])))
+			{
+				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+				setandget(NULL)->exs = 1;
+				return (NULL);
+			}
+		}
+		i++;
+	}
+	i = 0;
+	while(tokens && tokens[i])
+	{
+		if (i == 0)
+			input = ft_strdup(tokens[i]);
+		else
+		{
+			input = ft_strjoin(input, " ");
+			input = ft_strjoin(input, tokens[i]);
+		}
+		i++;
+	}
+	return (input);
+}
 
 int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
@@ -110,12 +164,27 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 	while (cmd)
 	{
 		cmd->input = add_space(cmd->input);
+		if (strstr(cmd->input, "<<") == NULL)
+		{
+			cmd->input = expand_main(cmd->env, cmd->input);
+			if (cmd->input == NULL)
+				return (0);
+			if(check_complete(cmd->input) == 0)
+				return (0);
+		}
+		else
+		{
+			if(check_complete(cmd->input) == 0)
+				return (0);
+		}
 		cmd->tokens = ft_strtok_all(cmd->input, " \t");
 		int i = 0;
 		if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
 			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<"))
 		{
+			*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
 			check_cmd(cmd);
+			cmd->tokens++;
 		}
 		while (cmd->tokens && *(cmd->tokens))
 		{

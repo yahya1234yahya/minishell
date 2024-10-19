@@ -80,7 +80,6 @@ int g_signal;
 int 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);
-int		check_complete(t_cmd *cmd);
 char	*ft_strjoin(char  *s1, char  *s2);
 t_env	*envsearch(t_env *env, char *key);
 char    *remove_quotes(char *input);
@@ -161,6 +160,7 @@ int		ft_tolower(int c);
 int		helper(t_cmd *cmd);
 int		ft_export_status(t_cmd *cmd);
 void    *safe_malloc(size_t size, int flag);
+int		check_complete(char *input);
 
 
 
