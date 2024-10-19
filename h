@@ -1,7 +1,7 @@
 Makefile
 TODOLIST.txt
 execution
-jf h
+h
 main.c
 main.o
 minishell

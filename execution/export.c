@@ -97,12 +97,6 @@ static char **preparetokens(char *str)
 		ret[i] = remove_quotes(ret[i]);
 		i++;
 	}
-	i = 0;
-	while (ret[i])
-	{
-		ret[i] = ft_strtrim(ret[i], " ");
-		i++;
-	}
 	return (ret);
 }
 
@@ -200,6 +194,75 @@ return (setandget(NULL)->exs = ret, ret);
 
 }
 
+
+static int onechar(char *str, char c)
+{
+	int i;
+
+	i = 0;
+
+	while ((str[i]) && (str[i] == c || str[i] == '\'' || str[i] == '\"'))
+		i++;
+	if (ft_strlen(str) == i)
+		return (1);
+	return (0);
+}
+
+int parskey(char *str)
+{
+	int i;
+
+	i = 0;
+	if (str[i] && (str[i] != '_' && !ft_isalpha(str[i])))
+		return (0);
+	i++;
+	if (str[i] == '\0')
+	{
+		if(ft_isdigit(str[i - 1]))
+			return (0);
+		return (1);
+	}
+	while (str[i])
+	{
+		if (str[i] != '_' && !ft_isalpha(str[i]) && !ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
+
+
+int ft_export2(char *str)
+{
+	char **split;
+	// DON'T USE SPLIT BECAUES lol=====mehdi is valid and must be valid !!!
+
+	return (0);
+}
+
+// int ft_export(t_cmd *cmd)
+// {
+// 	char **token;
+// 	char **split;
+
+// 	if (!cmd->args)
+// 		return (printenv(cmd->env, 0));
+// 	if (onechar(cmd->args, ' '))
+// 		return (printerrorexport(cmd->args), 1);
+// 	token = preparetokens(cmd->args);
+// 	while (*token)
+// 	{
+// 		if (parskey(*token) == 1)
+// 			printf("valid key, -> %s\n" , *token);
+// 		else
+// 			printf("invalid key, -> %s\n", *token);
+// 		token++;		
+// 	}
+	
+// 	return (0);	
+// }
 
 
 int	ft_export_status(t_cmd *cmd)

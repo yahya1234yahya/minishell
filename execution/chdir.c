@@ -171,6 +171,8 @@ int changedir(t_cmd *cmd)
 		destination = preparearcd(cmd);
 		if (checkiffail(cmd, destination, current_path) == -1)
 			return (free(current_path), -1);
+		envset2(cmd->env, "OLDPWD", current_path);
+		envset2(cmd->env, "PWD", getcwd(NULL, 0));
 	}
 	free(current_path);
 	return (0);

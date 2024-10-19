@@ -234,6 +234,7 @@ int main(int argc, char **argv, char **envp)
 		// print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
+		// exportsignal(cmd->exs, cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

@@ -23,11 +23,11 @@ minishell: ls   : command not found
 ____________________________________________
 
 
-ls | sdfsdf
+ls | sdfsdf	DONE
 
-< gfgf  | cat 
+< gfgf  | cat  DONE
 
-cat | < jkdhd
+cat | < jkdhd DONE
 
 export a+=====
 
@@ -35,3 +35,11 @@ export a+=+=======
 
 signal gerdoc should close fd 0 so the readline exits 
 
+
+
+____________________________________________
+
+
+sapce or tabs only -> overflow
+
+____________________________________________
