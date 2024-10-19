@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/19 14:55:44 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:43:46 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ void	herdoc(t_cmd *cmd)
 void	check_cmd(t_cmd *cmd)
 {
 	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
+	if (ft_strcmp(*(cmd->tokens), ".") == 0 || ft_strcmp(*(cmd->tokens), "..") == 0)
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n", 2);
+		setandget(NULL)->exs = 127;
+		return ;
+	}
 	is_valid_command(cmd, *(cmd->tokens));
 	cmd->cmd = ft_strdup(*(cmd->tokens));
 }
