@@ -267,8 +267,16 @@ int ft_export(t_cmd *cmd)
 		// printf("plus = %d\n", exp->plus);
 		// printf("equal = %d\n", exp->equal);
 		// printf("\n-----------------\n");
-		if (exportwithouthvalue(*exp, cmd) == 1)
+		if (exp->key[0] == '\0')
+		{
 			ret = 1;
+			setandget(NULL)->exs = 1;
+			printerrorexport(*token);
+			token++;
+			continue ;
+		}
+		if (exportwithouthvalue(*exp, cmd) == 1)
+				ret = 1;
 		exp->key = NULL;
 		exp->value = NULL;
 		exp->plus = 0;
