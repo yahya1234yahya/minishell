@@ -76,7 +76,7 @@ int	executesingle(t_cmd *cmd , char **envp)
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
 		if (input == -1 || output == -1 || redirectchange(cmd) == -1)
-			return (write(2, "dup or dup2 failed\n", 21), -1);
+			return (write(2, "dup or dup2 failed\n", 20), -1);
 	}
 	value = helper(cmd);
 	if (value == 1337)

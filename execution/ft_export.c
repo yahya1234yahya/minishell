@@ -34,22 +34,22 @@ static int onechar(char *str, char c)  //checks if the string is only made of on
 }
 
 
-int ft_export(t_cmd *cmd)
-{
-	char			**token;
-	int i;
+// int ft_export(t_cmd *cmd)
+// {
+// 	char			**token;
+// 	int i;
 	
-	i = 0;
-	if (cmd->args == NULL)
-		return (printenv(cmd->env, 0));
-	if (onechar(cmd->args, ' '))
-		return (printerrorexport(cmd->args), 1);
-	token = ft_strtok_all(cmd->args, " ");
+// 	i = 0;
+// 	if (cmd->args == NULL)
+// 		return (printenv(cmd->env, 0));
+// 	if (onechar(cmd->args, ' '))
+// 		return (printerrorexport(cmd->args), 1);
+// 	token = ft_strtok_all(cmd->args, " ");
 	
 	
 	
 	
 	
 
-	return 0;
-}
+// 	return 0;
+// }

@@ -19,6 +19,8 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 #include <limits.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 // # include <sys/wait.h>
 #define BUFFER_SIZE 200
 

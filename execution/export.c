@@ -128,72 +128,6 @@ void printerrorexport(char *str)
 	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
-int	ft_export(t_cmd *cmd)
-{
-	int		i;
-	char **token;
-	int ret;
-	char **split;
-	int plus;
-
-	plus = 0;
-	ret = 0;
-	if (!cmd->args)
-		return (printenv(cmd->env, 0), 0);
-	token = preparetokens(cmd->args);
-	i = 0;
-	while (token[i])
-	{
-		split = ft_split(token[i], '=');
-		if (split[0] == NULL || hardcodecheck(split[0], token[i]))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(token[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			setandget(NULL)->exs = 1;
-			ret = 1;
-			return (ret);
-		}
-		
-		if (checkplus(split[0]))
-			plus = 1;
-		if (plus)
-		{
-			int r = 0;
-			while (split[0][r])
-				r++;			
-			split[0][r-1] = '\0';
-		}
-		if (!parsename(split[0]))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(token[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			setandget(NULL)->exs = 1;
-			ret = 1;
-			return (ret);
-		}
-		if (split[1] == NULL)
-			ft_lstadd_back(&cmd->env, ft_lstnew(token[i]));
-		else if(plus == 1)
-		{
-			if (plusaddpack(&cmd->env, split[1], split[0]) == -1)
-			{
-				split[0] = ft_strjoin(split[0], "=");
-				ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(split[0], split[1])));
-			}
-		}
-		else
-		{
-			split[0] = ft_strjoin(split[0], "=");
-			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(split[0], split[1])));
-		}
-		i++;
-	}
-return (setandget(NULL)->exs = ret, ret);
-
-}
-
 
 static int onechar(char *str, char c)
 {
@@ -224,6 +158,13 @@ int parskey(char *str)
 	}
 	while (str[i])
 	{
+		if (str[i] == '+')
+		{
+			if (str[i + 1] == '\0')
+				return (1);
+			else
+				return (0);
+		}
 		if (str[i] != '_' && !ft_isalpha(str[i]) && !ft_isdigit(str[i]))
 			return (0);
 		i++;
@@ -233,16 +174,47 @@ int parskey(char *str)
 
 
 
-
-int ft_export2(char *str)
+int exportwithouthvalue(t_exp exp, t_cmd *cmd)
 {
-	char **split;
-	// DON'T USE SPLIT BECAUES lol=====mehdi is valid and must be valid !!!
+	char *str;
 
+	if (parskey(exp.key))
+	{
+		if (exp.equal == 0)
+		{
+			t_env *tmp = ft_lstnew(exp.key);
+			// free(tmp->value);
+			tmp->value = NULL;
+			ft_lstadd_back(&cmd->env, tmp);
+		}
+		else if (exp.equal == 1)
+		{
+			if (exp.plus == 1)
+			{
+				exp.key = ft_substr(exp.key, 0, ft_strlen(exp.key) - 1);
+				// printf("exp.key = %s\n", exp.key);
+				if (plusaddpack(&cmd->env, exp.value, exp.key) == -1)
+				{
+					str = ft_strjoin(exp.key, "=");
+					ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(str, exp.value)));
+				}
+			}
+			else
+			{
+				// printf("case of equal without plus\n");
+				str = ft_strjoin(exp.key, "=");
+				str = ft_strjoin(str, exp.value);
+				ft_lstadd_back(&cmd->env, ft_lstnew(str));
+			}
+		}
+	}
+	else
+	{
+		printerrorexport(exp.key);
+		return (1);
+	}
 	return (0);
 }
-
-
 
 t_exp *collect(char *str, t_exp *exp)
 {
@@ -270,39 +242,40 @@ t_exp *collect(char *str, t_exp *exp)
 	return (exp);
 }
 
-// int ft_export(t_cmd *cmd)
-// {
-// 	char	**token;
-// 	t_exp	*exp;
+int ft_export(t_cmd *cmd)
+{
+	char	**token;
+	t_exp	*exp;
 	
-// 	if (!cmd->args)
-// 		return (printenv(cmd->env, 0));
-// 	if (onechar(cmd->args, ' '))
-// 		return (printerrorexport(cmd->args), 1);
-// 	exp = (t_exp *)malloc(sizeof(t_exp));
-// 	exp->key = NULL;
-// 	exp->value = NULL;
-// 	exp->plus = 0;
-// 	exp->equal = 0;
-// 	token = preparetokens(cmd->args);
-// 	while (*token)
-// 	{
-// 		exp = collect(*token, exp);
-// 		printf("key = %s\n", exp->key);
-// 		printf("value = %s\n", exp->value);
-// 		printf("plus = %d\n", exp->plus);
-// 		printf("equal = %d\n", exp->equal);
-// 		printf("\n-----------------\n");
-// 		exp->key = NULL;
-// 		exp->value = NULL;
-// 		exp->plus = 0;
-// 		exp->equal = 0;
-// 		token++;
-// 		//todo 
-// 	}
+	if (!cmd->args)
+		return (printenv(cmd->env, 0));
+	if (onechar(cmd->args, ' '))
+		return (printerrorexport(cmd->args), 1);
+	exp = (t_exp *)malloc(sizeof(t_exp));
+	exp->key = NULL;
+	exp->value = NULL;
+	exp->plus = 0;
+	exp->equal = 0;
+	token = preparetokens(cmd->args);
+	while (*token)
+	{
+		exp = collect(*token, exp);
+		// printf("key = %s\n", exp->key);
+		// printf("value = %s\n", exp->value);
+		// printf("plus = %d\n", exp->plus);
+		// printf("equal = %d\n", exp->equal);
+		// printf("\n-----------------\n");
+		exportwithouthvalue(*exp, cmd);
+		exp->key = NULL;
+		exp->value = NULL;
+		exp->plus = 0;
+		exp->equal = 0;
+		token++;
+		//todo 
+	}
 	
-// 	return (0);	
-// }
+	return (0);	
+}
 
 
 int	ft_export_status(t_cmd *cmd)
