@@ -12,35 +12,7 @@
 
 #include "../minishell.h"
 
-size_t ft_min(size_t a, size_t b)
-{
-	if (a < b)
-	{
-		return (a);
-	}
-	else
-	{
-		return (b);
-	}
-}
-char	*ft_substr(char  *s, unsigned int start, size_t len)
-{
-	char	*substr;
-	size_t	s_len;
-	size_t	substr_len;
 
-	if (!s)
-		return (NULL);
-	s_len = ft_strlen(s);
-	if (start >= s_len)
-		return (ft_strdup(""));
-	substr_len = ft_min(len, s_len - start);
-	substr = (char *)safe_malloc((substr_len + 1) * sizeof(char), 'a');
-	if (!substr)
-		return (NULL);
-	ft_strlcpy(substr, s + start, substr_len + 1);
-	return (substr);
-}
 
 // t_env	*ft_lstnew(void *content)
 // {

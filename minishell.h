@@ -68,12 +68,13 @@ typedef struct s_cmd
 	struct 	s_cmd *next;
 } t_cmd;
 
-typedef struct s_export
+typedef struct s_exp
 {
-	char				*str;
-	int					flag;
-	struct s_export	*next;
-}	t_export;
+	char *key;
+	char *value;
+	char plus;
+	char equal;
+} t_exp;
 
 int g_signal;
 
@@ -161,7 +162,7 @@ int		helper(t_cmd *cmd);
 int		ft_export_status(t_cmd *cmd);
 void    *safe_malloc(size_t size, int flag);
 int		check_complete(char *input);
-
+char	*ft_substr(char  *s, unsigned int start, size_t len);
 
 
 // echo with -n option

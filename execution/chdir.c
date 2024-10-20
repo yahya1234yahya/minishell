@@ -56,8 +56,6 @@ static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
 		setandget(NULL)->exs = 1;
 		return (setandget(NULL)->exs = 1, -1);
 	}
-	envset2(cmd->env, "OLDPWD", current_path);
-	envset2(cmd->env, "PWD", cwd);
 	free(cwd);
 	return (0);
 }

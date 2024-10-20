@@ -242,23 +242,63 @@ int ft_export2(char *str)
 	return (0);
 }
 
+
+
+t_exp *collect(char *str, t_exp *exp)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			{
+				exp->equal = 1;
+				exp->key = ft_strdup(ft_substr(str, 0, i));
+				exp->value = ft_strdup(ft_substr(str, i + 1, ft_strlen(str) - i - 1));
+				exp->plus = checkplus(exp->key);
+				break ;
+			}
+		i++;
+	}
+	if (exp->equal == 0)
+	{
+		exp->key = ft_strdup(str);
+		exp->value = NULL;
+		exp->plus = 0;
+	}
+	return (exp);
+}
+
 // int ft_export(t_cmd *cmd)
 // {
-// 	char **token;
-// 	char **split;
-
+// 	char	**token;
+// 	t_exp	*exp;
+	
 // 	if (!cmd->args)
 // 		return (printenv(cmd->env, 0));
 // 	if (onechar(cmd->args, ' '))
 // 		return (printerrorexport(cmd->args), 1);
+// 	exp = (t_exp *)malloc(sizeof(t_exp));
+// 	exp->key = NULL;
+// 	exp->value = NULL;
+// 	exp->plus = 0;
+// 	exp->equal = 0;
 // 	token = preparetokens(cmd->args);
 // 	while (*token)
 // 	{
-// 		if (parskey(*token) == 1)
-// 			printf("valid key, -> %s\n" , *token);
-// 		else
-// 			printf("invalid key, -> %s\n", *token);
-// 		token++;		
+// 		exp = collect(*token, exp);
+// 		printf("key = %s\n", exp->key);
+// 		printf("value = %s\n", exp->value);
+// 		printf("plus = %d\n", exp->plus);
+// 		printf("equal = %d\n", exp->equal);
+// 		printf("\n-----------------\n");
+// 		exp->key = NULL;
+// 		exp->value = NULL;
+// 		exp->plus = 0;
+// 		exp->equal = 0;
+// 		token++;
+// 		//todo 
 // 	}
 	
 // 	return (0);	
