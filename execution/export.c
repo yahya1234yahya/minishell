@@ -210,7 +210,8 @@ int exportwithouthvalue(t_exp exp, t_cmd *cmd)
 	}
 	else
 	{
-		printerrorexport(exp.key);
+		printerrorexport(ft_strjoin(ft_strjoin(exp.key, "="), exp.value));
+		setandget(NULL)->exs = 1;
 		return (1);
 	}
 	return (0);
@@ -246,11 +247,12 @@ int ft_export(t_cmd *cmd)
 {
 	char	**token;
 	t_exp	*exp;
+	int ret = 0;
 	
 	if (!cmd->args)
 		return (printenv(cmd->env, 0));
 	if (onechar(cmd->args, ' '))
-		return (printerrorexport(cmd->args), 1);
+		return (printerrorexport(cmd->args),setandget(NULL)->exs = 1, 1);
 	exp = (t_exp *)malloc(sizeof(t_exp));
 	exp->key = NULL;
 	exp->value = NULL;
@@ -265,7 +267,8 @@ int ft_export(t_cmd *cmd)
 		// printf("plus = %d\n", exp->plus);
 		// printf("equal = %d\n", exp->equal);
 		// printf("\n-----------------\n");
-		exportwithouthvalue(*exp, cmd);
+		if (exportwithouthvalue(*exp, cmd) == 1)
+			ret = 1;
 		exp->key = NULL;
 		exp->value = NULL;
 		exp->plus = 0;
@@ -273,8 +276,8 @@ int ft_export(t_cmd *cmd)
 		token++;
 		//todo 
 	}
-	
-	return (0);	
+	setandget(NULL)->exs = ret;
+	return (ret);	
 }
 
 
