@@ -236,8 +236,6 @@ int main(int argc, char **argv, char **envp)
 		// print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
-		// printf("setandget(cmd)->ex= %d\n", setandget(cmd)->exs);
-		// printf("cmd->exs = %d\n", cmd->exs);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

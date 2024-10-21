@@ -95,7 +95,6 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 		last = last->next;
 	last->next = newnode;
 };
- // TODO env and export ls+color plus shlvl 
 void	printenv2(t_env *current)
 {
 	while (current)

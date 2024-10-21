@@ -237,7 +237,7 @@ void	decider(t_cmd *cmd)
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
 		if (cmd->args == NULL)
-			envset2(cmd->env, "_", cmd->cmd);
+			envset2(cmd->env, "_", cmd->path);
 		else
 		{
 			last_argument = ft_split(cmd->args, ' ');
