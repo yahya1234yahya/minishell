@@ -38,6 +38,8 @@ void funcsign(int signum)
 	{
 		if (waitpid(-1, NULL, WNOHANG) != -1)
 		{
+			if (ft_strcmp(setandget(NULL)->cmd, "./minishell") == 0)
+				return ;
 			write(1, "\n", 1);
 			return;
 		}
