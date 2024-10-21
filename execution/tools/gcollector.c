@@ -75,7 +75,10 @@ void    *safe_malloc(size_t size, int flag)
     {
         address = malloc(size);
         if (!address)
-            return (NULL);
+        {
+            safe_malloc(0, 'f');
+            exit (0);
+        }
         if (gooper == NULL)
             gooper = garb_new(address);
         else
