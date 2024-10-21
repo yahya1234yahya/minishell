@@ -141,6 +141,7 @@ char	*envsearch3(t_env *env, char *name);
 // void	exportlastcommand(t_cmd *cmd);
 t_env *envset2(t_env *env, char *key, char *value);
 void funcsign(int signum);
+int exportwithouthvalue(t_exp exp, t_cmd *cmd);
 
 
 //tools

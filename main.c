@@ -200,7 +200,6 @@ int main(int argc, char **argv, char **envp)
 		setandget(cmd);
 		ft_signals();
 		cmd->env = env;
-		exportsignal(cmd->exs, cmd);
 		input = readline("minishell > ");
 		if (input == NULL)
 		{
@@ -230,13 +229,15 @@ int main(int argc, char **argv, char **envp)
 			setandget(NULL)->exs = 2;
 			continue ;
     	}
+		exportsignal(cmd->exs, cmd);
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
 		// print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
-		// exportsignal(cmd->exs, cmd);
+		// printf("setandget(cmd)->ex= %d\n", setandget(cmd)->exs);
+		// printf("cmd->exs = %d\n", cmd->exs);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);

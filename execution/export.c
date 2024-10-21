@@ -44,14 +44,17 @@ static char *removeFirstChar(const char* str)
 int exportsignal(int sig, t_cmd *cmd)
 {
 	char *str;
-
+	t_exp *exp;
+	
 	str = ft_itoa(sig);
-	if (!str)
-		return(-1);
-	cmd->args = ft_strjoin("?=", str);
-	ft_export_status(cmd);
-	free(str);
-	cmd->args = NULL;
+	exp = (t_exp *)malloc(sizeof(t_exp));
+	exp->key = ft_strdup("?");
+	exp->value = ft_strdup(str);
+	if (plusaddpack(&cmd->env, exp->key, exp->value) == -1)
+	{
+		str = ft_strjoin(exp->key, "=");
+		ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(str, exp->value)));
+	}
 	return (0);
 }
 
@@ -289,30 +292,4 @@ int ft_export(t_cmd *cmd)
 }
 
 
-int	ft_export_status(t_cmd *cmd)
-{
-	char	**arg;
-	t_env	*tmp;
-
-	//TODO parse the args before export
-	if (!cmd->args)
-		printenv(cmd->env, 0);
-	else if (ft_strnstr(cmd->args, "+=", ft_strlen(cmd->args)))   //zayd
-	{
-		arg = ft_split(cmd->args, '+');
-		arg[1] = removeFirstChar(arg[1]);
-		if (plusaddpack(&cmd->env, arg[1], arg[0]) == -1)
-		{
-			arg[0] = ft_strjoin(arg[0], "=");
-			ft_lstadd_back(&cmd->env, ft_lstnew(ft_strjoin(arg[0], arg[1])));
-		}
-	}
-	else
-	{
-		t_env *tmp = ft_lstnew(cmd->args);
-
-		ft_lstadd_back(&cmd->env, tmp);
-	}
-	return (0);
-};
 
