@@ -35,10 +35,14 @@ char	*parse_it(char	*str)
 {
 	int i = 0;
 	int count = 0;
+	int	d_quot;
+	int s_quot;
+	char	c;
 	char *res;
 	while(str[i])
 	{
-		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"'))
+		check_quots(str[i], &s_quot, &d_quot);
+		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"') && !s_quot && !d_quot)
 		{
 			i++;
 			continue ;
@@ -51,11 +55,13 @@ char	*parse_it(char	*str)
 	int j = 0;
 	while(str[i])
 	{
-		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"'))
+		check_quots(str[i], &s_quot, &d_quot);
+		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"') && !s_quot && !d_quot)
 		{
-			i++;
+			i++;		
 			continue ;
 		}
+
 		res[j] = str[i]; 
 		i++;
 		j++;
