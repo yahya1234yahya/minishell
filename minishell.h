@@ -166,6 +166,7 @@ int		ft_export_status(t_cmd *cmd);
 void    *safe_malloc(size_t size, int flag);
 int		check_complete(char *input);
 char	*ft_substr(char  *s, unsigned int start, size_t len);
+int		check_char(char  *set, char c);
 
 
 // echo with -n option

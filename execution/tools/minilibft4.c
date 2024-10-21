@@ -1,0 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minilibft4.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/21 20:04:26 by mboughra          #+#    #+#             */
+/*   Updated: 2024/10/21 20:08:18 by mboughra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell.h"
+
+size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
+{
+	size_t	i;
+	char	*s;
+
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	if (!dst || !src)
+		return (0);
+	s = (char *)src;
+	i = 0;
+	while (src[i] && i < (dstsize -1))
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	while (src[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(char *s1)
+{
+	size_t	i;
+	size_t	lenofs;
+	char	*s2;
+
+	i = 0;
+	lenofs = ft_strlen(s1)+1;
+	if (!s1)
+		return (NULL);
+	s2 = safe_malloc(lenofs * sizeof(char), 'a');
+	if (!s2)
+		return (NULL);
+	while (s1[i])
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
+}

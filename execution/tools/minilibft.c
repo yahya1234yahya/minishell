@@ -12,96 +12,6 @@
 
 #include "../../minishell.h"
 
-static int	check_char(char  *set, char c)
-{
-	int	w;
-
-	w = 0;
-	while (set[w])
-	{
-		if (set[w] == c)
-			return (1);
-		w++;
-	}
-	return (0);
-}
-
-char	*ft_strtrim(char  *s1, char  *set)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*ptr;
-
-	if (s1 == NULL)
-		return (NULL);
-	if (set == NULL)
-		return (ft_strdup(s1));
-	len = ft_strlen(s1);
-	i = 0;
-	while (check_char(set, s1[i]) == 1 && s1[i])
-		i++;
-	while (i < len && check_char(set, s1[len - 1]) == 1)
-		len--;
-	ptr = (char *)safe_malloc(len - i + 1, 'a');
-	if (ptr == NULL)
-		return (NULL);
-	j = 0;
-	while (i < len)
-		ptr[j++] = s1[i++];
-	ptr[j] = '\0';
-	return (ptr);
-}
-
-int	ft_strcmp(const char	*s1, const char	*s2)
-{
-	size_t			i;
-	unsigned char	*ss1;
-	unsigned char	*ss2;
-
-	if (!s1 || !s2)
-		return (1);
-	ss1 = (unsigned char *)s1;
-	ss2 = (unsigned char *)s2;
-	i = 0;
-	while (ss1[i] && ss2[i] && ss1[i] == ss2[i])
-		i++;
-	return (ss1[i] - ss2[i]);
-}
-int	ft_strncmp(const char	*s1, const char	*s2, size_t	n)
-{
-	size_t			i;
-	unsigned char	*ss1;
-	unsigned char	*ss2;
-
-	if (!s1 || !s2)
-		return (1);
-	ss1 = (unsigned char *)s1;
-	ss2 = (unsigned char *)s2;
-	i = 0;
-	while ((i < n) && ss1[i] && ss2[i] && ss1[i] == ss2[i])
-		i++;
-	if (i == n)
-		return (0);
-	return (ss1[i] - ss2[i]);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	if (fd < 0)
-		return ;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		write (fd, &s[i], 1);
-		i++;
-	}
-};
-
 char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 {
 	size_t	i;
@@ -124,11 +34,11 @@ char	*ft_strnstr(char	*haystack, char	*needle, size_t	len)
 		i++;
 	}
 	return (NULL);
-};
+}
 
-size_t ft_strlen( char *s)
+size_t	ft_strlen( char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!s)
@@ -136,75 +46,7 @@ size_t ft_strlen( char *s)
 	while (s[i])
 		i++;
 	return (i);
-};
-
-
-char	*ft_strjoin(char	*s1, char	*s2)
-{
-	char	*str;
-	size_t	s1len;
-	size_t	s2len;
-
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	s1len = ft_strlen(s1);
-	s2len = ft_strlen(s2);
-	str = (char *)safe_malloc(s1len + s2len + 1, 'a');
-	if (!str)
-		return ( NULL);
-	ft_strlcpy (str, s1, s1len + 1);
-	ft_strlcpy (str + s1len, s2, s2len + 1);
-	return (str);
 }
-
-size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize)
-{
-	size_t	i;
-	char	*s;
-
-	if (dstsize == 0)
-		return (ft_strlen(src));
-	if (!dst || !src)
-		return (0);
-	s = (char *)src;
-	i = 0;
-	while (src[i] && i < (dstsize -1))
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	while (src[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(char *s1)
-{
-	size_t	i;
-	size_t	lenofs;
-	char	*s2;
-
-	i = 0;
-	lenofs = ft_strlen(s1)+1;
-	if(!s1)
-		return (NULL);
-	s2 = safe_malloc(lenofs * sizeof(char), 'a');
-	if (!s2)
-		return (NULL);
-	while (s1[i])
-	{
-		s2[i] = s1[i];
-		i++;
-	}
-	s2[i] = '\0';
-	return (s2);
-}
-
 
 static char	*filler(char *ret, long count, long n)
 {
@@ -256,72 +98,4 @@ char	*ft_itoa(int n)
 		return (NULL);
 	ret = filler(ret, count, n);
 	return (ret);
-}
-
-static int	ft_ofchercker(long max, long re, int s)
-{
-	if (max > re && s > 0)
-		return (-1);
-	if (max > re && s < 0)
-		return (0);
-	return (1);
-}
-
-int	ft_atoi(const char *str)
-{
-	int		i;
-	int		s;
-	long	re;
-	long	max;
-
-	i = 0;
-	s = 1;
-	re = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			s = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		max = re;
-		re = re * 10 +(str[i] - 48);
-		if (ft_ofchercker(max, re, s) != 1)
-			return (ft_ofchercker(max, re, s));
-		i++;
-	}
-	return (re * s);
-}
-
-static size_t ft_min(size_t a, size_t b)
-{
-	if (a < b)
-	{
-		return (a);
-	}
-	else
-	{
-		return (b);
-	}
-}
-char	*ft_substr(char  *s, unsigned int start, size_t len)
-{
-	char	*substr;
-	size_t	s_len;
-	size_t	substr_len;
-
-	if (!s)
-		return (NULL);
-	s_len = ft_strlen(s);
-	if (start >= s_len)
-		return (ft_strdup(""));
-	substr_len = ft_min(len, s_len - start);
-	substr = (char *)safe_malloc((substr_len + 1) * sizeof(char), 'a');
-	if (!substr)
-		return (NULL);
-	ft_strlcpy(substr, s + start, substr_len + 1);
-	return (substr);
 }

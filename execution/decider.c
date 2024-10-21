@@ -19,7 +19,7 @@ int redirectchange(t_cmd *cmd)
 	if (dup2(cmd->ft_out, STDOUT_FILENO) == -1)
 		return (-1);
 	return (0);
-};
+}
 int ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')
