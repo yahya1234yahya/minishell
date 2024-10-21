@@ -27,10 +27,10 @@ char *remove_quotes(char *input)
     new_input[j] = '\0';
     if (i != j && j == 0)
         return (NULL);
-    if (is_all_space(new_input))
-    {
-        new_input[0] = '\0';
-        return (new_input);
-    }
+    // if (is_all_space(new_input))
+    // {
+    //     new_input[0] = '\0';
+    //     return (new_input);
+    // }
     return new_input;
 }
