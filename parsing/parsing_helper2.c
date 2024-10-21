@@ -31,13 +31,46 @@ int	fd_error(t_cmd *cmd)
 	return (0);
 }
 
+char	*parse_it(char	*str)
+{
+	int i = 0;
+	int count = 0;
+	char *res;
+	while(str[i])
+	{
+		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"'))
+		{
+			i++;
+			continue ;
+		}
+		i++;
+		count++;
+	}
+	res = safe_malloc(count + 1, 'a');
+	i = 0;
+	int j = 0;
+	while(str[i])
+	{
+		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"'))
+		{
+			i++;
+			continue ;
+		}
+		res[j] = str[i]; 
+		i++;
+		j++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 void	herdoc(t_cmd *cmd)
 {
 	cmd->tokens++;
 	cmd->redin = 1;
 	if (cmd->ft_in == 0)
 		cmd->ft_in = open("tmp_hdoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	cmd->hdoc_delimiter = ft_strdup(*(cmd->tokens));
+	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
 	handle_heredoc(*(cmd->tokens), cmd);
 	cmd->ft_in = open("tmp_hdoc", O_RDWR, 0644);
 }
