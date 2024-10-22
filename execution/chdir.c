@@ -12,7 +12,6 @@
 
 #include "../minishell.h"
 
-
 static char *preparearcd(t_cmd *cmd)
 {
 	char	**tok;

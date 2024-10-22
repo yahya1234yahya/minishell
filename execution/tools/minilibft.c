@@ -99,3 +99,10 @@ char	*ft_itoa(int n)
 	ret = filler(ret, count, n);
 	return (ret);
 }
+
+int ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
+}

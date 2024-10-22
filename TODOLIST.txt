@@ -43,3 +43,6 @@ ____________________________________________
 sapce or tabs only -> overflow
 
 ____________________________________________
+
+(for me)
+erease last exported argument/command in case of no command

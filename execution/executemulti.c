@@ -1,0 +1,97 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executemulti.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
+/*   Updated: 2024/10/21 21:03:59 by mboughra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+void	parent(int *input, int *pipefd)
+{
+	close(pipefd[1]);
+	if (*input != STDIN_FILENO)
+		close(*input);
+	*input = pipefd[0];
+}
+
+int child(t_cmd *cmd, int input, int *pipefd)
+{
+	int check;
+
+    close(pipefd[0]);
+	if (cmd->skip == 1)
+			exit(1) ;
+    if (cmd->redin != 0)
+        dup2(cmd->ft_in, STDIN_FILENO);
+	else
+        dup2(input, STDIN_FILENO);
+    if (cmd->redout != 0)
+        dup2(cmd->ft_out, STDOUT_FILENO);
+	else if (cmd->next != NULL)
+        dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);
+	if(helper(cmd)!= 1337)
+		{
+			isbuiltin(cmd, helper(cmd), 0);
+			exit(0);
+		}
+	else
+	{
+		check =  preparecmd(cmd);
+		if (check)
+			return (check);
+		check = check_command(cmd->splited[0]);
+		if (check)
+			return (check);
+		if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
+		{ 
+			perror("execve");
+			return (-1);
+		}
+	}
+    exit(EXIT_SUCCESS);
+}
+
+int	executemultiple(t_cmd *cmd)
+{
+	pid_t	pid;
+	int		input;
+	int		pipefd[2];
+	int		status;
+	
+	input = STDIN_FILENO;
+	while (cmd)
+	{
+		if (cmd->cmd == NULL)
+			cmd->cmd = ft_strdup("/usr/bin/true");
+		pipe(pipefd);
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (pid == 0)
+		{
+            if (child(cmd, input, pipefd) == -1)
+				exit(1);
+		}
+        else
+			parent(&input, pipefd);
+        cmd = cmd->next;
+	}
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+			setandget(NULL)->exs = 128 + WTERMSIG(status);
+		else if (WIFEXITED(status))
+			setandget(NULL)->exs = WEXITSTATUS(status);
+	while (wait(NULL) > 0)
+        ;
+	return (0);
+}

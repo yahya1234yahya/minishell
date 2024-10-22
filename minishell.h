@@ -135,14 +135,18 @@ int		ft_errorwrite(t_cmd *cmd);
 int		exportsignal(int sig, t_cmd *cmd);
 t_cmd	*setandget(t_cmd *cmd);
 char	*envsearch2(t_env *env, char *name);
-int check_command(char *command);
-void ft_exit(char *data, int flag);
+int		check_command(char *command);
+void	ft_exit(char *data, int flag);
 char	*envsearch3(t_env *env, char *name);
+t_env 	*envset2(t_env *env, char *key, char *value);
+void 	funcsign(int signum);
+int 	exportwithouthvalue(t_exp exp, t_cmd *cmd);
+int 	isbuiltin(t_cmd *cmd, int value, int flag);
+void	parent(int *input, int *pipefd);
+int		child(t_cmd *cmd, int input, int *pipefd);
+int		executesingle(t_cmd *cmd , char **envp);
 // void	exportlastcommand(t_cmd *cmd);
-t_env *envset2(t_env *env, char *key, char *value);
-void funcsign(int signum);
-int exportwithouthvalue(t_exp exp, t_cmd *cmd);
-
+void exportlastcommand(t_cmd *cmd);
 
 //tools
 char	**ft_split(char *s, char c);
@@ -153,7 +157,6 @@ size_t	ft_strlen( char *s);
 size_t	ft_strlcpy(char	*dst, char	*src, size_t	dstsize);
 char	*ft_strdup(char *s1);
 char	*ft_strtrim(char  *s1, char  *set);
-char	*ft_strchr(const char *s, int c); //TODO
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 int		ft_isalpha(int c);
@@ -162,18 +165,13 @@ int		ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 int		ft_strcmp2(const char *s1, const char *s2);
 int		ft_tolower(int c);
 int		helper(t_cmd *cmd);
-int		ft_export_status(t_cmd *cmd);
 void    *safe_malloc(size_t size, int flag);
 int		check_complete(char *input);
 char	*ft_substr(char  *s, unsigned int start, size_t len);
 int		check_char(char  *set, char c);
+int		ft_tolower(int c);
+// int		ft_export_status(t_cmd *cmd);
+// char	*ft_strchr(const char *s, int c); //TODO
 
 
-// echo with -n option
-// cd with relative or absolute path
-// pwd with no options
-// export with no options
-// unset with no options
-// env with no options or arguments
-// exit with no options
 #endif
