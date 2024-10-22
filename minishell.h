@@ -170,6 +170,7 @@ int		check_complete(char *input);
 char	*ft_substr(char  *s, unsigned int start, size_t len);
 int		check_char(char  *set, char c);
 int		ft_tolower(int c);
+int onechar(char *str, char c);
 // int		ft_export_status(t_cmd *cmd);
 // char	*ft_strchr(const char *s, int c); //TODO
 

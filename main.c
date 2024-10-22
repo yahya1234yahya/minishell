@@ -108,6 +108,7 @@ int	check_pipe(char	*input)
 	
 	input = ft_strtrim(input, " \t");
 	i = ft_strlen(input) - 1;
+	// when the input is empty strlen == -1 and segfault occurs here
 	if (input[i] == '|' || input[0] == '|')
       return (0);
 	i = 0;
@@ -231,7 +232,7 @@ int main(int argc, char **argv, char **envp)
 		// if (!check_ambigous(input, ambigous))
 		// 	continue ;
 		input_res = ft_strdup(input);
-		split_pipe(cmd, input, envp);
+		split_pipe(cmd, input, envp);	
 		if(check_pipe(input_res) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);

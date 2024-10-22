@@ -108,6 +108,8 @@ static int checkplus(char *str)
 {
 	int i;
 
+	if (!str || str[0] == '\0')
+		return (0);
 	i = ft_strlen(str) - 1;
 	if (str[i] == '+')
 	{
@@ -132,12 +134,11 @@ void printerrorexport(char *str)
 }
 
 
-static int onechar(char *str, char c)
+int onechar(char *str, char c)
 {
 	int i;
 
 	i = 0;
-
 	while ((str[i]) && (str[i] == c || str[i] == '\'' || str[i] == '\"'))
 		i++;
 	if (ft_strlen(str) == i)
