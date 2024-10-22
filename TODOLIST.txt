@@ -52,3 +52,17 @@ ____________________________________________
 export =asas //DONE
 
 ./ls/ (exit status) //DONE
+
+export + (doesn't exist) add it
+exit "" 
+
+env -i ./minishell followed by minishell > unset PATH
+
+export a="b'"
+minishell > echo $a
+minishell: syntax error
+
+bash-3.2$ echo $a
+b'
+
+>a echo hello >b lll
