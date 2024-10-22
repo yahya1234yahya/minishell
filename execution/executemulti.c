@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/21 21:03:59 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:47:22 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int child(t_cmd *cmd, int input, int *pipefd)
 	{
 		check =  preparecmd(cmd);
 		if (check)
-			return (check);
+			exit(check);
 		check = check_command(cmd->splited[0]);
 		if (check)
-			return (check);
+			exit(check);
 		if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
 		{ 
 			perror("execve");

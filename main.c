@@ -165,7 +165,16 @@ void	updateshlvl(t_env *env)
 	int shelllevel;
 
 	shelllevel = ft_atoi(envsearch2(env, "SHLVL"));
-	if (shelllevel == 999)
+	if (shelllevel < 0)
+		envset(env, "SHLVL", "0");
+	else if (shelllevel > 999)
+	{
+		ft_putstr_fd("minishell: warning: shell level (", 2);
+		ft_putstr_fd(envsearch2(env, "SHLVL"), 2);
+		ft_putstr_fd(") too high, resetting to 1\n", 2);
+		envset(env, "SHLVL", "1");
+	}
+	else if (shelllevel == 999)
 		envset(env, "SHLVL", " ");
 	else
 		envset(env, "SHLVL", ft_itoa(shelllevel + 1));
@@ -237,6 +246,10 @@ int main(int argc, char **argv, char **envp)
 		// exit(0);
 		unlink("tmp_hdoc");
 		decider(cmd);
+		if (cmd->ft_in != STDIN_FILENO)
+			close(cmd->ft_in);
+		if (cmd->ft_out != STDOUT_FILENO)
+			close(cmd->ft_out);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
     }

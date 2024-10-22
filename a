@@ -1,0 +1,13 @@
+Makefile
+TODOLIST.txt
+a
+b
+c
+execution
+main.c
+main.o
+minishell
+minishell.h
+minishell_tester
+parsing
+tester.py
