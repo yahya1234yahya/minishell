@@ -33,7 +33,26 @@ void	ft_putendl_fd(char *s, int fd)
 	write (fd, "\n", 1);
 }
 
-
+char    chose_quote(char    *str)
+{
+    int i;
+    int s_quots;
+    int d_quots;
+    i = 0;
+    s_quots = 0;
+    d_quots = 0;
+    while(str[i])
+    {
+        check_quots(str[i], &s_quots, &d_quots);
+        i++;
+    }
+    if (s_quots && !d_quots)
+        return ('"');
+    else if (!s_quots && d_quots)
+        return ('\'');
+    else
+        return ('"');
+}
 char* add_quotes(char* str)
 {
     int len ;
@@ -44,14 +63,15 @@ char* add_quotes(char* str)
     char* quoted_str = safe_malloc(len + 3, 'a');
     if (quoted_str == NULL)
         return (NULL);
-    quoted_str[i] = '\'';
+    
+    quoted_str[i] = chose_quote(str);
     while(j < len)
     {
         quoted_str[i + 1] = str[j];
         i++;
         j++;
     }
-    quoted_str[++i] = '\'';
+    quoted_str[++i] = chose_quote(str);
     quoted_str[++i] = '\0';
     return (quoted_str);
 }

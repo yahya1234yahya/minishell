@@ -105,7 +105,7 @@ int	check_pipe(char	*input)
 	int i = 0;
 	int d_quote = 0;
 	int s_quote = 0;
-	
+
 	input = ft_strtrim(input, " \t");
 	i = ft_strlen(input) - 1;
 	// when the input is empty strlen == -1 and segfault occurs here
@@ -217,6 +217,7 @@ int main(int argc, char **argv, char **envp)
 			safe_malloc(0, 'f');
 			exit(setandget(NULL)->exs);
 		}
+		input = ft_strtrim(input, " \t");
 		if (input != NULL && *input != '\0')
 			add_history(input);
 		if (!(*input))
@@ -224,7 +225,6 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-		ambigous = ft_strdup(input);
          if(!input[0])
 		 {
             continue ;
@@ -243,7 +243,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		// print_commands(cmd);
+		print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
 		decider(cmd);

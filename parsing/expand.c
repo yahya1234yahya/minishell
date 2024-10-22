@@ -172,6 +172,7 @@ char *expand_variables(t_env	*env, char    *input)
             // printf("%s\n", env_value);
             if (env_value)
             {
+                env_value = add_quotes(env_value);
                 while (*env_value)
                 {
                     new_input[j++] = *env_value;
