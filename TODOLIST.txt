@@ -66,3 +66,5 @@ bash-3.2$ echo $a
 b'
 
 >a echo hello >b lll
+
+echo > >>
