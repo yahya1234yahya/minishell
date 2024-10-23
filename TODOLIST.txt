@@ -53,10 +53,10 @@ export =asas //DONE
 
 ./ls/ (exit status) //DONE
 
-export + (doesn't exist) add it
-exit "" 
+export + (doesn't exist) add it  //DONE
+exit ""   // DONE
 
-env -i ./minishell followed by minishell > unset PATH
+env -i ./minishell followed by minishell > unset PATH  //DONE
 
 export a="b'"
 minishell > echo $a

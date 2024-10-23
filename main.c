@@ -194,12 +194,12 @@ int main(int argc, char **argv, char **envp)
 
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
-	if (*envp)
-	{
-		env = initenv(envp);
-		updateshlvl(env);
-	}
-	else
+	// if (*envp)
+	// {
+	// 	env = initenv(envp);
+	// 	updateshlvl(env);
+	// }
+	// else
 		env = noenv();
 	cmd->first_run = 1;
 	setandget(cmd);
