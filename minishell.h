@@ -107,7 +107,6 @@ void	handle_redirection_error(void);
 void	handle_export_sort(t_cmd *cmd, char	**envp);
 char	**handle_redirection_in(t_cmd *cmd, char **tokens);
 char	**handle_redirection_out(t_cmd *cmd, char **tokens);
-char* 	add_quotes(char* str);
 
 
 

@@ -15,9 +15,9 @@ READLINEDIR  =  $(shell brew --prefix readline)
 
 all: $(NAME)
 %.o: %.c $(HEADER)
-	$(CC) -g -fsanitize=address -c $< -o $@ -I $(READLINEDIR)/include 
+	$(CC) -c $< -o $@ -I $(READLINEDIR)/include -g3 -fsanitize=address
 $(NAME): $(OBJS)
-	$(CC) -g -fsanitize=address $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory 
+	$(CC)   $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g3 -fsanitize=address
 clean:
 	rm -f $(OBJS)
 fclean: clean
