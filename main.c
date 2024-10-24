@@ -168,7 +168,7 @@ void	updateshlvl(t_env *env)
 	shlvlchar = envsearch2(env, "SHLVL");
 	if (!shlvlchar)
 	{
-		envset(env, "SHLVL", "1");
+		envset(env, "SHLVL", "1");	
 		return ;
 	}
 	shelllevel = ft_atoi(shlvlchar);
@@ -249,7 +249,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		// print_commands(cmd);
+		print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
 		decider(cmd);

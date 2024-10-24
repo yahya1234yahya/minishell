@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/23 21:41:49 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:44:26 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,27 +104,12 @@ static void no_args(char *data)
 	}
 }
 
-
 void	ft_exit(char *data, int flag)
 {
 	long long	num;
 	int			i;
 	char		**str;
 
-	int r = 0;
-	while (data[i])
-	{
-		if (data[i] == ' ' || data[i] == '\t' || data[i] == '\'' || data[i] == '\"')
-			r++;
-	}
-	if (r == ft_strlen(data))
-	{
-		ft_putstr_fd("exit\n", 1);
-		setandget(NULL)->exs = 255;
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		exit(setandget(NULL)->exs);
-	}
-	
 	no_args(data);
 	str = preparexit(data);
 	i = 0;

@@ -113,8 +113,10 @@ int handledeletedfile(t_cmd *cmd)
 		}
 		else
 		{
-			ft_putstr_fd("HOME not set exiting the program\n", 2);
-			exit(1);
+			ft_putstr_fd("HOME not set going to root\n", 2);
+			chdir("/");
+			envset2(cmd->env, "OLDPWD", "/");
+			envset2(cmd->env, "PWD", "/");
 			return (setandget(NULL)->exs = 1);
 		}
 		
