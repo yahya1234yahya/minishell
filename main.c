@@ -163,9 +163,15 @@ int	check_ambigous(char *input, char *ambigous)
 }
 void	updateshlvl(t_env *env)
 {
-	int shelllevel;
-
-	shelllevel = ft_atoi(envsearch2(env, "SHLVL"));
+	int		shelllevel;
+	char	*shlvlchar;
+	shlvlchar = envsearch2(env, "SHLVL");
+	if (!shlvlchar)
+	{
+		envset(env, "SHLVL", "1");
+		return ;
+	}
+	shelllevel = ft_atoi(shlvlchar);
 	if (shelllevel < 0)
 		envset(env, "SHLVL", "0");
 	else if (shelllevel > 999)
