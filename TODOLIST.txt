@@ -58,14 +58,14 @@ exit ""   // DONE
 
 env -i ./minishell followed by minishell > unset PATH  //DONE
 
-export a="b'"
-minishell > echo $a
-minishell: syntax error
+export a="b'" //DONE
+minishell > echo $a //DONE
+minishell: syntax error //DONE
 
-bash-3.2$ echo $a
+bash-3.2$ echo $a //DONE
 b'
 
->a echo hello >b lll
+>a echo hello >b lll //DONE
 
 echo > >>
 echo >          >           < "echo"
