@@ -68,3 +68,4 @@ b'
 >a echo hello >b lll
 
 echo > >>
+echo >          >           < "echo"

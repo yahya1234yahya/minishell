@@ -65,6 +65,7 @@ typedef struct s_cmd
 	int		exs;
 	int 	first_run;
 	int		fd_hdoc;
+	int		found;
 	int		signal_exs_flag;
 	int		skip;
 	struct 	s_cmd *next;
@@ -80,6 +81,7 @@ typedef struct s_exp
 
 int g_signal;
 
+char*	add_d_quot(char* str);
 int 	ft_export(t_cmd *cmd);
 char	*ft_strtok(char *str, char *delim);
 int		parse(t_cmd *cmd, char *input, char **envp, int rec);

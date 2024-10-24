@@ -179,13 +179,7 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 		}
 		cmd->tokens = ft_strtok_all(cmd->input, " \t");
 		int i = 0;
-		if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
-			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<"))
-		{
-			*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
-			check_cmd(cmd);
-			cmd->tokens++;
-		}
+		
 		while (cmd->tokens && *(cmd->tokens))
 		{
 			check_cases(cmd);

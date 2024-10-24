@@ -60,7 +60,7 @@ int count_new_input(t_env	*env, char    *input)
             name = ft_strdup("?");
             env_value = envsearch3(env, name);
             if (env_value)
-                count += strlen(env_value);
+                count += strlen(add_d_quot(env_value));
             free(name);
         }
         else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
@@ -78,7 +78,7 @@ int count_new_input(t_env	*env, char    *input)
             name[i] = '\0';
             env_value = envsearch3(env, name);
             if (env_value)
-                count += strlen(env_value);
+                count += strlen(add_d_quot(env_value));
             free(name);
         }
         else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*input + 1)))
@@ -146,6 +146,7 @@ char *expand_variables(t_env	*env, char    *input)
             env_value = envsearch3(env, name);
             if (env_value)
             {
+                env_value = add_d_quot(env_value);
                 while (*env_value)
                 {
                     new_input[j++] = *env_value;
@@ -172,6 +173,7 @@ char *expand_variables(t_env	*env, char    *input)
             // printf("%s\n", env_value);
             if (env_value)
             {
+                env_value = add_d_quot(env_value);
                 while (*env_value)
                 {
                     new_input[j++] = *env_value;

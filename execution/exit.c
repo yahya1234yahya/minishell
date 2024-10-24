@@ -112,9 +112,9 @@ void	ft_exit(char *data, int flag)
 	char		**str;
 
 	int r = 0;
-	while (data[r])
+	while (data[i])
 	{
-		if (data[r] == ' ' || data[r] == '\t' || data[r] == '\'' || data[r] == '\"')
+		if (data[i] == ' ' || data[i] == '\t' || data[i] == '\'' || data[i] == '\"')
 			r++;
 	}
 	if (r == ft_strlen(data))

@@ -97,7 +97,13 @@ void	check_cmd(t_cmd *cmd)
 void	check_cases(t_cmd *cmd)
 {
 	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
-	if (ft_strcmp(*(cmd->tokens), ">") == 0 || ft_strcmp(*(cmd->tokens), ">>") == 0
+	if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
+			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<") && cmd->found == 0)
+		{
+			cmd->found = 1;
+			check_cmd(cmd);
+		}
+	else if (ft_strcmp(*(cmd->tokens), ">") == 0 || ft_strcmp(*(cmd->tokens), ">>") == 0
 		|| ft_strcmp(*(cmd->tokens), "<") == 0)
 	{
 		if (ft_strcmp(*(cmd->tokens), "<") == 0)

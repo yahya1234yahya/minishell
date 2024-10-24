@@ -243,7 +243,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		print_commands(cmd);
+		// print_commands(cmd);
 		// exit(0);
 		unlink("tmp_hdoc");
 		decider(cmd);
