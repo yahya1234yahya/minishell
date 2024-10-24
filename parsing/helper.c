@@ -163,13 +163,13 @@ int is_all_space(char *input)
 }
 int index_char(char *str)
 {
-    if (strcmp(str, "<") == 0)
+    if (ft_strcmp(str, "<") == 0)
         return (1);
-    else if (strcmp(str, ">") == 0)
+    else if (ft_strcmp(str, ">") == 0)
         return (2);
-    else if (strcmp(str, ">>") == 0)
+    else if (ft_strcmp(str, ">>") == 0)
         return (3);
-    else if (strcmp(str, "<<") == 0)
+    else if (ft_strcmp(str, "<<") == 0)
         return (4);
     else 
         return (2);
