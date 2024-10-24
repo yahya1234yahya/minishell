@@ -137,6 +137,12 @@ int handledeletedfile(t_cmd *cmd)
 }
 
 
+void setnewandoldpwd(t_cmd *cmd, char *current_path, char *destination)
+{
+	envset2(cmd->env, "OLDPWD", current_path);
+	envset2(cmd->env, "PWD", destination);
+}
+
 int changedir(t_cmd *cmd)
 {
 	char *home;
@@ -145,35 +151,23 @@ int changedir(t_cmd *cmd)
 
 	current_path = getcwd(NULL, 0);
 	if (!current_path)
-	{
-		handledeletedfile(cmd);
-		return (setandget(NULL)->exs = 1, 1);
-	}
-	if (cmd->args == NULL)
+		return (handledeletedfile(cmd), setandget(NULL)->exs = 1, 1);
+	if (!cmd->args)
 	{
 		if ((home = envsearch2(cmd->env, "HOME")) == NULL)
 			return (free(current_path), setandget(NULL)->exs = 1, ft_putstr_fd("HOME not set\n", 2), -1);
 		if(chdir(home) == -1)
-		{
-			printerror(home, errno);
-			return (free(current_path), setandget(NULL)->exs = 1, -1);
-		}
-		envset2(cmd->env, "OLDPWD", current_path);
-		envset2(cmd->env, "PWD", getcwd(NULL, 0));
+			return (printerror(home, errno), free(current_path), setandget(NULL)->exs = 1, -1);
+		setnewandoldpwd(cmd, current_path, home);
 	}
 	else if(ft_strcmp(cmd->args, "\"\"") == 0)
-	{
 		return (free(current_path), setandget(NULL)->exs = 0, 0);
-	}
 	else
 	{
 		destination = preparearcd(cmd);
 		if (checkiffail(cmd, destination, current_path) == -1)
 			return (free(current_path), -1);
-		envset2(cmd->env, "OLDPWD", current_path);
-		envset2(cmd->env, "PWD", getcwd(NULL, 0));
+		setnewandoldpwd(cmd, current_path, destination);
 	}
-	free(current_path);
-	return (0);
+	return (free(current_path), 0);
 }
-
