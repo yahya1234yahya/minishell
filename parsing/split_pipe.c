@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   split_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:51:29 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/26 16:27:47 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:05:32 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //DONE
 #include "../minishell.h"
 
-void	split_pipe(t_cmd *cmd, char *input, char **envp)
+void	split_pipe(t_cmd *cmd, char *input, t_env *envp)
 {
 	char	*token;
 	int		i;
@@ -28,7 +28,7 @@ void	split_pipe(t_cmd *cmd, char *input, char **envp)
 		{
 			cmd->next = init_cmd();
 			cmd = cmd->next;
-			cmd->env = initenv(envp);
+			cmd->env = envp;
 		}
 	}
 }

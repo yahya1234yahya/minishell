@@ -172,7 +172,7 @@ int			is_all_space(char *input);
 char		*expand_variables(t_env *env, char *input);
 int			index_char(char *str);
 void		handle_heredoc(char *input, t_cmd *cmd);
-void		split_pipe(t_cmd *cmd, char *input, char **envp);
+void		split_pipe(t_cmd *cmd, char *input, t_env *envp);
 char		**ft_strtok_all(char *str, char *delim);
 void		check_quots(char c, int *single_q, int *double_q);
 int			redouthelper(t_cmd *cmd);

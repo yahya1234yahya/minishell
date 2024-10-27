@@ -1,3 +1,4 @@
+
 NAME = minishell
 SRCS = main.c parsing/parsing.c parsing/ft_strtok.c parsing/check_complete.c \
 execution/pwd.c execution/decider.c \
@@ -17,11 +18,10 @@ READLINEDIR  =  $(shell brew --prefix readline)
 
 all: $(NAME)
 %.o: %.c $(HEADER)
-	$(CC) -c $< -o $@ -I $(READLINEDIR)/include -g -fsanitize=address
+	$(CC) -c $< -o $@ -I $(READLINEDIR)/include -g
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g -fsanitize=address
-clean:
-	rm -f $(OBJS)
+	$(CC) $(OBJS) -o $(NAME) -L $(READLINEDIR)/lib -lreadline -lhistory -g
+	# rm -f $(OBJS)
 fclean: clean
 	rm -f $(NAME)
 re: fclean all

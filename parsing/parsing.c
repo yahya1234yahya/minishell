@@ -77,17 +77,17 @@ char	*expand_main(t_env *env, char *input)
 	if (ambigous(tokens, env) == 0)
 		return (NULL);
 	i = 0;
-	while (tokens && tokens[i])
-	{
-		if (i == 0)
-			input = ft_strdup(tokens[i]);
-		else
-		{
-			input = ft_strjoin(input, " ");
-			input = ft_strjoin(input, tokens[i]);
-		}
-		i++;
-	}
+	// while (tokens && tokens[i])
+	// {
+	// 	if (i == 0)
+	// 		input = ft_strdup(tokens[i]);
+	// 	else
+	// 	{
+	// 		input = ft_strjoin(input, " ");
+	// 		input = ft_strjoin(input, tokens[i]);
+	// 	}
+	// 	i++;
+	// }
 	return (input);
 }
 

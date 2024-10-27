@@ -90,7 +90,7 @@ int	changedir(t_cmd *cmd)
 			return (printerror("cd", ERANGE), setandget(NULL)->exs = 1, 1);
 		return (caseofnocp(cmd, current_path));
 	}
-	if (cmd->args == NULL)
+	if (cmd->args == NULL || cmd->args[0] == '\0')
 		return (headhome(cmd, current_path));
 	else if (ft_strcmp(cmd->args, "\"\"") == 0)
 		return (setandget(NULL)->exs = 0, 0);

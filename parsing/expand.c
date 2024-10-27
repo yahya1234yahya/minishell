@@ -34,6 +34,7 @@ char	*expand_one(t_expa *expa, char *input, t_env *env)
 {
 	input++;
 	expa->name = ft_strdup("?");
+
 	expa->env_value = envsearch3(env, expa->name);
 	if (expa->env_value)
 	{
@@ -61,6 +62,7 @@ char	*expand_two(t_expa *expa, char *input, t_env *env)
 	}
 	expa->name[expa->i] = '\0';
 	expa->env_value = envsearch3(env, expa->name);
+	// printf("expa->env_value = %s\n", expa->env_value);
 	if (expa->env_value)
 	{
 		expa->env_value = add_d_quot(expa->env_value);
@@ -72,7 +74,6 @@ char	*expand_two(t_expa *expa, char *input, t_env *env)
 	}
 	return (input);
 }
-
 int	count_new_input(t_env *env, char *input)
 {
 	t_count	co;

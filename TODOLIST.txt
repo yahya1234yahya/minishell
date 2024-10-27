@@ -71,3 +71,7 @@ echo << < // DONE
 
 echo > > >  // DONE
 echo <> |echo by // DONE
+
+
+
+first run NO OLD PWD NO $_

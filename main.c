@@ -235,7 +235,7 @@ int main(int argc, char **argv, char **envp)
             continue ;
 		 }
 		input_res = ft_strdup(input);
-		split_pipe(cmd, input, envp);	
+		split_pipe(cmd, input, cmd->env);	
 		if(check_pipe(input_res) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);
