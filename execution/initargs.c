@@ -34,8 +34,9 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->hdoc_delimiter = NULL;
 	cmd->signal_exs_flag = 0;
 	return (cmd);
-};
-t_cmd	*init_cmd()
+}
+
+t_cmd	*init_cmd(void)
 {
 	t_cmd	*new_cmd;
 
@@ -60,23 +61,4 @@ t_cmd	*init_cmd()
 	new_cmd->hdoc_delimiter = NULL;
 	new_cmd->exs = 0;
 	return (new_cmd);
-};
-
-// typedef struct s_cmd
-// {
-// 	char	*input;
-// 	char	*cmd;  
-// 	char	*args;
-// 	int		pipe;
-// 	int		redout;
-// 	int		redin;
-// 	int		ft_in;
-// 	int		ft_out;
-// 	char 	*path;
-// 	char	*hdoc;
-// 	t_env	*env;
-// 	t_data	data;
-// 	char	**splited;
-// 	int		exs;
-// 	struct 	s_cmd *next;
-// } 
+}

@@ -6,13 +6,13 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/24 15:44:26 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/26 00:49:35 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	print_numeric_error(char *str)
+void	print_numeric_error(char *str)
 {
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(str, 2);
@@ -20,16 +20,16 @@ static void	print_numeric_error(char *str)
 	setandget(NULL)->exs = 255;
 	exit(255);
 }
-static char convertexit(int num)
+
+char	convertexit(int num)
 {
 	if (num < 0)
 		return (256 + num);
-	else
 	num = (unsigned char )num;
 	return (num);
 }
 
-static long long	ft_atoil(const char *str)
+long long	ft_atoil(const char *str)
 {
 	int					i;
 	int					sign;
@@ -49,7 +49,6 @@ static long long	ft_atoil(const char *str)
 	while (ft_isdigit(str[i]))
 	{
 		rest = rest * 10 + (str[i] - '0');
-
 		if (sign == -1 && rest > 9223372036854775808ULL)
 			return (LLONG_MAX);
 		if (sign == 1 && rest > 9223372036854775807ULL)
@@ -61,7 +60,7 @@ static long long	ft_atoil(const char *str)
 	return (rest * sign);
 }
 
-static char **preparexit(char *data)
+char	**preparexit(char *data)
 {
 	char	**str;
 	int		i;
@@ -82,7 +81,7 @@ static char **preparexit(char *data)
 	return (str);
 }
 
-static int too_many_args(char **str, int flag)
+int	too_many_args(char **str, int flag)
 {
 	if (str[1])
 	{
@@ -93,40 +92,4 @@ static int too_many_args(char **str, int flag)
 		return (1);
 	}
 	return (0);
-}
-
-static void no_args(char *data)
-{
-	if (!data)
-	{
-		ft_putstr_fd("exit\n", 1);
-		exit(setandget(NULL)->exs);
-	}
-}
-
-void	ft_exit(char *data, int flag)
-{
-	long long	num;
-	int			i;
-	char		**str;
-
-	no_args(data);
-	str = preparexit(data);
-	i = 0;
-	if (str[0][i] == '-' || str[0][i] == '+')
-		i++;
-	while (str[0][i])
-	{
-		if (!ft_isdigit(str[0][i]))
-			print_numeric_error(str[0]);
-		i++;
-	}
-	if (too_many_args(str, flag))
-		return ;
-	num = ft_atoil(str[0]);
-	if (num == LLONG_MAX )
-		print_numeric_error(str[0]);
-	if (flag)
-		ft_putstr_fd("exit\n", 1);
-	exit(convertexit(num));
 }

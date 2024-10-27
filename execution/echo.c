@@ -12,70 +12,7 @@
 
 #include "../minishell.h"
 
-// static int echohelper(t_cmd *cmd)
-// {
-// 	if (cmd->args[0] == '-' && cmd->args[1] == 'n' && cmd->args[2] == ' ')
-// 		return (3);
-// 	return (0);
-// }
-
-// int	ft_echo(t_cmd *cmd)
-// {
-//     int option;
-//     int i;
-// 	int	j;
-	
-// 	i = 0;
-// 	option = 0;
-// 	if (cmd->args == NULL || cmd->args[0] == '\0')
-// 	{
-// 		if (write(STDOUT_FILENO, "\n", 1) == -1)
-// 			return(perror("write"), -1);
-// 		return (0);
-// 	}
-//     while (cmd->args[i] == '-' && cmd->args[i + 1] == 'n')
-//     {
-//         j = i + 2;
-//         while (cmd->args[j] == 'n')
-//             j++;
-//         if (cmd->args[j] == ' ' || cmd->args[j] == '\0')
-//         {
-//             option = 1;
-//             i = j;
-//             while (cmd->args[i] == ' ')
-//                 i++;
-//         }
-//         else
-//             break;
-//     }
-//     if(write(STDOUT_FILENO, &cmd->args[i], strlen(&cmd->args[i])) == -1)
-// 		return (perror("write"),-1);
-// 	if (!option)
-//         if (write(1, "\n", 1) == -1)
-// 			return(perror("write"),-1);
-// 		return (0);
-// }
-
-
-static int check_string(char *str)
-{
-    int i = 0;
-
-    if (strlen(str) < 2)
-        return 0;
-
-    if (str[0] == '-' && str[1] == 'n')
-	{
-        i = 2;
-        while (str[i] == 'n')
-            i++;
-        if (str[i] == '\0')
-            return 1;
-    }
-    return (0);
-}
-
-static char **preparetokecho(char *str)
+static char	**preparetokecho(char *str)
 {
 	char	**tok;
 	int		i;
@@ -90,9 +27,9 @@ static char **preparetokecho(char *str)
 	return (tok);
 }
 
-static int allspace(char *str)
+static int	allspace(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str == NULL)
@@ -100,7 +37,6 @@ static int allspace(char *str)
 		ft_putstr_fd("\n", 1);
 		return (1);
 	}
-	
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\'' || str[i] == '\"')
 		i++;
 	if (i == ft_strlen(str))
@@ -110,41 +46,6 @@ static int allspace(char *str)
 	}
 	return (0);
 }
-	
-// int	ft_echo(t_cmd *cmd)
-// {
-// 	int		flag;
-// 	int		i;
-// 	char	**tok;
-// 	char	*str;
-
-// 	flag = 0;
-// 	if (cmd->args == NULL || cmd->args[0] == '\0' )
-// 		if (write(STDOUT_FILENO, "\n", 1) == -1)
-// 			return (perror("write"), setandget(NULL)->exs = 1,  -1);
-// 		else
-// 			return (0);
-// 	tok = preparetokecho(cmd->args);
-// 	i = 0;
-// 	while (tok[i])
-// 	{
-// 		if (check_string(tok[i]))
-// 		{
-// 			flag = 1;
-// 			i++;
-// 		}else
-// 			break;
-// 	}
-// 	if (tok[i] == NULL)
-// 		return (0);
-// 	cmd->args = remove_quotes(cmd->args);
-// 	str = ft_strnstr(cmd->args, tok[i], ft_strlen(cmd->args));
-// 	ft_putstr_fd(str, 1);
-// 	if (!flag)
-// 		ft_putstr_fd("\n", 1);
-// 	return (0);
-// }
-
 
 static int	handle_write_error(void)
 {
@@ -170,7 +71,7 @@ static int	handle_flags(char **tok, int *flag)
 			i++;
 		}
 		else
-			break;
+			break ;
 	}
 	return (i);
 }
@@ -198,6 +99,3 @@ int	ft_echo(t_cmd *cmd)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
-
-
-//TODO protect write

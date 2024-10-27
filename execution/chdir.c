@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static char *preparearcd(t_cmd *cmd)
+char	*preparearcd(t_cmd *cmd)
 {
 	char	**tok;
 	int		i;
@@ -27,7 +27,7 @@ static char *preparearcd(t_cmd *cmd)
 	return (tok[0]);
 }
 
-static void printerror(char *path, int error)
+void	printerror(char *path, int error)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(path, 2);
@@ -37,17 +37,18 @@ static void printerror(char *path, int error)
 		ft_putstr_fd(": Permission denied\n", 2);
 	else if (error == 20)
 		ft_putstr_fd(": Not a directory\n", 2);
+	else if (error == ERANGE)
+		ft_putstr_fd(": File name too long\n", 2);
 	else
 		ft_putstr_fd(": unknown error\n", 2);
-};
+}
 
-
-static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
+int	checkiffail(t_cmd *cmd, char *destination, char *current_path)
 {
-	int i;
-	char *cwd;
+	int		i;
+	char	cwd[PATH_MAX];
 
-	cwd = getcwd(NULL, 0);
+	getcwd(cwd, PATH_MAX);
 	i = chdir(destination);
 	if (i == -1)
 	{
@@ -55,12 +56,10 @@ static int checkiffail(t_cmd *cmd, char *destination, char *current_path)
 		setandget(NULL)->exs = 1;
 		return (setandget(NULL)->exs = 1, -1);
 	}
-	free(cwd);
 	return (0);
 }
 
-
-static char	*ft_strrchr(char	*s, int c)
+char	*ft_strrchr(char	*s, int c)
 {
 	size_t			i;
 	unsigned char	*str;
@@ -80,94 +79,21 @@ static char	*ft_strrchr(char	*s, int c)
 	return (NULL);
 }
 
-static char *get_directory_path(char *path)
+int	changedir(t_cmd *cmd)
 {
-	char *last_slash;
-	
-	last_slash = ft_strrchr(path, '/');
-	if (last_slash)
+	char	*destination;
+	char	current_path[PATH_MAX];
+
+	if (getcwd(current_path, PATH_MAX) == NULL)
 	{
-		*last_slash = '\0';
-		return (path);
+		if (errno == ERANGE)
+			return (printerror("cd", ERANGE), setandget(NULL)->exs = 1, 1);
+		return (caseofnocp(cmd, current_path));
 	}
-	return (NULL);
-}
-
-int handledeletedfile(t_cmd *cmd)
-{
-	char *destination;
-	char *current_path;
-
-	ft_putstr_fd("current file is not accesisble\n", 2);
-	ft_putstr_fd("trying to go back to the last valid directory\n", 2);
-	current_path = envsearch3(cmd->env, "PWD");
-	if (!current_path)
-	{
-		ft_putstr_fd("failed to get the current last directory from env trying to go Home\n", 2);
-		if (access(envsearch3(cmd->env, "HOME"), F_OK) == 0)
-		{
-			chdir(envsearch3(cmd->env, "HOME"));
-			envset2(cmd->env, "OLDPWD", envsearch3(cmd->env, "HOME"));
-			envset2(cmd->env, "PWD", envsearch3(cmd->env, "HOME"));
-			return (setandget(NULL)->exs = 1);
-		}
-		else
-		{
-			ft_putstr_fd("HOME not set going to root\n", 2);
-			chdir("/");
-			envset2(cmd->env, "OLDPWD", "/");
-			envset2(cmd->env, "PWD", "/");
-			return (setandget(NULL)->exs = 1);
-		}
-		
-		return (setandget(NULL)->exs = 1);
-	}
-	while (1)
-	{
-		current_path = get_directory_path(current_path);
-		if (access(current_path, F_OK) == 0)
-		{
-			chdir(current_path);	
-			break;
-		}
-	}
-	envset2(cmd->env, "OLDPWD", current_path);
-	envset2(cmd->env, "PWD", current_path);
-	return (0);
-}
-
-
-void setnewandoldpwd(t_cmd *cmd, char *current_path, char *destination)
-{
-	envset2(cmd->env, "OLDPWD", current_path);
-	envset2(cmd->env, "PWD", destination);
-}
-
-int changedir(t_cmd *cmd)
-{
-	char *home;
-	char *destination;
-	char *current_path;
-
-	current_path = getcwd(NULL, 0);
-	if (!current_path)
-		return (handledeletedfile(cmd), setandget(NULL)->exs = 1, 1);
-	if (!cmd->args)
-	{
-		if ((home = envsearch2(cmd->env, "HOME")) == NULL)
-			return (free(current_path), setandget(NULL)->exs = 1, ft_putstr_fd("HOME not set\n", 2), -1);
-		if(chdir(home) == -1)
-			return (printerror(home, errno), free(current_path), setandget(NULL)->exs = 1, -1);
-		setnewandoldpwd(cmd, current_path, home);
-	}
-	else if(ft_strcmp(cmd->args, "\"\"") == 0)
-		return (free(current_path), setandget(NULL)->exs = 0, 0);
+	if (cmd->args == NULL)
+		return (headhome(cmd, current_path));
+	else if (ft_strcmp(cmd->args, "\"\"") == 0)
+		return (setandget(NULL)->exs = 0, 0);
 	else
-	{
-		destination = preparearcd(cmd);
-		if (checkiffail(cmd, destination, current_path) == -1)
-			return (free(current_path), -1);
-		setnewandoldpwd(cmd, current_path, destination);
-	}
-	return (free(current_path), 0);
+		return (normalcase(cmd, current_path));
 }

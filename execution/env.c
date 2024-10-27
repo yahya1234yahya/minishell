@@ -12,37 +12,6 @@
 
 #include "../minishell.h"
 
-
-
-// t_env	*ft_lstnew(void *content)
-// {
-// 	t_env	*node;
-// 	char	**split;
-// 	int 	i;
-// 	char	*valuejoined;
-// 	char *typecast;
-
-// 	typecast = (char *)content;
-// 	node = safe_malloc(sizeof(t_env), 'a');
-// 	if (!node)
-// 		return (NULL);
-// 	i = 0;
-// 	while (typecast[i] && typecast[i] != '=')
-// 		i++;
-// 	node->key = ft_substr(typecast, 0, i);
-// 	node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
-// 	if (!node->value)
-// 	{
-// 		node->value = ft_strdup("");
-// 	}
-// 	node->value[ft_strlen(node->value)] = '\0';
-// 	if (strcmp(node->value,"\0") == 0)
-// 		node->value = NULL;
-// 	node->name = content;
-// 	node->next = NULL;
-// 	return (node);
-// };
-
 t_env	*ft_lstnew(void *content)
 {
 	t_env	*node;
@@ -68,8 +37,7 @@ t_env	*ft_lstnew(void *content)
 	return (node);
 }
 
-
-void	ft_lstadd_back(t_env **lst, t_env *newnode)
+void	addback(t_env **lst, t_env *newnode)
 {
 	t_env	*last;
 
@@ -94,7 +62,8 @@ void	ft_lstadd_back(t_env **lst, t_env *newnode)
 	while (last->next)
 		last = last->next;
 	last->next = newnode;
-};
+}
+
 void	printenv2(t_env *current)
 {
 	while (current)
@@ -137,11 +106,6 @@ int	printenv(t_env *env, int flag)
 				current = current->next;
 				continue;
 			}
-			// if (ft_strcmp(current->key, "_") == 0)
-			// {
-			// 	current = current->next;
-			// 	continue;
-			// }
 			if (current->value != NULL)
 			{
 				printf("%s=", current->key);
@@ -196,38 +160,9 @@ t_env *envset2(t_env *env, char *key, char *value)
 		}
 		temp = temp->next;
 	}
-	ft_lstadd_back(&env, ft_lstnew(ft_strjoin(ft_strjoin(key, "="), value)));
+	addback(&env, ft_lstnew(ft_strjoin(ft_strjoin(key, "="), value)));
 	return (env);
 }
-
-
-// t_env	*envset(t_env *env, char *name, char *value)
-// {
-// 	t_env	*current;
-// 	char	*new;
-// 	int		i;
-
-// 	i = 0;
-// 	current = env;
-// 	while (current)
-// 	{
-// 		if (ft_strnstr(current->key, name, ft_strlen(current->key)))
-// 		{
-// 			if (!ft_strcmp(name, "_") && !ft_strcmp(current->key, name))
-// 			{	
-// 				current->value = value;
-// 				return (env);
-// 			}
-// 			else if (ft_strcmp(name, "_"))
-// 			{
-// 				current->value = value;
-// 				return (env);
-// 			}
-// 		}
-// 		current = current->next;
-// 	}
-// 	return (env);
-// };
 
 t_env	*initenv(char **envp)
 {
@@ -243,7 +178,7 @@ t_env	*initenv(char **envp)
 		if (!current)
 			return (NULL);
 		if (ft_strcmp(current->key, "_"))
-			ft_lstadd_back(&env, current);
+			addback(&env, current);
 		i++;
 	}
 	return (env);

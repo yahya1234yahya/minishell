@@ -34,12 +34,12 @@ static char	*ft_strstr(const char	*haystack, const char	*needle)
 		i++;
 	}
 	return (NULL);
-};
+}
 
-int	ft_pwd(t_env *env)  //TODO test mziyan
+int	ft_pwd(t_env *env)
 {
 	t_env	*wd;
-	char 	*pwd;
+	char	*pwd;
 
 	wd = envsearch(env, "PWD");
 	if (!wd)
@@ -52,9 +52,8 @@ int	ft_pwd(t_env *env)  //TODO test mziyan
 		}
 		printf("%s\n", pwd);
 		free(pwd);
-		return 0;
+		return (0);
 	}
 	printf("%s\n", wd->value);
 	return (0);
 }
-

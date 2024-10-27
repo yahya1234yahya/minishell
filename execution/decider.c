@@ -28,7 +28,7 @@ int	isbuiltin(t_cmd *cmd, int value, int flag)
 	if (value == 5)
 		retv = changedir(cmd);
 	if (value == 6)
-		retv = ft_export(cmd);
+		retv = preexport(cmd);
 	if (value == 7)
 		retv = ft_unset(&cmd->env, cmd);
 	return (retv);
@@ -74,7 +74,7 @@ void	exportlastcommand(t_cmd *cmd)
 	char	**last_argument;
 	int		i;
 
-	if (cmd->args == NULL)
+	if (cmd->args == NULL || cmd->args[0] == '\0')
 		envset2(cmd->env, "_", cmd->path);
 	else
 	{
@@ -82,8 +82,8 @@ void	exportlastcommand(t_cmd *cmd)
 		i = 0;
 		while (last_argument[i])
 			i++;
-		if (i != 0)
-			envset2(cmd->env, "_", last_argument[i - 1]);
+		printf("last_argument: %s\n", last_argument[i - 1]);
+		envset2(cmd->env, "_", last_argument[i - 1]);
 	}
 }
 
@@ -105,5 +105,7 @@ void	decider(t_cmd *cmd)
 		exportlastcommand(cmd);
 	}
 	else
+	{
 		executemultiple(cmd);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:04:26 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/21 20:40:29 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:33:08 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_strdup(char *s1)
 	return (s2);
 }
 
-int ft_strcmp2(const char *s1, const char *s2)
+int	ft_strcmp2(const char *s1, const char *s2)
 {
 	while (*s1 && *s2)
 	{

@@ -12,90 +12,87 @@
 
 #include "../minishell.h"
 
-int preparecmd(t_cmd *cmd)
+void static	perrornb(char *str)
 {
-	char *tmp;
-	int i;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": command not found\n", 2);
+}
+
+void	argsprepare(t_cmd *cmd)
+{
+	char	*tmp;
+	int		i;
+
 	i = 0;
+	tmp = ft_strjoin(ft_strjoin(cmd->path, " "), cmd->args);
+	cmd->splited = ft_strtok_all(tmp, " ");
+	while (cmd->splited[i])
+	{
+		cmd->splited[i] = remove_quotes(cmd->splited[i]);
+		i++;
+	}
+}
+
+//  
+
+
+int	preparecmd(t_cmd *cmd)
+{
 	if (!cmd->path)
 	{
 		if (cmd->cmd[0] == '.' || cmd->cmd[0] == '/')
-		{
 			cmd->path = ft_strdup(cmd->cmd);
-		}
 		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->cmd, 2);
-			ft_putstr_fd(": command not found\n", 2);
-			setandget(NULL)->exs = 127;
-			return (127);		
-		}
-		// cmd->path = ft_strdup(cmd->cmd);
+			return (perrornb(cmd->cmd), setandget(NULL)->exs = 127, 127);
 	}
 	if (cmd->args)
-	{	
-		tmp = ft_strjoin(cmd->path, " ");
-		tmp = ft_strjoin(tmp, cmd->args);
-		cmd->splited = ft_strtok_all(tmp, " ");
-		while (cmd->splited[i])
-		{
-			cmd->splited[i] = remove_quotes(cmd->splited[i]);
-			i++;
-		}
-	}else
+		argsprepare(cmd);
+	else
 	{
 		cmd->splited = (char **)safe_malloc(sizeof(char *) * 2, 'a');
-		cmd->splited[0] = cmd->path;
-		cmd->splited[1] = NULL;
-	};
+		(1) && (cmd->splited[0] = cmd->path, cmd->splited[1] = NULL);
+	}
 	return (0);
 }
 
-int ft_errorwrite(t_cmd *cmd)
+int	ft_errorwrite2(char *str, int ernum)
 {
-	struct stat path_stat;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(ernum), 2);
+	ft_putstr_fd("\n", 2);
+	return (1);
+}
+int	ft_errorwrite(t_cmd *cmd)
+{
+	struct stat	path_stat;
 	
 	if (stat(cmd->splited[0], &path_stat) == 0)
 	{
 		if(errno == ENOTDIR)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->splited[0], 2);
-			ft_putstr_fd(": is a directory\n", 2);
-			setandget(NULL)->exs = 126;
-			return (126);
+			ft_errorwrite2(cmd->splited[0], errno);
+			return (setandget(NULL)->exs = 126, 126);
 		}
-
 	}
-	// else
-	// {
-	// 	perror("stat");
-	// 	return (1);
-	// }
-
+	else
+	{
+		return (perror("perror"), 1);
+	}
 	if (access(cmd->splited[0], F_OK) == -1) //NOT FOUND ERROR (FOLDER OR COMMAND)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->splited[0], 2);
-		ft_putstr_fd(" : No such file or directory\n", 2);
-		setandget(NULL)->exs = 127;
-		return 127;
+		ft_errorwrite2(cmd->splited[0], errno);
+		return (setandget(NULL)->exs = 127, 127);
 	}
-
 	if (access(cmd->splited[0], X_OK) == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->splited[0], 2);
-		ft_putstr_fd(" : Permission denied\n", 2);
-		setandget(NULL)->exs = 126;
-		return 126;
+		ft_errorwrite2(cmd->splited[0], errno);
+		return (setandget(NULL)->exs = 126, 126);
 	}	
-
 	return 1;
 }
-
-
 
 int check_command(char *command)
 {
@@ -135,53 +132,37 @@ int check_command(char *command)
         ft_putstr_fd("minishell: ", 2);
         ft_putstr_fd(command, 2);
         ft_putstr_fd(": Permission denied\n", 2);
-        return (setandget(NULL)->exs = 126, 126);
+		return (setandget(NULL)->exs = 126, 126);
     }
     return (0);
 }
 
-
-
-int execfromsystem(t_cmd *cmd, char **envp)
+int	execfromsystem(t_cmd *cmd, char **envp)
 {
-	int pid;
-	int status;
-	int check;
+	int	pid;
+	int	s;
+	int	check;
 
-	check = preparecmd(cmd);
-	if (check)
-		return (check);
+	if (preparecmd(cmd))
+		return (cmd->exs);
 	check = check_command(cmd->splited[0]);
 	if (check)
 		return (check);
-
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			return (1);
-		}
-		if (pid == 0)
-		{
-			if (execve(cmd->splited[0], cmd->splited, envp) < 0)
-			{
-				perror("execve"); //TODO HERE
-				return (1);
-			}
-		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			if (WIFSIGNALED(status))
-			{
-				setandget(NULL)->exs = 128 + WTERMSIG(status);
-				return (128 + WTERMSIG(status));
-			}
-			else if (WIFEXITED(status))
-			{
-				setandget(NULL)->exs = WEXITSTATUS(status);
-				return WEXITSTATUS(status);
-			}
-		}
-	return 0;
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+	{
+		if (execve(cmd->splited[0], cmd->splited, envp) < 0)
+			return (perror("execve:"), 1);
+	}
+	else
+	{
+		waitpid(pid, &s, 0);
+		if (WIFSIGNALED(s))
+			return (setandget(NULL)->exs = 128 + WTERMSIG(s), 128 + WTERMSIG(s));
+		else if (WIFEXITED(s))
+			return (setandget(NULL)->exs = WEXITSTATUS(s), WEXITSTATUS(s));
+	}
+	return (0);
 }
