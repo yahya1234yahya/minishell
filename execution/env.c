@@ -131,4 +131,3 @@ t_env	*envset2(t_env *env, char *key, char *value)
 	addback(&env, ft_lstnew(ft_strjoin(ft_strjoin(key, "="), value)));
 	return (env);
 }
-

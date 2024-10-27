@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 18:04:25 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/27 19:43:45 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,51 +20,56 @@ void	parent(int *input, int *pipefd)
 	*input = pipefd[0];
 }
 
-int child(t_cmd *cmd, int input, int *pipefd)
+void	prechildredirection(t_cmd *cmd, int input, int *pipefd)
 {
-	int check;
-
-    close(pipefd[0]);
+	close(pipefd[0]);
 	if (cmd->skip == 1)
-			exit(1) ;
-    if (cmd->redin != 0)
-        dup2(cmd->ft_in, STDIN_FILENO);
+		exit(1);
+	if (cmd->redin != 0)
+		dup2(cmd->ft_in, STDIN_FILENO);
 	else
-        dup2(input, STDIN_FILENO);
-    if (cmd->redout != 0)
-        dup2(cmd->ft_out, STDOUT_FILENO);
+		dup2(input, STDIN_FILENO);
+	if (cmd->redout != 0)
+		dup2(cmd->ft_out, STDOUT_FILENO);
 	else if (cmd->next != NULL)
-        dup2(pipefd[1], STDOUT_FILENO);
-    close(pipefd[1]);
-	if(helper(cmd)!= 1337)
-		{
-			isbuiltin(cmd, helper(cmd), 0);
-			exit(0);
-		}
+		dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
+}
+
+void	child(t_cmd *cmd, int input, int *pipefd)
+{
+	int	check;
+
+	prechildredirection(cmd, input, pipefd);
+	if (helper(cmd) != 1337)
+	{
+		isbuiltin(cmd, helper(cmd), 0);
+		exit(0);
+	}
 	else
 	{
-		check =  preparecmd(cmd);
+		check = preparecmd(cmd);
 		if (check)
 			exit(check);
 		check = check_command(cmd->splited[0]);
 		if (check)
 			exit(check);
-		if (execve(cmd->splited[0], cmd->splited,convert(cmd)) == -1)
-		{ 
+		if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
+		{
 			perror("execve");
-			return (-1);
+			exit(1);
 		}
 	}
-    exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 int	executemultiple(t_cmd *cmd)
 {
-	pid_t	pid;
-	int		input;
-	int		pipefd[2];
-	int		status;
-	
+	int	input;
+	int	pipefd[2];
+	int	status;
+	int	pid;
+
 	input = STDIN_FILENO;
 	while (cmd)
 	{
@@ -73,25 +78,25 @@ int	executemultiple(t_cmd *cmd)
 		pipe(pipefd);
 		pid = fork();
 		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
+			return ((perror("fork"), setandget(NULL)->exs = 1), 1);
 		if (pid == 0)
-		{
-            if (child(cmd, input, pipefd) == -1)
-				exit(1);
-		}
-        else
+			child(cmd, input, pipefd);
+		else
 			parent(&input, pipefd);
-        cmd = cmd->next;
+		cmd = cmd->next;
 	}
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status))
-			setandget(NULL)->exs = 128 + WTERMSIG(status);
-		else if (WIFEXITED(status))
-			setandget(NULL)->exs = WEXITSTATUS(status);
+	waiter(pid, &status);
 	while (wait(NULL) > 0)
-        ;
+		;
+	return (0);
+}
+
+int	waiter(int pid, int *status)
+{
+	waitpid(pid, status, 0);
+	if (WIFSIGNALED(*status))
+		return (setandget(NULL)->exs = 128 + WTERMSIG(*status));
+	else if (WIFEXITED(*status))
+		return (setandget(NULL)->exs = WEXITSTATUS(*status));
 	return (0);
 }
