@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:15:25 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/27 13:34:11 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:27:57 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ int	count_word(char *input)
 	return (i);
 }
 
-char	*count_one(t_count *co, char *input, t_env *env)
+char	*count_one(t_count *co, char *input, t_env *env, int herdoc)
 {
 	input++;
 	co->name = ft_strdup("?");
 	co->env_value = envsearch3(env, co->name);
-	if (co->env_value)
+	if (co->env_value && herdoc == 0)
 		co->count += ft_strlen(add_d_quot(co->env_value));
+	if (co->env_value && herdoc == 1)
+		co->count += ft_strlen(co->env_value);
 	return (input);
 }

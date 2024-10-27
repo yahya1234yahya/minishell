@@ -87,9 +87,9 @@ void	read_herdoc(t_cmd *cmd, int is_quoted)
 			break ;
 		}
 		if (is_quoted)
-			line = add_quotes(line);
-		line = expand_variables(cmd->env, line);
-		line = remove_quotes(line);
+			line = remove_quotes(expand_variables(cmd->env, add_quotes(line), 1));
+		else
+			line = expand_variables(cmd->env, line, 1);
 		ft_putendl_fd(line, cmd->ft_in);
 		free(line);
 	}
@@ -105,8 +105,8 @@ void	handle_heredoc(char *input, t_cmd *cmd)
 	is_quoted = 0;
 	tmp_fd = dup(STDIN_FILENO);
 	signal(SIGINT, signalhandlerherdoc);
-	if (cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '\''
-		|| cmd->hdoc_delimiter[ft_strlen(cmd->hdoc_delimiter) - 1] == '"')
+	if (strchr(cmd->hdoc_delimiter, '\'')
+		|| strchr(cmd->hdoc_delimiter, '"'))
 		is_quoted = 1;
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
 	read_herdoc(cmd, is_quoted);

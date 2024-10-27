@@ -75,3 +75,5 @@ echo <> |echo by // DONE
 
 
 first run NO OLD PWD NO $_
+
+cat << a'b'c

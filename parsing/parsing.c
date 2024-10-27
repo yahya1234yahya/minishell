@@ -49,14 +49,14 @@ int	ambigous(char	**tokens, t_env *env)
 	i = 0;
 	while (tokens && tokens[i])
 	{
-		tokens[i] = expand_variables(env, tokens[i]);
+		tokens[i] = expand_variables(env, tokens[i], 0);
 		if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0
 			|| ft_strcmp(tokens[i], "<") == 0)
 		{
 			i++;
 			tmp = ft_strdup(tokens[i]);
 			if (tokens && tokens[i])
-				tokens[i] = expand_variables(env, tokens[i]);
+				tokens[i] = expand_variables(env, tokens[i], 0);
 			else
 				break ;
 			if (!tokens || !tokens[i][0] || (is_there_space(tokens[i])

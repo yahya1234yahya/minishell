@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:38:47 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/26 16:27:31 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:24:53 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_exit(char *path, char *word)
 
 void	check_cases(t_cmd *cmd)
 {
-	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
+	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens), 0);
 	if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
 		&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<")
 		&& cmd->found == 0)
