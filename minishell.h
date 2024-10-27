@@ -40,11 +40,80 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_check_r
+{
+	int i;
+    int d_q;
+    int s_q;
+    int out;
+    int in;
+}	t_check_r;
+
+typedef struct s_parse
+{
+	char	*next_word;
+	int		flags;
+	char	*delimiter;
+	char	*tmp_args;
+	int		i;
+}	t_parsing;
+typedef	struct s_check_c
+{
+	int		i;
+	int		found;
+	char	quote_char;
+} t_check_c;
+
+typedef	struct s_valid_command
+{
+	t_env	*tmp;
+	char	*path_env;
+	char	f_p[1024];
+	char	*dir;
+	char	*path_dup;
+}	t_valid;
 typedef struct s_data
 {
 	int 	originalfd[2];
 	int 	pipedfd[2];
 } t_data;
+
+typedef struct s_parse_it
+{
+	int 	count;
+	int		d_quot;
+	int 	s_quot;
+	char	c;
+	char	*res;
+	int		j;
+	int		z;
+}	t_parse;
+
+typedef struct s_expand
+{
+	int 	count;
+    int 	count_name;
+    int 	single_q;
+    int 	double_q;
+    int 	i;
+    int 	j;
+    char    *name;
+    char    *env_value;
+    char    *new_input;
+    char    *tmp;
+    char    *tmp2;
+} t_expa;
+
+typedef struct s_count
+{
+	int 	count;
+    int 	count_name;
+    int 	single_q;
+    int 	double_q;
+    int 	i;
+    char    *name;
+    char    *env_value;
+} t_count;
 
 typedef struct s_cmd
 {
@@ -92,7 +161,6 @@ void 	print_commands(t_cmd *head);
 int		is_all_space(char *input);
 char 	*expand_variables(t_env *env, char *input);
 int		index_char(char *str);
-void	my_free(t_cmd *t);
 void	handle_heredoc(char *input, t_cmd *cmd);
 void	split_pipe(t_cmd *cmd, char *input, char **envp);
 char	**ft_strtok_all(char *str, char *delim);
@@ -109,6 +177,24 @@ void	handle_redirection_error(void);
 void	handle_export_sort(t_cmd *cmd, char	**envp);
 char	**handle_redirection_in(t_cmd *cmd, char **tokens);
 char	**handle_redirection_out(t_cmd *cmd, char **tokens);
+int		check_exit(char *path, char *word);
+void    check_quots(char c, int *single_q, int  *double_q);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+int		count_word(char *input);
+char    *count_one(t_count *co, char *input, t_env *env);
+void	init_struct(t_expa *expa, char *input, t_env *env);
+int		count_new_input(t_env *env, char *input);
+int		index_char(char *str);
+int		is_all_space(char *input);
+char	*add_d_quot(char* str);
+void	ft_putendl_fd(char *s, int fd);
+char    chose_quotes(char   *str);
+void	print_exit_s(char *str, int i);
+int		is_there_space(char *input);
+char	*add_space(char *input);
+int		calculate_space(char *input);
+
 
 
 

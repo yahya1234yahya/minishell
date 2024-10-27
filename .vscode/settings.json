@@ -20,6 +20,10 @@
 		"type_traits": "c",
 		"vector": "c",
 		"complex": "c",
-		"stat.h": "c"
+		"stat.h": "c",
+		"__locale": "c",
+		"ios": "c",
+		"unordered_map": "c",
+		"typeinfo": "c"
 	}
 }

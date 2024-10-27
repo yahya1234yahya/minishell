@@ -3,69 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:25:59 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/21 18:45:01 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/26 16:27:17 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//DONE
 #include "../minishell.h"
-
-int	redouthelper(t_cmd *cmd)
-{
-	if (cmd->redout == 2)
-	{
-		return (O_RDWR | O_CREAT | O_TRUNC);
-	}
-	else if (cmd->redout == 3)
-	{
-		return (O_RDWR | O_CREAT | O_APPEND);
-	}
-	return (0);
-}
-
-char	*skip_whitespace(char *str)
-{
-	while (*str == ' ')
-		str++;
-	return (str);
-}
 
 int	is_valid_command(t_cmd *cmd, char *word)
 {
-	t_env	*tmp;
-	char	*path_env;
-	char	full_path[1024];
-	char	*dir;
-	char	*path_dup;
+	t_valid	valid;
 
-	tmp = envsearch(cmd->env, "PATH");
-	if (!tmp || tmp->key == NULL)
+	valid.tmp = envsearch(cmd->env, "PATH");
+	if (!valid.tmp || valid.tmp->key == NULL)
 		return (0);
 	if (!word || !*word)
 		return (0);
 	if (word[0] == '.' || word[0] == '/')
+		return (check_exit(cmd->path, word));
+	valid.path_env = valid.tmp->value;
+	valid.path_dup = ft_strdup(valid.path_env);
+	valid.dir = ft_strtok(valid.path_dup, ":");
+	while (valid.dir)
 	{
-		if (access(word, X_OK) == 0)
+		snprintf(valid.f_p, sizeof(valid.f_p), "%s/%s", valid.dir, word);
+		if (access(valid.f_p, X_OK) == 0)
 		{
-			cmd->path = ft_strdup(word);
+			cmd->path = ft_strdup(valid.f_p);
 			return (1);
 		}
-		return (0);
-	}
-	path_env = tmp->value;
-	path_dup = ft_strdup(path_env);
-	dir = ft_strtok(path_dup, ":");
-	while (dir)
-	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dir, word);
-		if (access(full_path, X_OK) == 0)
-		{
-			cmd->path = ft_strdup(full_path);
-			return (1);
-		}
-		dir = ft_strtok(NULL, ":");
+		valid.dir = ft_strtok(NULL, ":");
 	}
 	return (0);
 }
@@ -113,4 +83,15 @@ void	handle_export_sort(t_cmd *cmd, char	**envp)
 	cmd->input = ft_strdup("sort");
 	if (tmp)
 		cmd->next = tmp;
+}
+
+void	handle_args(t_cmd *cmd)
+{
+	if (cmd->args)
+	{
+		cmd->args = ft_strjoin(cmd->args, " ");
+		cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
+	}
+	else
+		cmd->args = ft_strdup(*(cmd->tokens));
 }

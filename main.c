@@ -230,13 +230,10 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-		ambigous = ft_strdup(input);
          if(!input[0])
 		 {
             continue ;
 		 }
-		// if (!check_ambigous(input, ambigous))
-		// 	continue ;
 		input_res = ft_strdup(input);
 		split_pipe(cmd, input, envp);	
 		if(check_pipe(input_res) == 0)
@@ -249,8 +246,7 @@ int main(int argc, char **argv, char **envp)
 		int check = parse(cmd, input, envp, 0);
         if(check == 0)   
 			continue ;
-		print_commands(cmd);
-		// exit(0);
+		// print_commands(cmd);
 		unlink("tmp_hdoc");
 		decider(cmd);
 		if (cmd->ft_in != STDIN_FILENO)

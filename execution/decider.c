@@ -82,7 +82,8 @@ void	exportlastcommand(t_cmd *cmd)
 		i = 0;
 		while (last_argument[i])
 			i++;
-		envset2(cmd->env, "_", last_argument[i - 1]);
+		if (i != 0)
+			envset2(cmd->env, "_", last_argument[i - 1]);
 	}
 }
 

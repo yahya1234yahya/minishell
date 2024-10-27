@@ -1,197 +1,132 @@
- #include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 13:17:25 by ymouigui          #+#    #+#             */
+/*   Updated: 2024/10/27 13:17:25 by ymouigui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void    check_quots(char c, int *single_q, int  *double_q)
-{
-    if (c == '\'' && *double_q == 0)
-        *single_q = !(*single_q);
-    else if (c == '\'' && *double_q == 1)
-        return ;
-    else if (c == '"' && *single_q == 0)
-        *double_q = !(*double_q);
-    else if (c == '"' && *single_q == 1)
-        return ;
-}
-int	ft_isalpha(int c)
-{
-	if ((c > 64 && c < 91) || (c > 96 && c < 123))
-		return (1);
-	else 
-		return (0);
-}
+#include "../minishell.h"
 
-int	ft_isdigit(int c)
+char	*count_two(t_count *co, char *input, t_env *env)
 {
-	if (c > 47 && c < 58)
-		return (1);
-	else
-		return (0);
-}
-
-int count_word(char *input)
-{
-    int i = 0;
-    while(input[i] && (ft_isdigit(input[i]) || ft_isalpha(input[i]) || input[i] == '_') )
-    {
-        i++;
-    }
-    return (i);
-
+	input++;
+	co->name = safe_malloc(count_word(input) + 1, 'a');
+	co->i = 0;
+	while (*input && (ft_isdigit(*input) || ft_isalpha(*input)
+			|| *input == '_'))
+	{
+		co->name[co->i++] = *input;
+		input++;
+	}
+	co->name[co->i] = '\0';
+	co->env_value = envsearch3(env, co->name);
+	if (co->env_value)
+		co->count += strlen(add_d_quot(co->env_value));
+	return (input);
 }
 
-int count_new_input(t_env	*env, char    *input)
+char	*expand_one(t_expa *expa, char *input, t_env *env)
 {
-    int count = 0;
-    int count_name = 0;
-    int single_q = 0;
-    int double_q = 0;
-    int i = 0;
-    char    *name;
-    char    *env_value;
-    if (!input)
-        return (0);
-    
-    while (*input)
-    {
-        i = 0;
-        check_quots(*input, &single_q, &double_q);
-        if (*input == '$' && *(input + 1) == '?' && single_q == 0)
-        {
-            input++;
-            name = ft_strdup("?");
-            env_value = envsearch3(env, name);
-            if (env_value)
-                count += strlen(add_d_quot(env_value));
-            free(name);
-        }
-        else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_' ) && single_q == 0)
-        {
-            input++;
-            name = safe_malloc(count_word(input) + 1, 'a');
-            if (!name)
-                return (0);
-            i = 0;
-            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_') )
-            {
-                name[i++] = *input;
-                input++;
-            }
-            name[i] = '\0';
-            env_value = envsearch3(env, name);
-            if (env_value)
-                count += strlen(add_d_quot(env_value));
-            free(name);
-        }
-        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*input + 1)))
-            input = input + 2;
-        else if (*input == '$' && single_q == 0 && double_q ==0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
-            input++;
-        else 
-        {
-            count++;
-            input++;
-        }
-    }
-    return (count);
+	input++;
+	expa->name = ft_strdup("?");
+	expa->env_value = envsearch3(env, expa->name);
+	if (expa->env_value)
+	{
+		expa->env_value = add_d_quot(expa->env_value);
+		while (*expa->env_value)
+		{
+			expa->new_input[expa->j++] = *expa->env_value;
+			expa->env_value++;
+		}
+	}
+	input++;
+	return (input);
 }
 
-// int check_ambigous(char *input, char *env_value, int j, char    *name) 
-// {
-//     if (!env_value)
-//     {
-//         while(input[j] && input[j] != ' ' && input[j] != '\t')
-//             j--;
-//         if (input[j] == '<' || input[j] == '>')
-//         {
-//             ft_putstr_fd("minishell: ", 2);
-//             ft_putstr_fd(name, 2);
-//              ft_putstr_fd(": ambiguous redirect\n", 2);
-//             setandget(NULL)->exs = 1;
-//             return (1);
-//         }
-//     }
-//     return (0);
-// }
-
-char *expand_variables(t_env	*env, char    *input)
+char	*expand_two(t_expa *expa, char *input, t_env *env)
 {
-    int count;
-    int count_name;
-    int single_q = 0;
-    int double_q = 0;
-    int i = 0;
-    int j = 0;
-    char    *name;
-    char    *env_value;
-    char    *new_input;
-    char    *tmp;
-    char    *tmp2;
+	input++;
+	expa->name = safe_malloc(count_word(input) + 1, 'a');
+	expa->i = 0;
+	while (*input && (ft_isdigit(*input) || ft_isalpha(*input)
+			|| *input == '_' ))
+	{
+		expa->name[expa->i++] = *input;
+		input++;
+	}
+	expa->name[expa->i] = '\0';
+	expa->env_value = envsearch3(env, expa->name);
+	if (expa->env_value)
+	{
+		expa->env_value = add_d_quot(expa->env_value);
+		while (*expa->env_value)
+		{
+			expa->new_input[expa->j++] = *expa->env_value;
+			expa->env_value++;
+		}
+	}
+	return (input);
+}
 
+int	count_new_input(t_env *env, char *input)
+{
+	t_count	co;
 
-    if (!input)
-        return (0);
-    tmp2 = ft_strdup(input);
-    tmp = input; 
-	count = 0;
-    count = count_new_input(env, input);
-    // printf("%d\n", count);
-    new_input = safe_malloc(count + 1, 'a');
-    while (*input)
-    {
-        i = 0;
-        check_quots(*input, &single_q, &double_q);
-        if (*input == '$' && *(input + 1) == '?' && single_q == 0)
-        {
-            input++;
-            name = ft_strdup("?");
-            env_value = envsearch3(env, name);
-            if (env_value)
-            {
-                env_value = add_d_quot(env_value);
-                while (*env_value)
-                {
-                    new_input[j++] = *env_value;
-                    env_value++;
-                }
-            }
-            input++;
-        }
-        else if (*input == '$' && (ft_isalpha(*(input + 1)) || *(input + 1) == '_') && single_q == 0)
-        {
-            input++;
-            name = safe_malloc(count_word(input) + 1, 'a');
-            i = 0;
-            while(*input && (ft_isdigit(*input) || ft_isalpha(*input) || *input == '_' ))
-            {
-                name[i++] = *input;
-                input++;
-            }
-            name[i] = '\0';
-            env_value = envsearch3(env, name);
-            // int j = ft_strlen(ft_strnstr(tmp2, name, ft_strlen(name))) - ft_strlen(tmp2);
-            // if (check_ambigous(input , env_value, j, name) == 1)
-            //    return (NULL);
-            // printf("%s\n", env_value);
-            if (env_value)
-            {
-                env_value = add_d_quot(env_value);
-                while (*env_value)
-                {
-                    new_input[j++] = *env_value;
-                    env_value++;
-                }
-            }
-        }
-        else if (*input == '$' && (*(input + 1) == '*' || *(input + 1) == '@' || ft_isdigit(*(input + 1)) ))
-            input = input + 2;
-        else if (*input == '$' && single_q == 0 && double_q ==0 &&  (*(input + 1) == '\'' || *(input + 1) == '\"'))
-            input++;
-        else 
-        {
-            new_input[j++] = *input;
-            input++;
-        }
-    }
-    new_input[j] = '\0';
-    free(tmp);
-    return (new_input);
+	(1) && (co.count = 0, co.count_name = 0, co.single_q = 0, co.double_q = 0);
+	while (*input)
+	{
+		co.i = 0;
+		check_quots(*input, &co.single_q, &co.double_q);
+		if (*input == '$' && *(input + 1) == '?' && co.single_q == 0)
+			input = count_one(&co, input, env);
+		else if (*input == '$' && (ft_isalpha(*(input + 1))
+				|| *(input + 1) == '_' ) && co.single_q == 0)
+			input = count_two(&co, input, env);
+		else if (*input == '$' && (*(input + 1) == '*'
+				|| *(input + 1) == '@' || ft_isdigit(*input + 1)))
+			input = input + 2;
+		else if (*input == '$' && co.single_q == 0 && co.double_q == 0
+			&& (*(input + 1) == '\'' || *(input + 1) == '\"'))
+			input++;
+		else
+		{
+			co.count++;
+			input++;
+		}
+	}
+	return (co.count);
+}
+
+char	*expand_variables(t_env *env, char *input)
+{
+	t_expa	expa;
+
+	init_struct(&expa, input, env);
+	while (*input)
+	{
+		expa.i = 0;
+		check_quots(*input, &expa.single_q, &expa.double_q);
+		if (*input == '$' && *(input + 1) == '?' && expa.single_q == 0)
+			input = expand_one(&expa, input, env);
+		else if (*input == '$' && (ft_isalpha(*(input + 1))
+				|| *(input + 1) == '_') && expa.single_q == 0)
+			input = expand_two(&expa, input, env);
+		else if (*input == '$' && (*(input + 1) == '*'
+				|| *(input + 1) == '@' || ft_isdigit(*(input + 1))))
+			input = input + 2;
+		else if (*input == '$' && expa.single_q == 0 && expa.double_q == 0
+			&& (*(input + 1) == '\'' || *(input + 1) == '\"'))
+			input++;
+		else
+		{
+			expa.new_input[expa.j++] = *input;
+			input++;
+		}
+	}
+	return (expa.new_input[expa.j] = '\0', expa.new_input);
 }

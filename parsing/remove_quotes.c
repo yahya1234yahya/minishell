@@ -1,36 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/26 09:44:42 by ymouigui          #+#    #+#             */
+/*   Updated: 2024/10/26 09:44:42 by ymouigui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-char *remove_quotes(char *input)
+//DONE
+char	*remove_quotes(char *input)
 {
-    if (!input)
-        return (NULL);
-    int length = strlen(input);
-    char quote;
-    char *new_input = (char *)safe_malloc((length + 1) * sizeof(char *), 'a');
-    int i = 0;
-    int j = 0;
-    while (i <= length)
-    {
-        if (input[i] == '"' || input[i] == '\'') {
-            quote = input[i];
-            i++;
-            while (i <= length && input[i] != quote)
-                new_input[j++] = input[i++];
-            if (i <= length && input[i] == quote)
-                i++;
-        }
-        else
-        {
-            new_input[j++] = input[i++];
-        }
-    }
-    new_input[j] = '\0';
-    if (i != j && j == 0)
-        return (NULL);
-    // if (is_all_space(new_input))
-    // {
-    //     new_input[0] = '\0';
-    //     return (new_input);
-    // }
-    return new_input;
+	char	quote;
+	char	*new_input;
+	int		i;
+	int		j;
+
+	(1) && (i = 0, j = 0);
+	new_input = safe_malloc((ft_strlen(input) + 1) * sizeof(char *), 'a');
+	while (input && input[i])
+	{
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			quote = input[i++];
+			while (input[i] && input[i] != quote)
+				new_input[j++] = input[i++];
+			if (input[i] && input[i] == quote)
+				i++;
+		}
+		else
+			new_input[j++] = input[i++];
+	}
+	new_input[j] = '\0';
+	if (i != j && j == 0)
+		return (NULL);
+	return (new_input);
 }

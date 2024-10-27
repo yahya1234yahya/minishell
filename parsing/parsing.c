@@ -12,15 +12,14 @@
 
 #include "../minishell.h"
 
-static int	calculate_space(char *input)
+int	calculate_space(char *input)
 {
 	int	i;
 	int	count;
 	int	s_quote;
 	int	d_quote;
 
-	i = 0;
-	count = 0;
+	(1) && (i = 0, count = 0);
 	s_quote = 0;
 	d_quote = 0;
 	if (input[0] == '<' || input[0] == '>')
@@ -42,105 +41,43 @@ static int	calculate_space(char *input)
 	return (count);
 }
 
-char	*add_space(char *input)
+int	ambigous(char	**tokens, t_env *env)
 {
 	int		i;
-	int		j;
-	int		s_quote;
-	int		d_quote;
-	char	*new_input;
-
-	(1) && (i = 0, j = 0, s_quote = 0, d_quote = 0);
-	new_input = safe_malloc(calculate_space(input) + 1, 'a');
-	while (input && input[i])
-	{
-		check_quots(input[i], &s_quote, &d_quote);
-		if ((input[i] == '<' || input[i] == '>') && !s_quote && !d_quote)
-		{
-			if (i > 0 && input[i - 1] != '<' && input[i - 1] != '>')
-				new_input[j++] = ' ';
-			new_input[j++] = input[i++];
-			if (input[i] != '<' && input[i] != '>')
-				new_input[j++] = ' ';
-			continue ;
-		}
-		new_input[j++] = input[i++];
-	}
-	new_input[j] = '\0';
-	return (new_input);
-}
-
-char	**handle_redirection_out(t_cmd *cmd, char **tokens)
-{
-	cmd->redout = index_char(*(cmd->tokens));
-	cmd->tokens++;
-	if (*(cmd->tokens) == NULL)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("error: expected filename after redout\n", 2);
-		return (0);
-	}
-	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
-	cmd->ft_out = open(*(cmd->tokens), redouthelper(cmd), 0644);
-	return (cmd->tokens);
-}
-
-char	**handle_redirection_in(t_cmd *cmd, char **tokens)
-{
-	cmd->redin = 1;
-	cmd->tokens++;
-	if (*(cmd->tokens) == NULL)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("error: expected filename after redout\n", 2);
-		return (0);
-	}
-	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
-	cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
-	return (cmd->tokens);
-}
-int is_there_space(char *input)
-{
-	int i = 0;
-	int s_quote = 0;
-	int d_quote = 0;
-	while(input[i])
-	{
-		check_quots(input[i], &s_quote, &d_quote);
-		if (input[i] == ' ' || input[i] == '\t' && !s_quote && !d_quote)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-char	*expand_main(t_env *env, char *input)
-{
-	int i = 0;
 	char	*tmp;
-	char **tokens = ft_strtok_all(input, " \t");
 
-	while(tokens && tokens[i])
+	i = 0;
+	while (tokens && tokens[i])
 	{
 		tokens[i] = expand_variables(env, tokens[i]);
-		if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0 || ft_strcmp(tokens[i], "<") == 0)
+		if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0
+			|| ft_strcmp(tokens[i], "<") == 0)
 		{
 			i++;
 			tmp = ft_strdup(tokens[i]);
 			if (tokens && tokens[i])
 				tokens[i] = expand_variables(env, tokens[i]);
 			else
-				break;
-			if(!tokens || !tokens[i][0] || (is_there_space(tokens[i]) && ft_strcmp(tmp, tokens[i])))
-			{
-				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-				setandget(NULL)->exs = 1;
-				return (NULL);
-			}
+				break ;
+			if (!tokens || !tokens[i][0] || (is_there_space(tokens[i])
+				&& ft_strcmp(tmp, tokens[i])))
+				return (print_exit_s("minishell: ambiguous redirect\n", 1), 0);
 		}
 		i++;
 	}
+	return (1);
+}
+
+char	*expand_main(t_env *env, char *input)
+{
+	int		i;
+	char	**tokens;
+
+	tokens = ft_strtok_all(input, " \t");
+	if (ambigous(tokens, env) == 0)
+		return (NULL);
 	i = 0;
-	while(tokens && tokens[i])
+	while (tokens && tokens[i])
 	{
 		if (i == 0)
 			input = ft_strdup(tokens[i]);
@@ -154,32 +91,29 @@ char	*expand_main(t_env *env, char *input)
 	return (input);
 }
 
+int	expand_check(t_cmd *cmd)
+{
+	cmd->input = expand_main(cmd->env, cmd->input);
+	if (cmd->input == NULL)
+		return (0);
+	if (check_complete(cmd->input) == 0)
+		return (0);
+	return (1);
+}
+
 int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 {
-	char	*next_word;
-	int		flags;
-	char	*delimiter;
-	char	*tmp_args;
+	int	i;
 
 	while (cmd)
 	{
 		cmd->input = add_space(cmd->input);
-		if (strstr(cmd->input, "<<") == NULL)
-		{
-			cmd->input = expand_main(cmd->env, cmd->input);
-			if (cmd->input == NULL)
-				return (0);
-			if(check_complete(cmd->input) == 0)
-				return (0);
-		}
-		else
-		{
-			if(check_complete(cmd->input) == 0)
-				return (0);
-		}
+		if (strstr(cmd->input, "<<") == NULL && expand_check(cmd) == 0)
+			return (0);
+		else if (strstr(cmd->input, "<<") && check_complete(cmd->input) == 0)
+			return (0);
 		cmd->tokens = ft_strtok_all(cmd->input, " \t");
-		int i = 0;
-		
+		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
 			check_cases(cmd);

@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   srchenv.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/26 09:39:38 by ymouigui          #+#    #+#             */
+/*   Updated: 2024/10/26 09:39:38 by ymouigui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+//DONE
 #include "../minishell.h"
 
 t_env	*envsearch(t_env *env, char *name)
@@ -21,8 +34,6 @@ char	*envsearch2(t_env *env, char *name)
 	current = env;
 	while (current)
 	{
-		// if(current->name == NULL || current->value == NULL || current->key == NULL) 
-		// 	return (NULL);
 		if (ft_strnstr(current->name, name, ft_strlen(name)))
 			return (current->value);
 		current = current->next;

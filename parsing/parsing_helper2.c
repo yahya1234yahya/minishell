@@ -6,22 +6,12 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/19 15:43:46 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/26 16:27:25 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//DONE
 #include "../minishell.h"
-
-void	handle_args(t_cmd *cmd)
-{
-	if (cmd->args)
-	{
-		cmd->args = ft_strjoin(cmd->args, " ");
-		cmd->args = ft_strjoin(cmd->args, *(cmd->tokens));
-	}
-	else
-		cmd->args = ft_strdup(*(cmd->tokens));
-}
 
 int	fd_error(t_cmd *cmd)
 {
@@ -31,43 +21,62 @@ int	fd_error(t_cmd *cmd)
 	return (0);
 }
 
-char	*parse_it(char	*str)
+void	increment(int	*i, int	*j)
 {
-	int i = 0;
-	int count = 0;
+	int	a;
+	int	b;
+
+	if (i)
+		(*i)++;
+	if (j)
+		(*j)++;
+}
+
+int	calculate_alloc(char	*str)
+{
+	int	i;
+	int	s_quot;
 	int	d_quot;
-	int s_quot;
-	char	c;
-	char *res;
-	while(str[i])
+	int	count ;
+
+	i = 0;
+	s_quot = 0;
+	d_quot = 0;
+	count = 0;
+	while (str[i])
 	{
 		check_quots(str[i], &s_quot, &d_quot);
-		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"') && !s_quot && !d_quot)
+		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"')
+			&& !s_quot && !d_quot)
 		{
 			i++;
 			continue ;
 		}
-		i++;
-		count++;
+		increment(&i, &count);
 	}
-	res = safe_malloc(count + 1, 'a');
-	i = 0;
-	int j = 0;
-	while(str[i])
+	return (count);
+}
+
+char	*parse_it(char	*str)
+{
+	t_parse	p;
+
+	(1) && (p.j = 0, p.count = 0, p.d_quot = 0, p.s_quot = 0, p.z = 0);
+	p.count = calculate_alloc(str);
+	p.res = safe_malloc(p.count + 1, 'a');
+	while (str[p.z])
 	{
-		check_quots(str[i], &s_quot, &d_quot);
-		if (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"') && !s_quot && !d_quot)
+		check_quots(str[p.z], &p.s_quot, &p.d_quot);
+		if (str[p.z] == '$' && (str[p.z + 1] == '\'' || str[p.z + 1] == '"')
+			&& !p.s_quot && !p.d_quot)
 		{
-			i++;		
+			p.z++;
 			continue ;
 		}
-
-		res[j] = str[i]; 
-		i++;
-		j++;
+		p.res[p.j] = str[p.z];
+		increment(&p.z, &p.j);
 	}
-	res[j] = '\0';
-	return (res);
+	return (p.res[p.j] = '\0', p.res);
 }
 
 void	herdoc(t_cmd *cmd)
@@ -79,40 +88,4 @@ void	herdoc(t_cmd *cmd)
 	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
 	handle_heredoc(*(cmd->tokens), cmd);
 	cmd->ft_in = open("tmp_hdoc", O_RDWR, 0644);
-}
-
-void	check_cmd(t_cmd *cmd)
-{
-	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
-	if (ft_strcmp(*(cmd->tokens), ".") == 0 || ft_strcmp(*(cmd->tokens), "..") == 0)
-	{
-		ft_putstr_fd("minishell: .: filename argument required\n", 2);
-		setandget(NULL)->exs = 127;
-		return ;
-	}
-	is_valid_command(cmd, *(cmd->tokens));
-	cmd->cmd = ft_strdup(*(cmd->tokens));
-}
-
-void	check_cases(t_cmd *cmd)
-{
-	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens));
-	if (ft_strcmp(*(cmd->tokens), ">") && ft_strcmp(*(cmd->tokens), ">>")
-			&& ft_strcmp(*(cmd->tokens), "<") && ft_strcmp(*(cmd->tokens), "<<") && cmd->found == 0)
-		{
-			cmd->found = 1;
-			check_cmd(cmd);
-		}
-	else if (ft_strcmp(*(cmd->tokens), ">") == 0 || ft_strcmp(*(cmd->tokens), ">>") == 0
-		|| ft_strcmp(*(cmd->tokens), "<") == 0)
-	{
-		if (ft_strcmp(*(cmd->tokens), "<") == 0)
-			cmd->tokens = handle_redirection_in(cmd, cmd->tokens);
-		else
-			cmd->tokens = handle_redirection_out(cmd, cmd->tokens);
-	}
-	else if (ft_strcmp(*(cmd->tokens), "<<") == 0)
-		herdoc(cmd);
-	else
-		handle_args(cmd);
 }
