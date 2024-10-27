@@ -6,16 +6,16 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:19:16 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 02:24:10 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:35:34 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int parsename(char *name)
+int	parsename(char *name)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 0;
 	if (ft_strcmp(name, "\0") == 0)
@@ -31,10 +31,10 @@ int parsename(char *name)
 	return (1);
 }
 
-char **preparetokens(char *str)
+char	**preparetokens(char *str)
 {
-	int i;
-	char **ret;
+	int		i;
+	char	**ret;
 
 	i = 0;
 	ret = ft_strtok_all(str, " ");
@@ -46,9 +46,9 @@ char **preparetokens(char *str)
 	return (ret);
 }
 
-int checkplus(char *str)
+int	checkplus(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || str[0] == '\0')
 		return (0);
@@ -58,9 +58,21 @@ int checkplus(char *str)
 	return (0);
 }
 
-void printerrorexport(char *str)
+void	printerrorexport(char *str)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
+int	onechar(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while ((str[i]) && (str[i] == c || str[i] == '\'' || str[i] == '\"'))
+		i++;
+	if (ft_strlen(str) == i)
+		return (1);
+	return (0);
 }

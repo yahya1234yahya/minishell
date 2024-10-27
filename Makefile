@@ -6,7 +6,7 @@ parsing/srchenv.c parsing/remove_quotes.c parsing/helper.c parsing/expand.c exec
 	parsing/split_pipe.c execution/exit.c execution/unset.c parsing/parsing_helper.c parsing/parsing_helper2.c \
 execution/tools/gcollector.c execution/tools/minilibft2.c execution/tools/minilibft3.c execution/tools/minilibft4.c \
 execution/executemulti.c execution/executesingle.c parsing/parsing_helper3.c parsing/expand_2.c parsing/expand_3.c \
-parsing/helper_2.c parsing/parsing_helper4.c execution/exit2.c execution/chdir2.c execution/echo2.c execution/export2.c execution/export3.c
+parsing/helper_2.c parsing/parsing_helper4.c execution/exit2.c execution/chdir2.c execution/echo2.c execution/export2.c execution/export3.c execution/env2.c
 
 
 OBJS = $(SRCS:.c=.o)

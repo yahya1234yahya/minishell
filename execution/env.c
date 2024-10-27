@@ -25,13 +25,11 @@ t_env	*ft_lstnew(void *content)
 	i = 0;
 	while (typecast[i] && typecast[i] != '=')
 		i++;
-	node->key = ft_substr(typecast, 0, i); // Extract the key part
-	
-	if (typecast[i] == '=' && typecast[i + 1] == '\0')  // Case: key with no value
-		node->value = ft_strdup("");  // Set value as empty string
+	node->key = ft_substr(typecast, 0, i);
+	if (typecast[i] == '=' && typecast[i + 1] == '\0')
+		node->value = ft_strdup("");
 	else
-		node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1); // Extract the value part
-
+		node->value = ft_substr(typecast, i + 1, ft_strlen(typecast) - i - 1);
 	node->name = content;
 	node->next = NULL;
 	return (node);
@@ -71,15 +69,15 @@ void	printenv2(t_env *current)
 		if (ft_strcmp(current->key, "?") == 0)
 		{
 			current = current->next;
-			continue;
+			continue ;
 		}
 		if (ft_strcmp(current->key, "_") == 0)
 		{
 			current = current->next;
-			continue;
+			continue ;
 		}
 		printf("declare -x %s", current->key);
-		if(current->value)
+		if (current->value)
 			printf("=\"%s\"\n", current->value);
 		else
 			printf("\n");
@@ -93,10 +91,7 @@ int	printenv(t_env *env, int flag)
 
 	current = env;
 	if (!current)
-	{
-		ft_putstr_fd("no env\n", 2);
-		return (1);
-	}
+		return (ft_putstr_fd("no env\n", 2), 1);
 	if (flag)
 	{
 		while (current)
@@ -104,7 +99,7 @@ int	printenv(t_env *env, int flag)
 			if (ft_strcmp(current->key, "?") == 0)
 			{
 				current = current->next;
-				continue;
+				continue ;
 			}
 			if (current->value != NULL)
 			{
@@ -117,38 +112,11 @@ int	printenv(t_env *env, int flag)
 	else
 		printenv2(current);
 	return (0);
-};
+}
 
-t_env	*envset(t_env *env, char *name, char *value)
+t_env	*envset2(t_env *env, char *key, char *value)
 {
-	t_env	*current;
-	char	*new;
-	int		i;
-
-	i = 0;
-	current = env;
-	while (current)
-	{
-		if (ft_strnstr(current->name, name, ft_strlen(name)))
-		{
-			if (ft_strcmp(name, "_") == 0 && ft_strcmp(current->name, name) == 0)
-			{	
-			current->value = value;
-			return (env);}
-			else if (ft_strcmp(name, "_"))
-			{
-				current->value = value;
-				return (env);
-			}
-		}
-		current = current->next;
-	}
-	return (env);
-};
-
-t_env *envset2(t_env *env, char *key, char *value)
-{
-	t_env *temp;
+	t_env	*temp;
 
 	temp = env;
 	while (temp)
@@ -164,22 +132,3 @@ t_env *envset2(t_env *env, char *key, char *value)
 	return (env);
 }
 
-t_env	*initenv(char **envp)
-{
-	t_env	*env;
-	t_env	*current;
-	int		i;
-
-	env = NULL;
-	i = 0;
-	while (envp[i])
-	{
-		current = ft_lstnew(envp[i]); 
-		if (!current)
-			return (NULL);
-		if (ft_strcmp(current->key, "_"))
-			addback(&env, current);
-		i++;
-	}
-	return (env);
-};

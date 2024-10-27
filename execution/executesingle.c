@@ -6,17 +6,17 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:34:40 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/25 23:30:09 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:37:11 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	executesingle(t_cmd *cmd , char **envp)
+int	executesingle(t_cmd *cmd, char **envp)
 {
-	int input;
-	int output;
-	int retv;
+	int	input;
+	int	output;
+	int	retv;
 	int	value;
 
 	if (cmd->skip == 1)
@@ -32,14 +32,14 @@ int	executesingle(t_cmd *cmd , char **envp)
 	if (value == 1337)
 	{
 		retv = execfromsystem(cmd, envp);
-			return (filedreset(input, output), retv);
+		return (filedreset(input, output), retv);
 	}
 	else
 		retv = isbuiltin(cmd, value, 1);
 	return (filedreset(input, output), retv);
 }
 
-int redirectchange(t_cmd *cmd)
+int	redirectchange(t_cmd *cmd)
 {
 	if (dup2(cmd->ft_in, STDIN_FILENO) == -1)
 		return (-1);

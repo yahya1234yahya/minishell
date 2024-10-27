@@ -37,6 +37,6 @@ char	*remove_quotes(char *input)
 	}
 	new_input[j] = '\0';
 	if (i != j && j == 0)
-		return (NULL);
+		return (ft_strdup(""));
 	return (new_input);
 }

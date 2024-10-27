@@ -24,6 +24,7 @@ void	argsprepare(t_cmd *cmd)
 	char	*tmp;
 	int		i;
 
+	// printf("cmd->args: %s\n", cmd->args);
 	i = 0;
 	tmp = ft_strjoin(ft_strjoin(cmd->path, " "), cmd->args);
 	cmd->splited = ft_strtok_all(tmp, " ");
@@ -32,9 +33,9 @@ void	argsprepare(t_cmd *cmd)
 		cmd->splited[i] = remove_quotes(cmd->splited[i]);
 		i++;
 	}
+	// printf("cmd->args: %s\n", cmd->args);
 }
 
-//  
 
 
 int	preparecmd(t_cmd *cmd)

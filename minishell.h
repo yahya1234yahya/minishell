@@ -202,7 +202,6 @@ int		calculate_space(char *input);
 t_env 		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd);
 t_cmd		*init_cmd();
-t_env		*envset(t_env *env, char *name, char *value);
 t_env		*ft_lstnew(void *content);
 void		addback(t_env **lst, t_env *newnode);
 void		decider(t_cmd *cmd);

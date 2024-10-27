@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:05:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 02:54:47 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:35:46 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,27 @@ int	exportsignal(int sig, t_cmd *cmd)
 	return (0);
 }
 
+void	equalfound(t_exp *exp, t_cmd *cmd)
+{
+	char	*str;
+
+	if (exp->plus == 1)
+	{
+		exp->key = ft_substr(exp->key, 0, ft_strlen(exp->key) - 1);
+		if (plusaddpack(&cmd->env, exp->v, exp->key) == -1)
+		{
+			str = ft_strjoin(exp->key, "=");
+			addback(&cmd->env, ft_lstnew(ft_strjoin(str, exp->v)));
+		}
+	}
+	else
+	{
+		str = ft_strjoin(exp->key, "=");
+		str = ft_strjoin(str, exp->v);
+		addback(&cmd->env, ft_lstnew(str));
+	}
+}
+
 int	exportwithouthvalue(t_exp exp, t_cmd *cmd)
 {
 	char	*str;
@@ -65,28 +86,13 @@ int	exportwithouthvalue(t_exp exp, t_cmd *cmd)
 		}
 		else if (exp.equal == 1)
 		{
-			if (exp.plus == 1)
-			{
-				exp.key = ft_substr(exp.key, 0, ft_strlen(exp.key) - 1);
-				if (plusaddpack(&cmd->env, exp.v, exp.key) == -1)
-				{
-					str = ft_strjoin(exp.key, "=");
-					addback(&cmd->env, ft_lstnew(ft_strjoin(str, exp.v)));
-				}
-			}
-			else
-			{
-				str = ft_strjoin(exp.key, "=");
-				str = ft_strjoin(str, exp.v);
-				addback(&cmd->env, ft_lstnew(str));
-			}
+			equalfound(&exp, cmd);
 		}
 	}
 	else
 	{
 		printerrorexport(ft_strjoin(ft_strjoin(exp.key, "="), exp.v));
-		setandget(NULL)->exs = 1;
-		return (1);
+		return (setandget(NULL)->exs = 1, 1);
 	}
 	return (0);
 }
@@ -118,16 +124,4 @@ int	parskey(char *str)
 		i++;
 	}
 	return (1);
-}
-
-int	onechar(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while ((str[i]) && (str[i] == c || str[i] == '\'' || str[i] == '\"'))
-		i++;
-	if (ft_strlen(str) == i)
-		return (1);
-	return (0);
 }

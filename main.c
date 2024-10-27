@@ -168,23 +168,23 @@ void	updateshlvl(t_env *env)
 	shlvlchar = envsearch2(env, "SHLVL");
 	if (!shlvlchar)
 	{
-		envset(env, "SHLVL", "1");	
+		envset2(env, "SHLVL", "1");	
 		return ;
 	}
 	shelllevel = ft_atoi(shlvlchar);
 	if (shelllevel < 0)
-		envset(env, "SHLVL", "0");
+		envset2(env, "SHLVL", "0");
 	else if (shelllevel > 999)
 	{
 		ft_putstr_fd("minishell: warning: shell level (", 2);
 		ft_putstr_fd(envsearch2(env, "SHLVL"), 2);
 		ft_putstr_fd(") too high, resetting to 1\n", 2);
-		envset(env, "SHLVL", "1");
+		envset2(env, "SHLVL", "1");
 	}
 	else if (shelllevel == 999)
-		envset(env, "SHLVL", " ");
+		envset2(env, "SHLVL", " ");
 	else
-		envset(env, "SHLVL", ft_itoa(shelllevel + 1));
+		envset2(env, "SHLVL", ft_itoa(shelllevel + 1));
 }
 
 void f(){system("leaks minishell");}
