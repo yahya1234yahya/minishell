@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:34:40 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 17:37:11 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/10/28 01:30:29 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	executesingle(t_cmd *cmd, char **envp)
 	int	retv;
 	int	value;
 
-	if (cmd->skip == 1)
-		return (-42);
+	// if (cmd->skip == 1)
+	// 	return (-42);
 	if (cmd->redout != 0 || cmd->redin != 0)
 	{
 		input = dup(STDIN_FILENO);

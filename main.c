@@ -129,38 +129,6 @@ int	check_pipe(char	*input)
 
 }
 
-int	check_ambigous(char *input, char *ambigous)
-{
-	int i = 0;
-	int j = 0;
-	int d_quote = 0;
-	int s_quote = 0;
-	
-	input = ft_strtrim(input, " \t");
-	ambigous = ft_strtrim(ambigous, " \t");
-	printf("%s ---- %s\n", input, ambigous);
-	if (ft_strcmp(input, ambigous) != 0)
-	{
-		while(input[i] && ambigous[i])
-		{
-			if (input[i] != ambigous[i] &&( input[i] == ' ' || input[i] == '\t'))
-			{
-				printf("hello\n");
-				j = i - 1;
-				while(input[i] == ' ' || input[j] == '\t')
-					j--;
-				if (input[j] == '>' || input[j] == '<')
-				{
-					ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-					setandget(NULL)->exs = 1;
-					return (0);
-				}
-			}
-			i++;
-		}
-	}
-	return (1);
-}
 void	updateshlvl(t_env *env)
 {
 	int		shelllevel;
