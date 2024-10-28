@@ -129,4 +129,4 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 		}
 		// waiter(pid, &s);
 	return (0);
-}
+ }
