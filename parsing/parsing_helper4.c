@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:17:27 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/27 15:23:25 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:43:13 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char	**handle_redirection_out(t_cmd *cmd, char **tokens)
 		return (0);
 	}
 	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
+	if (cmd->ft_out > 1)
+		close(cmd->ft_out);
 	cmd->ft_out = open(*(cmd->tokens), redouthelper(cmd), 0644);
 	return (cmd->tokens);
 }
@@ -66,6 +68,8 @@ char	**handle_redirection_in(t_cmd *cmd, char **tokens)
 		return (0);
 	}
 	*(cmd->tokens) = remove_quotes(*(cmd->tokens));
+	if (cmd->ft_in != -1 && cmd->ft_in != 0)
+		close(cmd->ft_in);
 	cmd->ft_in = open(*(cmd->tokens), O_RDONLY, 0644);
 	return (cmd->tokens);
 }
