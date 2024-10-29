@@ -69,13 +69,18 @@ int	filedreset(int input, int output)
 	return (0);
 }
 
-void	exportlastcommand(t_cmd *cmd)
+void	exportlastcommand(t_cmd *cmd, int flag)
 {
 	char	**last_argument;
 	int		i;
 
+	if (flag == 1)
+	{
+		envset2(cmd->env, "_", NULL);
+		return ;
+	}
 	if (cmd->args == NULL || cmd->args[0] == '\0')
-		envset2(cmd->env, "_", cmd->path);
+		envset2(cmd->env, "_", cmd->cmd);
 	else
 	{
 		last_argument = ft_split(cmd->args, ' ');
@@ -101,10 +106,11 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
-		exportlastcommand(cmd);
+		exportlastcommand(cmd, 0);
 	}
 	else
 	{
+		exportlastcommand(cmd, 1);
 		executemultiple(cmd);
 	}
 }
