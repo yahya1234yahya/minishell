@@ -207,6 +207,7 @@ char		*add_space(char *input);
 int			calculate_space(char *input);
 char    	*ft_random(void);
 char		*find_name(void);
+void    ft_unlink(t_cmd *cmd);
 //execution
 t_env		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd);

@@ -6,7 +6,7 @@
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:35:55 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 16:33:39 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:45:53 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char    *ft_random(void)
     static int index;
     char *filename;
 
-    filename = safe_malloc(ft_strlen(ft_itoa(index)), 'a');
     filename = ft_itoa(index);
     index++;
     return (filename);
@@ -25,8 +24,22 @@ char    *ft_random(void)
 
 char    *find_name(void)
 {
-    char    *tmp = ft_random();
+    char    *tmp;
+    
+    tmp = ft_random();
+    tmp = ft_strjoin("/tmp/.", tmp);
     while(access(tmp, F_OK) == 0)
-        tmp = ft_random();
+        tmp = ft_strjoin("/tmp/.", ft_random());
     return (tmp);
+}
+
+void    ft_unlink(t_cmd *cmd)
+{
+    t_cmd *t = cmd;
+    while(t)
+    {
+        if (t->herdoc_file)
+            unlink(t->herdoc_file);
+        t = t->next;
+    }
 }

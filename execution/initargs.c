@@ -23,6 +23,7 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->cmd = NULL;
 	cmd->found = 0;
 	cmd->args = NULL;
+	cmd->herdoc_file = NULL;
 	cmd->skip = 0;
 	cmd->pipe = 0;
 	cmd->redout = 0;
@@ -48,6 +49,7 @@ t_cmd	*init_cmd(void)
 	}
 	new_cmd->input = NULL;
 	new_cmd->cmd = NULL;
+	new_cmd->herdoc_file = NULL;
 	new_cmd->skip = 0;
 	new_cmd->found = 0;
 	new_cmd->args = NULL;
