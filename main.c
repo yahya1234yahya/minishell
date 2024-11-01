@@ -15,7 +15,6 @@
 void print_commands(t_cmd *head)
 {
     t_cmd *current = head;
-	int i = 0;
 	while(current)
 	{
 		// printf("input: %s\n", current->input);
@@ -163,8 +162,11 @@ int main(int argc, char **argv, char **envp)
 	char	*input;
 	t_env 	*env;
 	char	*input_res;
-	char	*ambigous;
 	static struct termios	termstate;
+
+	(void)argv;
+	(void)argc;
+
 
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
