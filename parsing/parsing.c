@@ -90,7 +90,7 @@ int	expand_check(t_cmd *cmd)
 	return (1);
 }
 
-int	parse(t_cmd *cmd, char *input, char **envp, int rec)
+int	parse(t_cmd *cmd)
 {
 	int	i;
 
@@ -105,8 +105,7 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
-			if ((check_cases(cmd) == -1) || (cmd->ft_out == -1
-					|| cmd->ft_in == -1) && fd_error(cmd) == 0)
+			if ((fd_error(cmd) == 0) && ((check_cases(cmd) == -1) || (cmd->ft_out == -1) || (cmd->ft_in == -1)))
 			{
 				if (cmd->next)
 					break ;

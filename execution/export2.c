@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:05:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 17:35:46 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:48:59 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	plusaddpack(t_env **env, char *key, char *value)
 {
 	t_env	*tmp;
-	t_env	*tmp2;
 	char	*newvalue;
 
 	tmp = *env;
@@ -73,7 +72,6 @@ void	equalfound(t_exp *exp, t_cmd *cmd)
 
 int	exportwithouthvalue(t_exp exp, t_cmd *cmd)
 {
-	char	*str;
 	t_env	*tmp;
 
 	if (parskey(exp.key))

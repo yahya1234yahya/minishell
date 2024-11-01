@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:38:47 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 17:11:51 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:48:27 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	check_cases(t_cmd *cmd)
 		|| ft_strcmp(*(cmd->tokens), "<") == 0)
 	{
 		if (ft_strcmp(*(cmd->tokens), "<") == 0)
-			cmd->tokens = handle_redirection_in(cmd, cmd->tokens);
+			cmd->tokens = handle_redirection_in(cmd);
 		else
-			cmd->tokens = handle_redirection_out(cmd, cmd->tokens);
+			cmd->tokens = handle_redirection_out(cmd);
 	}
 	else if (ft_strcmp(*(cmd->tokens), "<<") == 0)
 	{

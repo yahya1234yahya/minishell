@@ -29,7 +29,7 @@ static char	**preparetokecho(char *str)
 
 static int	allspace(char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (str == NULL)

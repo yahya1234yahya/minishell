@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:49:43 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/25 23:35:14 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:46:05 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	ft_isalnum(int c)
 
 static int	is_valid_variable_name(char *str)
 {
-	int	i;
+	size_t	i;
 
 	if (str == NULL || *str == '\0')
 		return (1);

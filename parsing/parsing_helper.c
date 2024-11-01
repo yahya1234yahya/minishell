@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:25:59 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/28 01:35:38 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:46:46 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	handle_export_sort(t_cmd *cmd, char	**envp)
 {
 	t_cmd	*tmp;
 
+	tmp = NULL;
 	if (cmd->next)
 		tmp = cmd->next;
 	cmd->next = init_cmd();

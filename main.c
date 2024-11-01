@@ -154,7 +154,6 @@ void	updateshlvl(t_env *env)
 		envset2(env, "SHLVL", ft_itoa(shelllevel + 1));
 }
 
-void f(){system("leaks minishell");}
 
 int main(int argc, char **argv, char **envp)
 {  
@@ -213,7 +212,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
     	}
 		exportsignal(cmd->exs, cmd);
-		int check = parse(cmd, input, envp, 0);
+		int check = parse(cmd);
         if(check == 0)   
 			continue ;
 		// print_commands(cmd);

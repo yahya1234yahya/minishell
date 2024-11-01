@@ -12,30 +12,6 @@
 
 #include "../minishell.h"
 
-static char	*ft_strstr(const char	*haystack, const char	*needle)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	if (!haystack && needle != NULL)
-		return (NULL);
-	if (needle[i] == '\0')
-		return ((char *)haystack);
-	while (haystack[i])
-	{
-		j = 0;
-		while (haystack[i + j] == needle[j] && (i + j))
-		{
-			if (needle[j + 1] == '\0')
-				return ((char *)(haystack + i));
-			j++;
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 int	ft_pwd(t_env *env)
 {
 	t_env	*wd;

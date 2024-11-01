@@ -78,7 +78,6 @@ void	signalhandlerherdoc(int signum)
 int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 {
 	char	*line;
-	int		flag;
 
 	while (1)
 	{
@@ -113,7 +112,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 	return (0);
 }
 
-int	handle_heredoc(char *input, t_cmd *cmd)
+int	handle_heredoc(t_cmd *cmd)
 {
 	int	is_quoted;
 	int	i;

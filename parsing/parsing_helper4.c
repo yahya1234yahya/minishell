@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:17:27 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/10/28 20:45:45 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:48:09 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*add_space(char *input)
 	return (new_input);
 }
 
-char	**handle_redirection_out(t_cmd *cmd, char **tokens)
+char	**handle_redirection_out(t_cmd *cmd)
 {
 	cmd->redout = index_char(*(cmd->tokens));
 	cmd->tokens++;
@@ -57,7 +57,7 @@ char	**handle_redirection_out(t_cmd *cmd, char **tokens)
 	return (cmd->tokens);
 }
 
-char	**handle_redirection_in(t_cmd *cmd, char **tokens)
+char	**handle_redirection_in(t_cmd *cmd)
 {
 	cmd->redin = 1;
 	cmd->tokens++;
@@ -86,7 +86,7 @@ int	is_there_space(char *input)
 	while (input[i])
 	{
 		check_quots(input[i], &s_quote, &d_quote);
-		if (input[i] == ' ' || input[i] == '\t' && !s_quote && !d_quote)
+		if ((input[i] == ' ' || input[i] == '\t') && !s_quote && !d_quote)
 			return (1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 19:51:55 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:45:46 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ long long	ft_atoil(const char *str)
 	while (ft_isdigit(str[i]))
 	{
 		r = r * 10 + (str[i] - '0');
-		if ((s == -1 && r > LLONG_MIN) || (s == 1 && r > LLONG_MAX))
+		if ((s == -1 && (long long)r > LLONG_MIN) || (s == 1 && r > LLONG_MAX))
 			return (LLONG_MAX);
 		i++;
 	}

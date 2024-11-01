@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:19:16 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/27 17:35:34 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:49:18 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	parsename(char *name)
 {
 	int	i;
-	int	ret;
 
 	i = 0;
 	if (ft_strcmp(name, "\0") == 0)
@@ -67,7 +66,7 @@ void	printerrorexport(char *str)
 
 int	onechar(char *str, char c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while ((str[i]) && (str[i] == c || str[i] == '\'' || str[i] == '\"'))

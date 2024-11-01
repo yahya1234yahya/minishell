@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 00:27:20 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/26 00:38:44 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:43:51 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	normalcase(t_cmd *cmd, char *current_path)
 	char	*destination;
 
 	destination = preparearcd(cmd);
-	if (checkiffail(cmd, destination, current_path) == -1)
+	if (checkiffail(destination) == -1)
 		return (-1);
 	envset2(cmd->env, "OLDPWD", current_path);
 	getcwd(current_path, PATH_MAX);

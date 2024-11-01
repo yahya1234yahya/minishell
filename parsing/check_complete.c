@@ -83,9 +83,6 @@ int	check_complete_2(char *input, int len)
 int	check_complete(char *input)
 {
 	int		len;
-	int		i;
-	int		found;
-	char	quote_char;
 
 	input = ft_strtrim(input, " \t");
 	len = ft_strlen(input);

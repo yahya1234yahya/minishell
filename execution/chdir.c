@@ -43,7 +43,7 @@ void	printerror(char *path, int error)
 		ft_putstr_fd(": unknown error\n", 2);
 }
 
-int	checkiffail(t_cmd *cmd, char *destination, char *current_path)
+int	checkiffail(char *destination)
 {
 	int		i;
 	char	cwd[PATH_MAX];
@@ -81,7 +81,6 @@ char	*ft_strrchr(char	*s, int c)
 
 int	changedir(t_cmd *cmd)
 {
-	char	*destination;
 	char	current_path[PATH_MAX];
 
 	if (getcwd(current_path, PATH_MAX) == NULL)
