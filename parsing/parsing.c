@@ -116,7 +116,8 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
-			check_cases(cmd);
+			if (check_cases(cmd) == -1)
+				return (0);
 			if ((cmd->ft_out == -1 || cmd->ft_in == -1) && fd_error(cmd) == 0)
 			{
 				if (cmd->next)
