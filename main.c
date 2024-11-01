@@ -215,7 +215,7 @@ int main(int argc, char **argv, char **envp)
         if(check == 0)   
 			continue ;
 		// print_commands(cmd);
-		unlink("tmp_hdoc");
+		unlink(cmd->herdoc_file); //todo
 		decider(cmd);
 		if (cmd->ft_in != STDIN_FILENO)
 			close(cmd->ft_in);

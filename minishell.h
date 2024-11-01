@@ -147,6 +147,7 @@ typedef struct s_cmd
 	int				found;
 	int				signal_exs_flag;
 	int				skip;
+	char			*herdoc_file;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -204,6 +205,8 @@ void		print_exit_s(char *str, int i);
 int			is_there_space(char *input);
 char		*add_space(char *input);
 int			calculate_space(char *input);
+char    	*ft_random(void);
+char		*find_name(void);
 //execution
 t_env		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd);
