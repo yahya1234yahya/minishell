@@ -70,6 +70,7 @@ void	signalhandlerherdoc(int signum)
 void	read_herdoc(t_cmd *cmd, int is_quoted)
 {
 	char	*line;
+	int		flag;
 
 	while (1)
 	{
@@ -77,6 +78,7 @@ void	read_herdoc(t_cmd *cmd, int is_quoted)
 		if (line == NULL)
 		{
 			close(cmd->ft_in);
+			open(cmd->herdoc_file,  O_RDWR | O_CREAT | O_TRUNC, 0644);
 			break ;
 		}
 		if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
