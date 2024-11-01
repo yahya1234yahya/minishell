@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/01 15:37:33 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 15:46:53 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	executemultiple(t_cmd *cmd)
 		setandget(NULL)->exs = 128 + WTERMSIG(status);
 	else if (WIFEXITED(status))
 		setandget(NULL)->exs = WEXITSTATUS(status);
-	// waiter(pid, &status);
 	while (wait(NULL) > 0)
 		;
 	close(pipefd[0]);

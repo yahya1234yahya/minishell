@@ -22,6 +22,7 @@ int	there_is_another(char *input, char c, int i)
 	}
 	return (0);
 }
+
 char	*remove_quotes(char *input)
 {
 	char	quote;
@@ -33,7 +34,8 @@ char	*remove_quotes(char *input)
 	new_input = safe_malloc((ft_strlen(input) + 1) * sizeof(char *), 'a');
 	while (input && input[i])
 	{
-		if ((input[i] == '"' || input[i] == '\'') && there_is_another(input, input[i], i))
+		if ((input[i] == '"' || input[i] == '\'')
+			&& there_is_another(input, input[i], i))
 		{
 			quote = input[i++];
 			while (input[i] && input[i] != quote)

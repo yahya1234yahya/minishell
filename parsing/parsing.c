@@ -77,17 +77,6 @@ char	*expand_main(t_env *env, char *input)
 	if (ambigous(tokens, env) == 0)
 		return (NULL);
 	i = 0;
-	// while (tokens && tokens[i])
-	// {
-	// 	if (i == 0)
-	// 		input = ft_strdup(tokens[i]);
-	// 	else
-	// 	{
-	// 		input = ft_strjoin(input, " ");
-	// 		input = ft_strjoin(input, tokens[i]);
-	// 	}
-	// 	i++;
-	// }
 	return (input);
 }
 
@@ -116,8 +105,8 @@ int	parse(t_cmd *cmd, char *input, char **envp, int rec)
 		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
-			check_cases(cmd);
-			if ((cmd->ft_out == -1 || cmd->ft_in == -1) && fd_error(cmd) == 0)
+			if ((check_cases(cmd) == -1) || (cmd->ft_out == -1
+					|| cmd->ft_in == -1) && fd_error(cmd) == 0)
 			{
 				if (cmd->next)
 					break ;

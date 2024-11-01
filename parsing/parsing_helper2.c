@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 16:34:55 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:19:54 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*parse_it(char	*str)
 	return (p.res[p.j] = '\0', p.res);
 }
 
-void	herdoc(t_cmd *cmd)
+int	herdoc(t_cmd *cmd)
 {
 	cmd->tokens++;
 	cmd->redin = 1;
@@ -89,6 +89,8 @@ void	herdoc(t_cmd *cmd)
 		cmd->ft_in = open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	}
 	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
-	handle_heredoc(*(cmd->tokens), cmd);
+	if (handle_heredoc(*(cmd->tokens), cmd) == -1)
+		return (-1);
 	cmd->ft_in = open(cmd->herdoc_file, O_RDWR, 0644);
+	return (0);
 }
