@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 17:10:25 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/01 17:19:54 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	herdoc(t_cmd *cmd)
 		cmd->ft_in = open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	}
 	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
-	if (handle_heredoc(*(cmd->tokens), cmd) == -1 )
+	if (handle_heredoc(*(cmd->tokens), cmd) == -1)
 		return (-1);
 	cmd->ft_in = open(cmd->herdoc_file, O_RDWR, 0644);
 	return (0);
