@@ -208,7 +208,8 @@ char		*add_space(char *input);
 int			calculate_space(char *input);
 char    	*ft_random(void);
 char		*find_name(void);
-void    ft_unlink(t_cmd *cmd);
+void		ft_unlink(t_cmd *cmd);
+int			check_pipe(char	*input);
 //execution
 t_env		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd, t_env *env);
@@ -268,6 +269,9 @@ int			waiter(int *status);
 void		perrornb(char *str);
 void		argsprepare(t_cmd *cmd);
 void		reset(t_cmd *cmd);
+void		ft_signals(void);
+t_env		*noenv(void);
+void	updateshlvl(t_env *env);
 //tools
 char		**ft_split(char *s, char c);
 int			ft_strcmp(const char	*s1, const char	*s2);
