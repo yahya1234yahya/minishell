@@ -33,31 +33,18 @@ export a+=====
 
 export a+=+=======
 
-signal gerdoc should close fd 0 so the readline exits 
-
-
-
+signal gerdoc should close fd 0 so the readline exits
 ____________________________________________
-
-
 sapce or tabs only -> overflow
-
 ____________________________________________
-
 (for me)
 erease last exported argument/command in case of no command
-
 ____________________________________________
-
 export =asas //DONE
-
 ./ls/ (exit status) //DONE
-
 export + (doesn't exist) add it  //DONE
 exit ""   // DONE
-
 env -i ./minishell followed by minishell > unset PATH  //DONE
-
 export a="b'" //DONE
 minishell > echo $a //DONE
 minishell: syntax error //DONE

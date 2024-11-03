@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define MLL 9223372036854775807ULL
 
 # include <stdio.h>
 # include <stdlib.h>
