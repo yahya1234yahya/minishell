@@ -113,4 +113,5 @@ void	decider(t_cmd *cmd)
 		exportlastcommand(cmd, 1);
 		executemultiple(cmd);
 	}
+	reset(cmd);
 }

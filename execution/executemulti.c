@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 19:21:06 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 21:11:49 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,32 @@ void	prechildredirection(t_cmd *cmd, int input, int *pipefd)
 	close(pipefd[1]);
 }
 
-void	child(t_cmd *cmd, int input, int *pipefd)
+void	childhelper(t_cmd *cmd)
 {
 	int	check;
 
+	check = preparecmd(cmd);
+	if (check)
+	{
+		safe_malloc(0, 'f');
+		exit(check);
+	}
+	check = check_command(cmd->splited[0]);
+	if (check)
+	{
+		safe_malloc(0, 'f');
+		exit(check);
+	}
+	if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
+	{
+		safe_malloc(0, 'f');
+		perror("execve");
+		exit(1);
+	}
+}
+
+void	child(t_cmd *cmd, int input, int *pipefd)
+{
 	prechildredirection(cmd, input, pipefd);
 	if (helper(cmd) != 1337)
 	{
@@ -51,26 +73,7 @@ void	child(t_cmd *cmd, int input, int *pipefd)
 		exit(0);
 	}
 	else
-	{
-		check = preparecmd(cmd);
-		if (check)
-		{
-			safe_malloc(0, 'f');	
-			exit(check);
-		}
-		check = check_command(cmd->splited[0]);
-		if (check)
-		{
-			safe_malloc(0, 'f');			
-			exit(check);
-		}
-		if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
-		{
-			safe_malloc(0, 'f');
-			perror("execve");
-			exit(1);
-		}
-	}
+		childhelper(cmd);
 	safe_malloc(0, 'f');
 	exit(EXIT_SUCCESS);
 }
@@ -98,21 +101,6 @@ int	executemultiple(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-		setandget(NULL)->exs = 128 + WTERMSIG(status);
-	else if (WIFEXITED(status))
-		setandget(NULL)->exs = WEXITSTATUS(status);
-	while (wait(NULL) > 0)
-		;
 	close(pipefd[0]);
-	return (0);
-}
-
-int	waiter(int *status)
-{
-	if (WIFSIGNALED(*status))
-		return (setandget(NULL)->exs = 128 + WTERMSIG(*status));
-	else if (WIFEXITED(*status))
-		return (setandget(NULL)->exs = WEXITSTATUS(*status));
-	return (0);
+	return (waiter(&status));
 }

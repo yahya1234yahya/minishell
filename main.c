@@ -200,10 +200,10 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-         if(!input[0])
-		 {
+        if(!input[0])
+		{
             continue ;
-		 }
+		}
 		input_res = ft_strdup(input);
 		split_pipe(cmd, input, cmd->env);	
 		if(check_pipe(input_res) == 0)
@@ -212,6 +212,7 @@ int main(int argc, char **argv, char **envp)
 			setandget(NULL)->exs = 2;
 			continue ;
     	}
+		exportsignal(cmd->exs, cmd);
 		int check = parse(cmd);
         if(check == 0)   
 			continue ;
@@ -219,10 +220,6 @@ int main(int argc, char **argv, char **envp)
 		// print_commands(cmd);
 		ft_unlink(cmd);
 		decider(cmd);
-		if (cmd->ft_in != STDIN_FILENO)
-			close(cmd->ft_in);
-		if (cmd->ft_out != STDOUT_FILENO)
-			close(cmd->ft_out);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
 		if (input)

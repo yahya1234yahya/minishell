@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define MLL 9223372036854775807ULL
-
+# define MLLOF 9223372036854775808ULL
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h> 
@@ -267,6 +267,7 @@ int			parsename(char *name);
 int			waiter(int *status);
 void		perrornb(char *str);
 void		argsprepare(t_cmd *cmd);
+void		reset(t_cmd *cmd);
 //tools
 char		**ft_split(char *s, char c);
 int			ft_strcmp(const char	*s1, const char	*s2);

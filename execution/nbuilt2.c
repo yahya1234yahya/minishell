@@ -119,14 +119,4 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 		return (waiter(&s));
 	}
 	return (0);
- }
-		// if (WIFSIGNALED(s))
-		// {
-		// 	setandget(NULL)->exs = 128 + WTERMSIG(s);
-		// 	return (128 + WTERMSIG(s));
-		// }
-		// else if (WIFEXITED(s))
-		// {
-		// 	setandget(NULL)->exs = WEXITSTATUS(s);
-		// 	return WEXITSTATUS(s);
-		// }
+}
