@@ -92,8 +92,6 @@ int	expand_check(t_cmd *cmd)
 
 int	parse(t_cmd *cmd)
 {
-	int	i;
-
 	while (cmd)
 	{
 		cmd->input = add_space(cmd->input);
@@ -102,10 +100,11 @@ int	parse(t_cmd *cmd)
 		else if (strstr(cmd->input, "<<") && check_complete(cmd->input) == 0)
 			return (0);
 		cmd->tokens = ft_strtok_all(cmd->input, " \t");
-		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
-			if (((check_cases(cmd) == -1) || (cmd->ft_out == -1) || (cmd->ft_in == -1)) && fd_error(cmd))
+			if (check_cases(cmd) == -1)
+				return (0);
+			if (((cmd->ft_out == -1) || (cmd->ft_in == -1)) && fd_error(cmd))
 			{
 				if (cmd->next)
 					break ;
