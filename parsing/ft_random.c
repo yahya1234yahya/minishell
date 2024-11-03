@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_random.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:35:55 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 16:45:53 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/03 22:01:29 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char    *find_name(void)
 
 void    ft_unlink(t_cmd *cmd)
 {
-    t_cmd *t = cmd;
+    t_cmd *t;
+	
+	t = cmd;
     while(t)
     {
         if (t->herdoc_file)

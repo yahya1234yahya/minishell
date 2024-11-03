@@ -96,6 +96,7 @@ void	decider(t_cmd *cmd)
 	char	**env;
 	int		exs;
 
+	ft_unlink(cmd);
 	if (cmd->next == NULL)
 	{
 		if (cmd->cmd == NULL)

@@ -108,7 +108,6 @@ int	check_pipe(char	*input)
 	
 	input = ft_strtrim(input, " \t");
 	i = ft_strlen(input) - 1;
-	// when the input is empty strlen == -1 and segfault occurs here
 	if (input[i] == '|' || input[0] == '|')
       return (0);
 	i = 0;
@@ -162,47 +161,48 @@ static void eof(void)
 	exit(setandget(NULL)->exs);
 }
 
-static void	secondmain(t_cmd *cmd, struct termios termstate, t_env *env, char *input, char *input_res)
+static t_env *thirdmain(t_cmd *cmd, char *input)
 {
-	int check;
+	t_env *env;
+	
+	decider(cmd);
+	env = cmd->env;
+	free(input);
+	return (env);
+}
 
+static void postreadline(char *input)
+{
+	if (input == NULL)
+		eof();
+	if (input != NULL && *input != '\0')
+		add_history(input);
+}
+
+static void	secondmain(t_cmd *cmd, struct termios termstate, t_env *env, char *input)
+{
 	while (1)
 	{
 		set_cmd(cmd, env);
-		setandget(cmd);
-		ft_signals();
 		input = readline("minishell > ");
-		if (input == NULL)
-			eof();
-		if (input != NULL && *input != '\0')
-			add_history(input);
+		postreadline(input);
 		if (!(*input))
 		{
 			free(input);
 			continue ;
 		}
-        if(!input[0])
-		{
-            continue ;
-		}
-		input_res = ft_strdup(input);
 		split_pipe(cmd, input, cmd->env);	
-		if(check_pipe(input_res) == 0)
+		if(check_pipe(input) == 0)
     	{
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			setandget(NULL)->exs = 2;
 			continue ;
     	}
 		exportsignal(cmd->exs, cmd);
-		check = parse(cmd);
-        if(check == 0)   
+        if (parse(cmd) == 0)
 			continue ;
-		exportsignal(cmd->exs, cmd);
-		ft_unlink(cmd);
-		decider(cmd);
-		env = cmd->env;
+		env = thirdmain(cmd, input);
 		tcsetattr(0, TCSANOW, &termstate);
-		free(input);
     }
 }
 
@@ -211,13 +211,12 @@ int main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	char	*input;
 	t_env 	*env;
-	char	*input_res;
 	static struct termios	termstate;
 
+	ft_signals();
 	(void)argv;
 	(void)argc;
 	input = NULL;
-	input_res = NULL;
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
 	if (*envp)
@@ -230,6 +229,6 @@ int main(int argc, char **argv, char **envp)
 	cmd->first_run = 1;
 	setandget(cmd);
 	setandget(NULL)->exs = 0;
-	secondmain(cmd, termstate, env, input, input_res);
+	secondmain(cmd, termstate, env, input);
     return (0);
 }
