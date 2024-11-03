@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 16:47:21 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:42:06 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,33 @@ char	convertexit(int num)
 long long	ft_atoil(const char *str)
 {
 	int					i;
-	int					s;
-	unsigned long long	r;
+	int					sign;
+	unsigned long long	rest;
 
 	i = 0;
-	r = 0;
-	s = 1;
-	while (str[i] && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
+	rest = 0;
+	sign = 1;
+	while (str[i] != '\0' && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			s = -1;
+			sign = -1;
 		i++;
 	}
 	while (ft_isdigit(str[i]))
 	{
-		r = r * 10 + (str[i] - '0');
-		if ((s == -1 && (long long)r > LLONG_MIN) || (s == 1 && r > LLONG_MAX))
+		rest = rest * 10 + (str[i] - '0');
+
+		if (sign == -1 && rest > 9223372036854775808ULL)
+			return (LLONG_MAX);
+		if (sign == 1 && rest > 9223372036854775807ULL)
 			return (LLONG_MAX);
 		i++;
 	}
-	if (s == -1 && r == 9223372036854775808ULL)
+	if (sign == -1 && rest == 9223372036854775808ULL)
 		return (LLONG_MIN);
-	return (r * s);
+	return (rest * sign);
 }
 
 char	**preparexit(char *data)

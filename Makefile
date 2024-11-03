@@ -12,7 +12,7 @@ execution/nbuilt3.c parsing/ft_random.c
 
 
 OBJS = $(SRCS:.c=.o)
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror
 HEADER = minishell.h
 READLINEDIR  =  $(shell brew --prefix readline)
 

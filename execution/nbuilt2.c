@@ -114,19 +114,19 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 			return (perror("execve:"), 1);
 	}
 	else
-		{
-			waitpid(pid, &s, 0);
-			if (WIFSIGNALED(s))
-			{
-				setandget(NULL)->exs = 128 + WTERMSIG(s);
-				return (128 + WTERMSIG(s));
-			}
-			else if (WIFEXITED(s))
-			{
-				setandget(NULL)->exs = WEXITSTATUS(s);
-				return WEXITSTATUS(s);
-			}
-		}
-		// waiter(pid, &s);
+	{
+		waitpid(pid, &s, 0);
+		return (waiter(&s));
+	}
 	return (0);
  }
+		// if (WIFSIGNALED(s))
+		// {
+		// 	setandget(NULL)->exs = 128 + WTERMSIG(s);
+		// 	return (128 + WTERMSIG(s));
+		// }
+		// else if (WIFEXITED(s))
+		// {
+		// 	setandget(NULL)->exs = WEXITSTATUS(s);
+		// 	return WEXITSTATUS(s);
+		// }

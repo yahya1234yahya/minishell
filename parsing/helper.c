@@ -60,18 +60,16 @@ char	*add_quotes(char *str)
 
 void	signalhandlerherdoc(int signum)
 {
-	// if (signum == SIGINT)
-	// {
-	// 	g_signal = 1;
-	// 	close(STDIN_FILENO);
-	// }
+
 	if ( signum == SIGINT)
 	{
 		g_signal = 1;
 		close(STDIN_FILENO);
-		rl_on_new_line();
+		// rl_on_new_line();
 		rl_replace_line("", 0);
+		setandget(NULL)->exs = 1;
 		// rl_redisplay();
+		// close(setandget(NULL)->ft_in);
 	}
 }
 
@@ -79,13 +77,14 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 {
 	char	*line;
 
+	g_signal = 1;
 	while (1)
 	{
 		line = readline("> ");
 		if (g_signal == 1)
 		{
-			dup2(tmp_fd, STDIN_FILENO);
 			signal(SIGINT, funcsign);
+			dup2(tmp_fd, STDIN_FILENO);
 			g_signal = 0;
 			return (-1);
 		}
@@ -93,6 +92,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 		{
 			close(cmd->ft_in);
 			open(cmd->herdoc_file,  O_RDWR | O_CREAT | O_TRUNC, 0644);
+			setandget(NULL)->exs = 0;
 			break ;
 		}
 		if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)

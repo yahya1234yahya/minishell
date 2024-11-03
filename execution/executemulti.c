@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 16:47:04 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:21:06 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,8 @@ int	executemultiple(t_cmd *cmd)
 	return (0);
 }
 
-int	waiter(int pid, int *status)
+int	waiter(int *status)
 {
-	waitpid(pid, status, 0);
 	if (WIFSIGNALED(*status))
 		return (setandget(NULL)->exs = 128 + WTERMSIG(*status));
 	else if (WIFEXITED(*status))
