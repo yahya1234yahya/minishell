@@ -12,26 +12,7 @@
 
 #include "minishell.h"
 
-void print_commands(t_cmd *head)
-{
-    t_cmd *current = head;
-	while(current)
-	{
-		// printf("input: %s\n", current->input);
-		printf("Command: %s\n", current->cmd);
-		printf("Arguments: [%s]\n", current->args);
-		printf("Pipe: %d\n", current->pipe ? current->pipe : 0);
-		printf("redout: %d\n", current->redout ? current->redout : 0);
-		printf("redin: %d\n", current->redin ? current->redin : 0);
-		printf("ft_in: %d\n", current->ft_in ? current->ft_in : 0);
-		printf("ft_out: %d\n", current->ft_out ? current->ft_out : 0);
-		printf("path: %s\n", current->path);
-		printf("----------------\n");
-		current = current->next;
-	}
-} 
-
-void funcsign(int signum)
+void	funcsign(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -40,7 +21,7 @@ void funcsign(int signum)
 			if (ft_strcmp(setandget(NULL)->cmd, "./minishell") == 0)
 				return ;
 			write(1, "\n", 1);
-			return;
+			return ;
 		}
 		write(1, "\n", 1);
 		rl_on_new_line();
@@ -55,29 +36,28 @@ void funcsign(int signum)
 	}
 }
 
-void ft_signals()
+void	ft_signals(void)
 {
 	rl_catch_signals = 0;
 	signal(SIGINT, funcsign);
 	signal(SIGQUIT, funcsign);
 }
 
-
 t_cmd	*setandget(t_cmd *cmd)
 {
-	static t_cmd *cmd2;
+	static t_cmd	*cmd2;
 
 	if (cmd)
 		cmd2 = cmd;
 	return (cmd2);
 }
 
-t_env	*noenv()
+t_env	*noenv(void)
 {
 	t_env	*env;
 	char	*currenntwd;
 	t_env	*tmp;
-	
+
 	currenntwd = getcwd(NULL, 0);
 	env = (t_env *)safe_malloc(sizeof(t_env), 'a');
 	if (!env)
@@ -100,24 +80,26 @@ t_env	*noenv()
 	tmp->next = NULL;
 	return (env);
 }
+
 int	check_pipe(char	*input)
 {
-	int i = 0;
-	int d_quote = 0;
-	int s_quote = 0;
-	
+	int	i;
+	int	s_quote;
+	int	d_quote;
+
+	d_quote = 0;
+	s_quote = 0;
 	input = ft_strtrim(input, " \t");
-	i = ft_strlen(input) - 1;
-	if (input[i] == '|' || input[0] == '|')
-      return (0);
+	if (input[ft_strlen(input) - 1] == '|' || input[0] == '|')
+		return (0);
 	i = 0;
-	while(input[i])
+	while (input[i])
 	{
 		check_quots(input[i], &d_quote, &s_quote);
 		if (input[i] == '|' && d_quote == 0 && s_quote == 0)
 		{
 			i++;
-			while(input[i] == ' ' || input[i] == '\t')
+			while (input[i] == ' ' || input[i] == '\t')
 				i++;
 			if (input[i] == '|' || input[i] == '\0')
 				return (0);
@@ -125,17 +107,17 @@ int	check_pipe(char	*input)
 		i++;
 	}
 	return (1);
-
 }
 
 void	updateshlvl(t_env *env)
 {
 	int		shelllevel;
 	char	*shlvlchar;
+
 	shlvlchar = envsearch2(env, "SHLVL");
 	if (!shlvlchar)
 	{
-		envset2(env, "SHLVL", "1");	
+		envset2(env, "SHLVL", "1");
 		return ;
 	}
 	shelllevel = ft_atoi(shlvlchar);
@@ -154,24 +136,24 @@ void	updateshlvl(t_env *env)
 		envset2(env, "SHLVL", ft_itoa(shelllevel + 1));
 }
 
-static void eof(void)
+static void	eof(void)
 {
 	ft_putstr_fd("exit\n", 1);
 	safe_malloc(0, 'f');
 	exit(setandget(NULL)->exs);
 }
 
-static t_env *thirdmain(t_cmd *cmd, char *input)
+static t_env	*thirdmain(t_cmd *cmd, char *input)
 {
-	t_env *env;
-	
+	t_env	*env;
+
 	decider(cmd);
 	env = cmd->env;
 	free(input);
 	return (env);
 }
 
-static void postreadline(char *input)
+static void	postreadline(char *input)
 {
 	if (input == NULL)
 		eof();
@@ -179,7 +161,7 @@ static void postreadline(char *input)
 		add_history(input);
 }
 
-static void	secondmain(t_cmd *cmd, struct termios termstate, t_env *env, char *input)
+static void	secondmain(t_cmd *cmd, struct termios ts, t_env *env, char *input)
 {
 	while (1)
 	{
@@ -191,34 +173,34 @@ static void	secondmain(t_cmd *cmd, struct termios termstate, t_env *env, char *i
 			free(input);
 			continue ;
 		}
-		split_pipe(cmd, input, cmd->env);	
-		if(check_pipe(input) == 0)
-    	{
+		split_pipe(cmd, input, cmd->env);
+		if (check_pipe(input) == 0)
+		{
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			setandget(NULL)->exs = 2;
 			continue ;
-    	}
+		}
 		exportsignal(cmd->exs, cmd);
-        if (parse(cmd) == 0)
+		if (parse(cmd) == 0)
 			continue ;
 		env = thirdmain(cmd, input);
-		tcsetattr(0, TCSANOW, &termstate);
-    }
+		tcsetattr(0, TCSANOW, &ts);
+	}
 }
 
-int main(int argc, char **argv, char **envp)
-{  
-	t_cmd	*cmd;
-	char	*input;
-	t_env 	*env;
-	static struct termios	termstate;
+int	main(int argc, char **argv, char **envp)
+{
+	t_cmd					*cmd;
+	char					*input;
+	t_env					*env;
+	static struct termios	ts;
 
 	ft_signals();
 	(void)argv;
 	(void)argc;
 	input = NULL;
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
-	tcgetattr(0, &termstate);
+	tcgetattr(0, &ts);
 	if (*envp)
 	{
 		env = initenv(envp);
@@ -229,6 +211,6 @@ int main(int argc, char **argv, char **envp)
 	cmd->first_run = 1;
 	setandget(cmd);
 	setandget(NULL)->exs = 0;
-	secondmain(cmd, termstate, env, input);
-    return (0);
+	secondmain(cmd, ts, env, input);
+	return (0);
 }
