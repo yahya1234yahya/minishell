@@ -51,7 +51,7 @@ char	**prepareforexport(char *str, t_exp *exp)
 {
 	char	**token;
 
-	exp = (t_exp *)malloc(sizeof(t_exp));
+	exp = (t_exp *)safe_malloc(sizeof(t_exp), 'a');
 	exp = initexp(exp);
 	token = preparetokens(str);
 	return (token);

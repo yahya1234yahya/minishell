@@ -83,6 +83,7 @@ t_env	*noenv()
 	if (!env)
 	{
 		perror("malloc");
+		safe_malloc(0, 'f');
 		exit(1);
 	}
 	tmp = env;
@@ -166,7 +167,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 
-
+	input = NULL;
 	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
 	tcgetattr(0, &termstate);
 	if (*envp)
@@ -217,6 +218,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		// print_commands(cmd);
 		ft_unlink(cmd);
+
 		decider(cmd);
 		if (cmd->ft_in != STDIN_FILENO)
 			close(cmd->ft_in);
@@ -224,6 +226,11 @@ int main(int argc, char **argv, char **envp)
 			close(cmd->ft_out);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
+		if (input)
+		{
+			free(input);
+			input = NULL;
+		}
     }
     return (0);
 }

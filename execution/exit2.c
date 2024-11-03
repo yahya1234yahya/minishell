@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 00:18:59 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/26 00:20:23 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:50:44 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	no_args(char *data)
 	if (!data)
 	{
 		ft_putstr_fd("exit\n", 1);
+		safe_malloc(0, 'f');
 		exit(setandget(NULL)->exs);
 	}
 }
@@ -45,5 +46,6 @@ void	ft_exit(char *data, int flag)
 		print_numeric_error(str[0]);
 	if (flag)
 		ft_putstr_fd("exit\n", 1);
+	safe_malloc(0, 'f');
 	exit(convertexit(num));
 }

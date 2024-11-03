@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/01 15:46:53 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:47:04 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	prechildredirection(t_cmd *cmd, int input, int *pipefd)
 {
 	close(pipefd[0]);
 	if (cmd->skip == 1)
+	{
+		safe_malloc(0, 'a');
 		exit(1);
+	}
 	if (cmd->redin != 0)
 		dup2(cmd->ft_in, STDIN_FILENO);
 	else
@@ -44,22 +47,31 @@ void	child(t_cmd *cmd, int input, int *pipefd)
 	if (helper(cmd) != 1337)
 	{
 		isbuiltin(cmd, helper(cmd), 0);
+		safe_malloc(0, 'f');
 		exit(0);
 	}
 	else
 	{
 		check = preparecmd(cmd);
 		if (check)
+		{
+			safe_malloc(0, 'f');	
 			exit(check);
+		}
 		check = check_command(cmd->splited[0]);
 		if (check)
+		{
+			safe_malloc(0, 'f');			
 			exit(check);
+		}
 		if (execve(cmd->splited[0], cmd->splited, convert(cmd)) == -1)
 		{
+			safe_malloc(0, 'f');
 			perror("execve");
 			exit(1);
 		}
 	}
+	safe_malloc(0, 'f');
 	exit(EXIT_SUCCESS);
 }
 

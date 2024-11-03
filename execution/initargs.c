@@ -45,6 +45,7 @@ t_cmd	*init_cmd(void)
 	if (!new_cmd)
 	{
 		perror("malloc");
+		safe_malloc(0, 'f');
 		exit(1);
 	}
 	new_cmd->input = NULL;

@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:05:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/01 17:48:59 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 17:08:04 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	exportsignal(int sig, t_cmd *cmd)
 	t_exp	*exp;
 
 	str = ft_itoa(sig);
-	exp = (t_exp *)malloc(sizeof(t_exp));
+	exp = (t_exp *)safe_malloc(sizeof(t_exp), 'a');
 	exp->key = ft_strdup("?");
 	exp->v = ft_strdup(str);
 	if (plusaddpack(&cmd->env, exp->key, exp->v) == -1)

@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/01 17:45:46 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:47:21 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	print_numeric_error(char *str)
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	setandget(NULL)->exs = 255;
+	safe_malloc(0, 'f');
 	exit(255);
 }
 

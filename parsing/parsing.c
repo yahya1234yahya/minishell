@@ -105,7 +105,7 @@ int	parse(t_cmd *cmd)
 		i = 0;
 		while (cmd->tokens && *(cmd->tokens))
 		{
-			if ((fd_error(cmd) == 0) && ((check_cases(cmd) == -1) || (cmd->ft_out == -1) || (cmd->ft_in == -1)))
+			if (((check_cases(cmd) == -1) || (cmd->ft_out == -1) || (cmd->ft_in == -1)) && fd_error(cmd))
 			{
 				if (cmd->next)
 					break ;
