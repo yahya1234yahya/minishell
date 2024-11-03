@@ -60,7 +60,6 @@ char	*add_quotes(char *str)
 
 void	signalhandlerherdoc(int signum)
 {
-
 	if ( signum == SIGINT)
 	{
 		g_signal = 1;
@@ -77,7 +76,6 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 {
 	char	*line;
 
-	g_signal = 1;
 	while (1)
 	{
 		line = readline("> ");

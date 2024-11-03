@@ -212,13 +212,12 @@ int main(int argc, char **argv, char **envp)
 			setandget(NULL)->exs = 2;
 			continue ;
     	}
-		exportsignal(cmd->exs, cmd);
 		int check = parse(cmd);
         if(check == 0)   
 			continue ;
+		exportsignal(cmd->exs, cmd);
 		// print_commands(cmd);
 		ft_unlink(cmd);
-
 		decider(cmd);
 		if (cmd->ft_in != STDIN_FILENO)
 			close(cmd->ft_in);
