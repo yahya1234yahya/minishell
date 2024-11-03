@@ -155,44 +155,25 @@ void	updateshlvl(t_env *env)
 		envset2(env, "SHLVL", ft_itoa(shelllevel + 1));
 }
 
+static void eof(void)
+{
+	ft_putstr_fd("exit\n", 1);
+	safe_malloc(0, 'f');
+	exit(setandget(NULL)->exs);
+}
 
-int main(int argc, char **argv, char **envp)
-{  
-	t_cmd	*cmd;
-	char	*input;
-	t_env 	*env;
-	char	*input_res;
-	static struct termios	termstate;
+static void	secondmain(t_cmd *cmd, struct termios termstate, t_env *env, char *input, char *input_res)
+{
+	int check;
 
-	(void)argv;
-	(void)argc;
-
-	input = NULL;
-	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
-	tcgetattr(0, &termstate);
-	if (*envp)
-	{
-		env = initenv(envp);
-		updateshlvl(env);
-	}
-	else
-		env = noenv();
-	cmd->first_run = 1;
-	setandget(cmd);
-	setandget(NULL)->exs = 0;
 	while (1)
 	{
-		set_cmd(cmd);
+		set_cmd(cmd, env);
 		setandget(cmd);
 		ft_signals();
-		cmd->env = env;
 		input = readline("minishell > ");
 		if (input == NULL)
-		{
-			write(1, "exit\n", 5);
-			safe_malloc(0, 'f');
-			exit(setandget(NULL)->exs);
-		}
+			eof();
 		if (input != NULL && *input != '\0')
 			add_history(input);
 		if (!(*input))
@@ -213,20 +194,42 @@ int main(int argc, char **argv, char **envp)
 			continue ;
     	}
 		exportsignal(cmd->exs, cmd);
-		int check = parse(cmd);
+		check = parse(cmd);
         if(check == 0)   
 			continue ;
 		exportsignal(cmd->exs, cmd);
-		// print_commands(cmd);
 		ft_unlink(cmd);
 		decider(cmd);
 		env = cmd->env;
 		tcsetattr(0, TCSANOW, &termstate);
-		if (input)
-		{
-			free(input);
-			input = NULL;
-		}
+		free(input);
     }
+}
+
+int main(int argc, char **argv, char **envp)
+{  
+	t_cmd	*cmd;
+	char	*input;
+	t_env 	*env;
+	char	*input_res;
+	static struct termios	termstate;
+
+	(void)argv;
+	(void)argc;
+	input = NULL;
+	input_res = NULL;
+	cmd = (t_cmd *)safe_malloc(sizeof(t_cmd), 'a');
+	tcgetattr(0, &termstate);
+	if (*envp)
+	{
+		env = initenv(envp);
+		updateshlvl(env);
+	}
+	else
+		env = noenv();
+	cmd->first_run = 1;
+	setandget(cmd);
+	setandget(NULL)->exs = 0;
+	secondmain(cmd, termstate, env, input, input_res);
     return (0);
 }

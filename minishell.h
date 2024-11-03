@@ -211,7 +211,7 @@ char		*find_name(void);
 void    ft_unlink(t_cmd *cmd);
 //execution
 t_env		*initenv(char **envp);
-t_cmd		*set_cmd(t_cmd *cmd);
+t_cmd		*set_cmd(t_cmd *cmd, t_env *env);
 t_cmd		*init_cmd(void);
 t_env		*ft_lstnew(void *content);
 void		addback(t_env **lst, t_env *newnode);

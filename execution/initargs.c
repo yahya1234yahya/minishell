@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-t_cmd	*set_cmd(t_cmd *cmd)
+t_cmd	*set_cmd(t_cmd *cmd, t_env *env)
 {
 	if (cmd->first_run == 1)
 	{
@@ -34,6 +34,7 @@ t_cmd	*set_cmd(t_cmd *cmd)
 	cmd->next = NULL;
 	cmd->hdoc_delimiter = NULL;
 	cmd->signal_exs_flag = 0;
+	cmd->env = env;
 	return (cmd);
 }
 
