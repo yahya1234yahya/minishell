@@ -223,6 +223,7 @@ int			executemultiple(t_cmd *cmd);
 int			executesingle(t_cmd *cmd, char **envp);
 int			preparecmd(t_cmd *cmd);
 int			ft_errorwrite(t_cmd *cmd);
+void		ft_errorwrite2(char *str, int ernum);
 int			exportsignal(int sig, t_cmd *cmd);
 t_cmd		*setandget(t_cmd *cmd);
 char		*envsearch2(t_env *env, char *name);

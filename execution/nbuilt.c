@@ -12,38 +12,6 @@
 
 #include "../minishell.h"
 
-// char	**convert(t_cmd *cmd)
-// {
-// 	t_env	*tmp;
-// 	char	**ret;
-// 	int		i;
-// 	int		j;
-
-// 	i = 0;
-// 	tmp = cmd->env;
-// 	while (tmp)
-// 	{
-// 		i++;
-// 		tmp = tmp->next;
-// 	};
-// 	ret = (char **)safe_malloc(sizeof(char *) * (i + 1), 'a');
-// 	if (!ret)
-// 		return (perror("malloc"), setandget(NULL)->exs = 1, NULL);
-// 	ret[i] = NULL;
-// 	j = 0;
-// 	free(tmp);
-// 	tmp = cmd->env;
-// 	while (j < i && tmp)
-// 	{
-// 		ret[j] = ft_strjoin(tmp->key, "=");
-// 		ret[j] = ft_strjoin(ret[j], tmp->value);
-// 		tmp = tmp->next;
-// 		j++;
-// 	};
-// 	ret[j] = NULL;		
-// 	return (ret);
-// }
-
 static char	**fill_ret_array(t_cmd *cmd, int count)
 {
 	t_env	*tmp;
