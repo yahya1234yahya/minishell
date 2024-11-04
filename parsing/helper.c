@@ -33,43 +33,35 @@ char	chose_quotes(char *str)
 	return ('"');
 }
 
-char	*add_quotes(char *str)
-{
-	int		len;
-	int		i;
-	int		j;
-	char	*quoted_str;
-
-	i = 0;
-	j = 0;
-	len = ft_strlen(str);
-	quoted_str = safe_malloc(len + 3, 'a');
-	if (quoted_str == NULL)
-		return (NULL);
-	quoted_str[i] = '\'';
-	while (j < len)
-	{
-		quoted_str[i + 1] = str[j];
-		i++;
-		j++;
-	}
-	quoted_str[++i] = '\'';
-	quoted_str[++i] = '\0';
-	return (quoted_str);
-}
-
 void	signalhandlerherdoc(int signum)
 {
-	if ( signum == SIGINT)
+	if (signum == SIGINT)
 	{
 		g_signal = 1;
 		close(STDIN_FILENO);
-		// rl_on_new_line();
 		rl_replace_line("", 0);
 		setandget(NULL)->exs = 1;
-		// rl_redisplay();
-		// close(setandget(NULL)->ft_in);
+		reset(setandget(NULL));
+		ft_unlink(setandget(NULL));
 	}
+}
+
+static int	helper2(t_cmd	*cmd, char	*line)
+{
+	if (line == NULL)
+	{
+		close(cmd->ft_in);
+		open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		return (1);
+	}
+	if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
+	{
+		setandget(NULL)->exs = 0;
+		free(line);
+		close(cmd->ft_in);
+		return (1);
+	}
+	return (0);
 }
 
 int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
@@ -80,28 +72,13 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 	{
 		line = readline("> ");
 		if (g_signal == 1)
-		{
-			signal(SIGINT, funcsign);
-			dup2(tmp_fd, STDIN_FILENO);
-			g_signal = 0;
-			return (-1);
-		}
-		if (line == NULL)
-		{
-			close(cmd->ft_in);
-			open(cmd->herdoc_file,  O_RDWR | O_CREAT | O_TRUNC, 0644);
-			setandget(NULL)->exs = 0;
+			return (signal(SIGINT, funcsign), dup2(tmp_fd, STDIN_FILENO), \
+				g_signal = 0, -1);
+		if (helper2(cmd, line))
 			break ;
-		}
-		if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
-		{
-			setandget(NULL)->exs = 0;
-			free(line);
-			close(cmd->ft_in);
-			break ;
-		}
 		if (is_quoted)
-			line = remove_quotes(expand_variables(cmd->env, add_quotes(line), 1));
+			line = remove_quotes(expand_variables(cmd->env, add_quotes(line), \
+				1));
 		else
 			line = expand_variables(cmd->env, line, 1);
 		ft_putendl_fd(line, cmd->ft_in);

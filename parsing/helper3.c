@@ -1,47 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_random.c                                        :+:      :+:    :+:   */
+/*   helper3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 15:35:55 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/04 23:28:59 by ymouigui         ###   ########.fr       */
+/*   Created: 2024/11/04 23:45:57 by ymouigui          #+#    #+#             */
+/*   Updated: 2024/11/04 23:46:09 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_random(void)
+char	*add_quotes(char *str)
 {
-	static int	index;
-	char		*filename;
+	int		len;
+	int		i;
+	int		j;
+	char	*quoted_str;
 
-	filename = ft_itoa(index);
-	index++;
-	return (filename);
-}
-
-char	*find_name(void)
-{
-	char	*tmp;
-
-	tmp = ft_random();
-	tmp = ft_strjoin("/tmp/.", tmp);
-	while (access(tmp, F_OK) == 0)
-		tmp = ft_strjoin("/tmp/.", ft_random());
-	return (tmp);
-}
-
-void	ft_unlink(t_cmd *cmd)
-{
-	t_cmd	*t;
-
-	t = cmd;
-	while (t)
+	i = 0;
+	j = 0;
+	len = ft_strlen(str);
+	quoted_str = safe_malloc(len + 3, 'a');
+	if (quoted_str == NULL)
+		return (NULL);
+	quoted_str[i] = '\'';
+	while (j < len)
 	{
-		if (t->herdoc_file)
-			unlink(t->herdoc_file);
-		t = t->next;
+		quoted_str[i + 1] = str[j];
+		i++;
+		j++;
 	}
+	quoted_str[++i] = '\'';
+	quoted_str[++i] = '\0';
+	return (quoted_str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 22:30:25 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 22:31:28 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/04 23:43:03 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	funcsign(int signum)
 	{
 		if (waitpid(-1, NULL, WNOHANG) != -1)
 		{
+			reset(setandget(NULL));
+			ft_unlink(setandget(NULL));
 			if (ft_strcmp(setandget(NULL)->cmd, "./minishell") == 0)
 				return ;
 			write(1, "\n", 1);

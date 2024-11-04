@@ -36,7 +36,6 @@ char	*expand_one(t_expa *expa, char *input, t_env *env, int herdoc)
 {
 	input++;
 	expa->name = ft_strdup("?");
-
 	expa->env_value = envsearch3(env, expa->name);
 	if (expa->env_value)
 	{
