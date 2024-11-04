@@ -23,7 +23,6 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <ctype.h>
-# include <string.h>
 # include <signal.h>
 # include <termios.h>
 # include <readline/readline.h>
@@ -31,8 +30,6 @@
 # include <sys/stat.h>
 # include <sys/errno.h>
 # include <limits.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 
 typedef struct s_garbage
 {
@@ -78,16 +75,10 @@ typedef struct s_valid_command
 {
 	t_env	*tmp;
 	char	*path_env;
-	char	f_p[1024];
+	char	*f_p;
 	char	*dir;
 	char	*path_dup;
 }	t_valid;
-
-typedef struct s_data
-{
-	int		originalfd[2];
-	int		pipedfd[2];
-}	t_data;
 
 typedef struct s_parse_it
 {
@@ -140,7 +131,6 @@ typedef struct s_cmd
 	char			*path;
 	char			*hdoc_delimiter;
 	t_env			*env;
-	t_data			data;
 	char			**splited;
 	int				exs;
 	int				first_run;
@@ -169,7 +159,6 @@ int			parse(t_cmd *cmd);
 char		*ft_strjoin(char *s1, char *s2);
 t_env		*envsearch(t_env *env, char *key);
 char		*remove_quotes(char *input);
-void		print_commands(t_cmd *head);
 int			is_all_space(char *input);
 char		*expand_variables(t_env *env, char *input, int herdoc);
 int			index_char(char *str);
@@ -190,7 +179,6 @@ void		handle_export_sort(t_cmd *cmd, char **envp);
 char		**handle_redirection_in(t_cmd *cmd);
 char		**handle_redirection_out(t_cmd *cmd);
 int			check_exit(char *path, char *word);
-void		check_quots(char c, int *single_q, int *double_q);
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			count_word(char *input);
@@ -211,6 +199,9 @@ char		*find_name(void);
 void		ft_unlink(t_cmd *cmd);
 int			check_pipe(char	*input);
 char		*add_quotes(char *str);
+char		*parse_it(char	*str);
+int			calculate_alloc(char	*str);
+void		increment(int	*i, int	*j);
 //execution
 t_env		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd, t_env *env);
@@ -296,5 +287,6 @@ char		*ft_substr(char *s, unsigned int start, size_t len);
 int			check_char(char *set, char c);
 int			ft_tolower(int c);
 int			onechar(char *str, char c);
-
+char		*ft_strchr(char *s, int c);
+char		*ft_strncpy(char *dst, const char *src, size_t n);
 #endif

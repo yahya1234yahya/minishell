@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//DONE
 #include "../minishell.h"
 
 static	char	*strtok_helper(char *next_token, char *delim)
@@ -26,7 +25,7 @@ static	char	*strtok_helper(char *next_token, char *delim)
 			dquote = !dquote;
 		else if (*next_token == '\'' && dquote == 0)
 			squote = !squote;
-		else if (strchr(delim, *next_token) != NULL
+		else if (ft_strchr(delim, *next_token) != NULL
 			&& dquote == 0 && squote == 0)
 			break ;
 		next_token++;
@@ -57,7 +56,7 @@ char	*ft_strtok(char *str, char *delim)
 	return (current_token);
 }
 
-int	count_tokens(char *str, char *delim)
+static int	count_tokens(char *str, char *delim)
 {
 	int	count;
 	int	token_count;
@@ -65,7 +64,7 @@ int	count_tokens(char *str, char *delim)
 	(1) && (count = 0, token_count = 0);
 	while (*str)
 	{
-		while (*str && strchr(delim, *str) != NULL)
+		while (*str && ft_strchr(delim, *str) != NULL)
 			str++;
 		if (!(*str))
 			break ;
@@ -89,7 +88,7 @@ char	**ft_strtok_all(char *str, char *delim)
 	tokens[count_tokens(str, delim)] = NULL;
 	while (*str)
 	{
-		while (*str && strchr(delim, *str) != NULL)
+		while (*str && ft_strchr(delim, *str) != NULL)
 			str++;
 		if (!(*str))
 			break ;
@@ -97,7 +96,7 @@ char	**ft_strtok_all(char *str, char *delim)
 		str = strtok_helper(str, delim);
 		token_len = str - current_token;
 		tokens[token_count] = safe_malloc((token_len + 1) * sizeof(char), 'a');
-		strncpy(tokens[token_count], current_token, token_len);
+		ft_strncpy(tokens[token_count], current_token, token_len);
 		tokens[token_count++][token_len] = '\0';
 		if (*str)
 			str++;

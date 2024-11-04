@@ -97,8 +97,8 @@ int	handle_heredoc(t_cmd *cmd)
 	is_quoted = 0;
 	tmp_fd = dup(STDIN_FILENO);
 	signal(SIGINT, signalhandlerherdoc);
-	if (strchr(cmd->hdoc_delimiter, '\'')
-		|| strchr(cmd->hdoc_delimiter, '"'))
+	if (ft_strchr(cmd->hdoc_delimiter, '\'')
+		|| ft_strchr(cmd->hdoc_delimiter, '"'))
 		is_quoted = 1;
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
 	if (read_herdoc(cmd, is_quoted, tmp_fd) == -1)

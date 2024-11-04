@@ -68,7 +68,7 @@ int	ambigous(char	**tokens, t_env *env)
 	return (1);
 }
 
-char	*expand_main(t_env *env, char *input)
+static char	*expand_main(t_env *env, char *input)
 {
 	int		i;
 	char	**tokens;
@@ -80,7 +80,7 @@ char	*expand_main(t_env *env, char *input)
 	return (input);
 }
 
-int	expand_check(t_cmd *cmd)
+static int	expand_check(t_cmd *cmd)
 {
 	cmd->input = expand_main(cmd->env, cmd->input);
 	if (cmd->input == NULL)
@@ -95,9 +95,11 @@ int	parse(t_cmd *cmd)
 	while (cmd)
 	{
 		cmd->input = add_space(cmd->input);
-		if (strstr(cmd->input, "<<") == NULL && expand_check(cmd) == 0)
+		if (ft_strnstr(cmd->input, "<<", ft_strlen(cmd->input)) == NULL
+			&& expand_check(cmd) == 0)
 			return (0);
-		else if (strstr(cmd->input, "<<") && check_complete(cmd->input) == 0)
+		else if (ft_strnstr(cmd->input, "<<", ft_strlen(cmd->input))
+			&& check_complete(cmd->input) == 0)
 			return (0);
 		cmd->tokens = ft_strtok_all(cmd->input, " \t");
 		while (cmd->tokens && *(cmd->tokens))

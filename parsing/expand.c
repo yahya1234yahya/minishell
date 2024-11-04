@@ -32,7 +32,7 @@ char	*count_two(t_count *co, char *input, t_env *env, int herdoc)
 	return (input);
 }
 
-char	*expand_one(t_expa *expa, char *input, t_env *env, int herdoc)
+static char	*expand_one(t_expa *expa, char *input, t_env *env, int herdoc)
 {
 	input++;
 	expa->name = ft_strdup("?");
@@ -51,7 +51,7 @@ char	*expand_one(t_expa *expa, char *input, t_env *env, int herdoc)
 	return (input);
 }
 
-char	*expand_two(t_expa *expa, char *input, t_env *env, int herdoc)
+static char	*expand_two(t_expa *expa, char *input, t_env *env, int herdoc)
 {
 	input++;
 	expa->name = safe_malloc(count_word(input) + 1, 'a');

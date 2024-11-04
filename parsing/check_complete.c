@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//DONE
 #include "../minishell.h"
 
 void	print_exit_s(char *str, int i)
@@ -19,13 +18,13 @@ void	print_exit_s(char *str, int i)
 	setandget(NULL)->exs = i;
 }
 
-void	set_zero(int	*i, int	*j)
+static void	set_zero(int	*i, int	*j)
 {
 	*i = 0;
 	*j = 0;
 }
 
-int	check_redirect(char	*str)
+static int	check_redirect(char	*str)
 {
 	t_check_r	var;
 
@@ -52,7 +51,7 @@ int	check_redirect(char	*str)
 	return (1);
 }
 
-int	check_complete_2(char *input, int len)
+static int	check_complete_2(char *input, int len)
 {
 	t_check_c	c;
 

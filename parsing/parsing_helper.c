@@ -6,11 +6,10 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:25:59 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 17:46:46 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/05 00:24:31 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//DONE
 #include "../minishell.h"
 
 int	is_valid_command(t_cmd *cmd, char *word)
@@ -29,7 +28,9 @@ int	is_valid_command(t_cmd *cmd, char *word)
 	valid.dir = ft_strtok(valid.path_dup, ":");
 	while (valid.dir)
 	{
-		snprintf(valid.f_p, sizeof(valid.f_p), "%s/%s", valid.dir, word);
+		valid.f_p = ft_strjoin(ft_strdup(""), valid.dir);
+		valid.f_p = ft_strjoin(valid.f_p, "/");
+		valid.f_p = ft_strjoin(valid.f_p, word);
 		if (access(valid.f_p, X_OK) == 0)
 		{
 			cmd->path = ft_strdup(valid.f_p);

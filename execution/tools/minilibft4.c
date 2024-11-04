@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:04:26 by mboughra          #+#    #+#             */
-/*   Updated: 2024/10/25 23:33:08 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/05 00:13:06 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,42 @@ int	ft_strcmp2(const char *s1, const char *s2)
 		s2++;
 	}
 	return (ft_tolower(*s1) - ft_tolower(*s2));
+}
+
+char	*ft_strncpy(char *dst, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (src[i] && i < n)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dst[i] = '\0';
+		i++;
+	}
+	return (dst);
+}
+
+char	*ft_strchr(char *s, int c)
+{
+	char	*char_s;
+	char	char_c;
+	size_t	i;
+
+	i = 0;
+	char_c = (char)c;
+	char_s = (char *)s;
+	while (char_s[i])
+	{
+		if (char_s[i] == char_c)
+			return (&char_s[i]);
+		i++;
+	}
+	if (char_c == '\0')
+		return (&char_s[i]);
+	return (NULL);
 }

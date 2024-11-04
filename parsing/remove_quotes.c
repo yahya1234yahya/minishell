@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int	there_is_another(char *input, char c, int i)
+static int	there_is_another(char *input, char c, int i)
 {
 	while (input[i])
 	{
