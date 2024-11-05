@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 22:30:25 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/04 23:43:03 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:58:15 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	funcsign(int signum)
 	else if (signum == SIGQUIT)
 	{
 		if (waitpid(-1, NULL, WNOHANG) != -1)
-			write(1, "Quit: 3\n", 8);
+			write(1, "Quit: 3\n", 9);
 	}
 }
 

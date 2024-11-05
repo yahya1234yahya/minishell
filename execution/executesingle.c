@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:34:40 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 20:49:37 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/05 17:23:38 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	executesingle(t_cmd *cmd, char **envp)
 	int	retv;
 	int	value;
 
-	if (cmd->skip == 1)
-		return (-42);
 	if (cmd->redout != 0 || cmd->redin != 0)
 	{
 		input = dup(STDIN_FILENO);
@@ -31,8 +29,11 @@ int	executesingle(t_cmd *cmd, char **envp)
 	value = helper(cmd);
 	if (value == 1337)
 	{
+		if (preparecmd(cmd))
+			return (cmd->exs);
 		retv = execfromsystem(cmd, envp);
-		return (filedreset(input, output), retv);
+		filedreset(input, output);
+		return (retv);
 	}
 	else
 		retv = isbuiltin(cmd, value, 1);

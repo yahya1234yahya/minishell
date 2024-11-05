@@ -100,8 +100,6 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 	int	s;
 	int	check;
 
-	if (preparecmd(cmd))
-		return (cmd->exs);
 	check = check_command(cmd->splited[0]);
 	if (check)
 		return (check);
@@ -111,7 +109,10 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 	if (pid == 0)
 	{
 		if (execve(cmd->splited[0], cmd->splited, envp) < 0)
-			return (perror("execve:"), 1);
+		{
+			perror("execve");
+			exit(1);
+		}
 	}
 	else
 	{

@@ -64,8 +64,6 @@ int	filedreset(int input, int output)
 {
 	dup2(input, STDIN_FILENO);
 	dup2(output, STDOUT_FILENO);
-	close(input);
-	close(output);
 	return (0);
 }
 
@@ -79,15 +77,18 @@ void	exportlastcommand(t_cmd *cmd, int flag)
 		envset2(cmd->env, "_", NULL);
 		return ;
 	}
-	if (cmd->args == NULL || cmd->args[0] == '\0')
-		envset2(cmd->env, "_", cmd->cmd);
-	else
+	else if (flag == 0)
 	{
-		last_argument = ft_split(cmd->args, ' ');
-		i = 0;
-		while (last_argument[i])
-			i++;
-		envset2(cmd->env, "_", last_argument[i - 1]);
+		if (cmd->args == NULL || cmd->args[0] == '\0')
+			envset2(cmd->env, "_", cmd->path);
+		else
+		{
+			last_argument = ft_split(cmd->args, ' ');
+			i = 0;
+			while (last_argument[i])
+				i++;
+			envset2(cmd->env, "_", last_argument[i - 1]);
+		}
 	}
 }
 
@@ -99,6 +100,7 @@ void	decider(t_cmd *cmd)
 	ft_unlink(cmd);
 	if (cmd->next == NULL)
 	{
+		exportlastcommand(cmd, 0);
 		if (cmd->cmd == NULL)
 			return ;
 		env = convert(cmd);
@@ -107,7 +109,6 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 0;
 		else if (exs == -1 || exs == 1)
 			setandget(NULL)->exs = 1;
-		exportlastcommand(cmd, 0);
 	}
 	else
 	{
