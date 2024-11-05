@@ -23,6 +23,10 @@ static t_env	*thirdmain(t_cmd *cmd, char *input)
 {
 	t_env	*env;
 
+	if (cmd->next)
+	{
+		exportlastcommand(cmd, 1);
+	}
 	decider(cmd);
 	env = cmd->env;
 	free(input);
