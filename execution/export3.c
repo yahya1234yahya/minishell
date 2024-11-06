@@ -36,7 +36,7 @@ char	**preparetokens(char *str)
 	char	**ret;
 
 	i = 0;
-	ret = ft_strtok_all(str, " ");
+	ret = ft_strtok_all(str, " \t");
 	while (ret[i])
 	{
 		ret[i] = remove_quotes(ret[i]);
