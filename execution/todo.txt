@@ -1,0 +1,2 @@
+close in fd;
+safe malloc instead of malloc;
