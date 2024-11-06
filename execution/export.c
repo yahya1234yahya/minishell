@@ -73,7 +73,7 @@ int	ft_export(t_cmd *cmd)
 	ret = 0;
 	if (onechar(cmd->args, ' '))
 		return (printerrorexport(cmd->args), setandget(NULL)->exs = 1, 1);
-	exp = (t_exp *)malloc(sizeof(t_exp));
+	exp = (t_exp *)safe_malloc(sizeof(t_exp), 'a');
 	exp = initexp(exp);
 	token = preparetokens(cmd->args);
 	while (*token)
