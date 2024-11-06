@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 00:18:59 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 16:50:44 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:17:57 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	no_args(char *data)
 
 void	ft_exit(char *data, int flag)
 {
-	long long	num;
-	int			i;
-	char		**str;
+	unsigned long long	num;
+	int					i;
+	char				**str;
 
 	no_args(data);
 	str = preparexit(data);
@@ -42,8 +42,6 @@ void	ft_exit(char *data, int flag)
 	if (too_many_args(str, flag))
 		return ;
 	num = ft_atoil(str[0]);
-	if (num == LLONG_MAX)
-		print_numeric_error(str[0]);
 	if (flag)
 		ft_putstr_fd("exit\n", 1);
 	safe_malloc(0, 'f');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/05 00:41:39 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:23:13 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	fd_error(t_cmd *cmd)
 {
 	handle_redirection_error();
-	setandget(NULL)->exs = 1;
 	cmd->skip = 1;
+	setandget(NULL)->exs = 1;
 	return (0);
 }
 

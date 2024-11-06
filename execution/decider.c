@@ -60,10 +60,15 @@ int	helper(t_cmd *cmd)
 	return (i);
 }
 
-int	filedreset(int input, int output)
+int	filedreset(int input, int output, t_cmd *cmd)
 {
 	dup2(input, STDIN_FILENO);
 	dup2(output, STDOUT_FILENO);
+	if (cmd->redout != 0 || cmd->redin != 0)
+	{
+		close(input);
+		close(output);
+	}
 	return (0);
 }
 
@@ -115,8 +120,6 @@ void	decider(t_cmd *cmd)
 			setandget(NULL)->exs = 1;
 	}
 	else
-	{
 		executemultiple(cmd);
-	}
 	reset(cmd);
 }

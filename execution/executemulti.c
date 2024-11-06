@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/06 22:24:43 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:27:27 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	parent(int *input, int *pipefd)
 
 void	prechildredirection(t_cmd *cmd, int input, int *pipefd)
 {
-	close(pipefd[0]);
 	if (cmd->skip == 1)
 	{
-		safe_malloc(0, 'a');
+		safe_malloc(0, 'f');
 		exit(1);
 	}
+	close(pipefd[0]);
 	if (cmd->redin != 0)
 		dup2(cmd->ft_in, STDIN_FILENO);
 	else

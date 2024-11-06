@@ -24,13 +24,13 @@ t_cmd	*set_cmd(t_cmd *cmd, t_env *env)
 	cmd->found = 0;
 	cmd->args = NULL;
 	cmd->herdoc_file = NULL;
-	cmd->skip = 0;
 	cmd->pipe = 0;
 	cmd->redout = 0;
 	cmd->redin = 0;
 	cmd->ft_in = STDIN_FILENO;
 	cmd->ft_out = STDOUT_FILENO;
 	cmd->path = NULL;
+	cmd->skip = 0;
 	cmd->next = NULL;
 	cmd->hdoc_delimiter = NULL;
 	cmd->signal_exs_flag = 0;
@@ -52,9 +52,9 @@ t_cmd	*init_cmd(void)
 	new_cmd->input = NULL;
 	new_cmd->cmd = NULL;
 	new_cmd->herdoc_file = NULL;
-	new_cmd->skip = 0;
 	new_cmd->found = 0;
 	new_cmd->args = NULL;
+	new_cmd->skip = 0;
 	new_cmd->pipe = 0;
 	new_cmd->redout = 0;
 	new_cmd->redin = 0;

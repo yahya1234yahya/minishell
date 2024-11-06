@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:17:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 20:48:56 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:17:41 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	convertexit(int num)
 	return (num);
 }
 
-long long	ft_atoil(const char *str)
+long long	ft_atoil(char *str)
 {
 	int					i;
 	int					sign;
@@ -50,12 +50,10 @@ long long	ft_atoil(const char *str)
 	while (ft_isdigit(str[i]))
 	{
 		rest = rest * 10 + (str[i] - '0');
-		if ((sign == -1 && rest > MLLOF) || (sign == 1 && rest > MLL))
-			return (LLONG_MAX);
+		if ((sign == -1 && rest > MLLOF) || (sign == 1 && rest >= MLLOF))
+			return (print_numeric_error(str), MLLOF);
 		i++;
 	}
-	if (sign == -1 && rest == 9223372036854775808ULL)
-		return (LLONG_MIN);
 	return (rest * sign);
 }
 
