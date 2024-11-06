@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/03 20:36:36 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/05 00:41:39 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//DONE
 #include "../minishell.h"
 
 int	fd_error(t_cmd *cmd)

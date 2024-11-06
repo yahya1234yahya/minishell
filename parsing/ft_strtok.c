@@ -42,7 +42,7 @@ char	*ft_strtok(char *str, char *delim)
 		next_token = str;
 	if (next_token == NULL)
 		return (NULL);
-	while (*next_token && strchr(delim, *next_token) != NULL)
+	while (*next_token && ft_strchr(delim, *next_token) != NULL)
 		next_token++;
 	if (!(*next_token))
 		return (NULL);

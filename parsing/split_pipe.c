@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   split_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:51:29 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/03 21:58:20 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/05 00:41:51 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//DONE
 #include "../minishell.h"
 
 void	split_pipe(t_cmd *cmd, char *input, t_env *envp)
