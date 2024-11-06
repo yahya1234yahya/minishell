@@ -75,12 +75,16 @@ void	exportlastcommand(t_cmd *cmd, int flag)
 	if (flag == 1)
 	{
 		envset2(cmd->env, "_", NULL);
-		return ;
 	}
 	else if (flag == 0)
 	{
 		if (cmd->args == NULL || cmd->args[0] == '\0')
-			envset2(cmd->env, "_", cmd->path);
+		{
+			if (cmd->path)
+				envset2(cmd->env, "_", cmd->path);
+			else
+				envset2(cmd->env, "_", cmd->cmd);
+		}
 		else
 		{
 			last_argument = ft_split(cmd->args, ' ');

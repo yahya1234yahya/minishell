@@ -44,16 +44,17 @@ int	ft_errorwrite(t_cmd *cmd)
 {
 	struct stat	path_stat;
 
-	if (stat(cmd->splited[0], &path_stat) == 0)
+	if (stat(cmd->splited[0], &path_stat) == -1)
 	{
-		if (errno == ENOTDIR)
-		{
-			ft_errorwrite2(cmd->splited[0], errno);
-			return (setandget(NULL)->exs = 126, 126);
-		}
+		return (perror("perror"), errno);
 	}
-	else
-		return (perror("perror"), 1);
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->splited[0], 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		return (setandget(NULL)->exs = 126, 126);
+	}
 	if (access(cmd->splited[0], F_OK) == -1)
 	{
 		ft_errorwrite2(cmd->splited[0], errno);
@@ -78,12 +79,9 @@ int	check_command(char *command)
 	}
 	if (S_ISDIR(sb.st_mode))
 	{
-		ft_errorwrite2(command, errno);
-		return (setandget(NULL)->exs = 126, 126);
-	}
-	if (!S_ISREG(sb.st_mode))
-	{
-		ft_errorwrite2(command, errno);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(command, 2);
+		ft_putstr_fd(": is a directory\n", 2);
 		return (setandget(NULL)->exs = 126, 126);
 	}
 	if (access(command, X_OK) == -1)
