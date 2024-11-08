@@ -232,6 +232,7 @@ void		ft_exit(char *data, int flag);
 char		*envsearch3(t_env *env, char *name);
 t_env		*envset2(t_env *env, char *key, char *value);
 void		funcsign(int signum);
+void		funcsign2(int signum);
 int			exportwithouthvalue(t_exp exp, t_cmd *cmd);
 int			isbuiltin(t_cmd *cmd, int value, int flag);
 void		parent(int *input, int *pipefd);
@@ -265,6 +266,7 @@ void		reset(t_cmd *cmd);
 void		ft_signals(void);
 t_env		*noenv(void);
 void		updateshlvl(t_env *env);
+char		*strrstr(char *haystack, char *needle);
 //tools
 char		**ft_split(char *s, char c);
 int			ft_strcmp(const char	*s1, const char	*s2);
