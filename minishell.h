@@ -139,7 +139,6 @@ typedef struct s_cmd
 	int				signal_exs_flag;
 	int				skip;
 	char			*herdoc_file;
-	// int				lasthdoc;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -163,7 +162,7 @@ char		*remove_quotes(char *input);
 int			is_all_space(char *input);
 char		*expand_variables(t_env *env, char *input, int herdoc);
 int			index_char(char *str);
-int			handle_heredoc(t_cmd *cmd);
+int			handle_heredoc(t_cmd *cmd, int flag);
 void		split_pipe(t_cmd *cmd, char *input, t_env *envp);
 char		**ft_strtok_all(char *str, char *delim);
 void		check_quots(char c, int *single_q, int *double_q);

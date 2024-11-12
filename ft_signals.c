@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 21:04:20 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/11 16:26:43 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/12 22:34:25 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,9 @@ void	funcsign2(int signum)
 	if (waitpid(-1, NULL, WNOHANG) != -1)
 	{
 		if (strrstr(holder, "minishell"))
-		{
 			return ;
-		}	
 		else
-		{
 			write(1, "Quit: 3\n", 9);
-		}
 	}
 }
 
