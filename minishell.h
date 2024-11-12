@@ -139,6 +139,7 @@ typedef struct s_cmd
 	int				signal_exs_flag;
 	int				skip;
 	char			*herdoc_file;
+	// int				lasthdoc;
 	struct s_cmd	*next;
 }	t_cmd;
 

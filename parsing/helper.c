@@ -71,6 +71,8 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 	while (1)
 	{
 		line = readline("> ");
+		// if (!line)
+		// 	setandget(NULL)->lasthdoc = 1;
 		if (g_signal == 1)
 			return (signal(SIGINT, funcsign), dup2(tmp_fd, STDIN_FILENO), \
 				g_signal = 0, -1);

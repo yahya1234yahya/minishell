@@ -35,6 +35,7 @@ t_cmd	*set_cmd(t_cmd *cmd, t_env *env)
 	cmd->hdoc_delimiter = NULL;
 	cmd->signal_exs_flag = 0;
 	cmd->env = env;
+	// cmd->lasthdoc = 0;
 	return (cmd);
 }
 
@@ -64,5 +65,6 @@ t_cmd	*init_cmd(void)
 	new_cmd->next = NULL;
 	new_cmd->hdoc_delimiter = NULL;
 	new_cmd->exs = 0;
+	// new_cmd->lasthdoc = 0;
 	return (new_cmd);
 }
