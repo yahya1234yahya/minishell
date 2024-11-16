@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:17:27 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/01 17:48:09 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/16 09:54:23 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	**handle_redirection_out(t_cmd *cmd)
 {
 	cmd->redout = index_char(*(cmd->tokens));
 	cmd->tokens++;
+	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens), 0);
 	if (*(cmd->tokens) == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -61,6 +62,7 @@ char	**handle_redirection_in(t_cmd *cmd)
 {
 	cmd->redin = 1;
 	cmd->tokens++;
+	*(cmd->tokens) = expand_variables(cmd->env, *(cmd->tokens), 0);
 	if (*(cmd->tokens) == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);

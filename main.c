@@ -19,7 +19,7 @@ static void	eof(void)
 	exit(setandget(NULL)->exs);
 }
 
-static t_env	*thirdmain(t_cmd *cmd, char *input)
+static t_env	*thirdmain(t_cmd *cmd)
 {
 	t_env	*env;
 
@@ -29,16 +29,20 @@ static t_env	*thirdmain(t_cmd *cmd, char *input)
 	}
 	decider(cmd);
 	env = cmd->env;
-	free(input);
 	return (env);
 }
 
-static void	postreadline(char *input)
+static char	*postreadline(char *input)
 {
+	char	*tmp;
+
 	if (input == NULL)
 		eof();
 	if (input != NULL && *input != '\0')
 		add_history(input);
+	tmp = ft_strdup(input);
+	free(input);
+	return (tmp);
 }
 
 static void	secondmain(t_cmd *cmd, struct termios ts, t_env *env, char *input)
@@ -47,12 +51,10 @@ static void	secondmain(t_cmd *cmd, struct termios ts, t_env *env, char *input)
 	{
 		set_cmd(cmd, env);
 		input = readline("minishell > ");
-		postreadline(input);
+		input = postreadline(input);
+		input = remove_tab(input);
 		if (!(*input))
-		{
-			free(input);
 			continue ;
-		}
 		split_pipe(cmd, input, cmd->env);
 		if (check_pipe(input) == 0)
 		{
@@ -63,7 +65,7 @@ static void	secondmain(t_cmd *cmd, struct termios ts, t_env *env, char *input)
 		exportsignal(cmd->exs, cmd);
 		if (parse(cmd) == 0)
 			continue ;
-		env = thirdmain(cmd, input);
+		env = thirdmain(cmd);
 		tcsetattr(0, TCSANOW, &ts);
 	}
 }

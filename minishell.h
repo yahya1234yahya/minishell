@@ -202,6 +202,7 @@ char		*add_quotes(char *str);
 char		*parse_it(char	*str);
 int			calculate_alloc(char	*str);
 void		increment(int	*i, int	*j);
+char		*remove_tab(char *input);
 //execution
 t_env		*initenv(char **envp);
 t_cmd		*set_cmd(t_cmd *cmd, t_env *env);
