@@ -54,11 +54,11 @@ static void	free_list(t_garbage **head)
 	while (current != NULL)
 	{
 		next = current->next;
-		if (current->is_free)
-		{
+		// if (current->is_free)
+		// {
 			free(current->adr);
 			current->adr = NULL;
-		}
+		// }
 		current = next;
 	}
 }

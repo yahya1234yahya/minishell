@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:34:40 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/06 23:27:49 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/17 19:33:49 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	executesingle(t_cmd *cmd, char **envp)
 	if (value == 1337)
 	{
 		if (preparecmd(cmd))
-			return (cmd->exs);
+			return (filedreset(input, output, cmd), cmd->exs);
 		retv = execfromsystem(cmd, envp);
 		return (filedreset(input, output, cmd), retv);
 	}

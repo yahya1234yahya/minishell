@@ -30,7 +30,6 @@
 typedef struct s_garbage
 {
 	void				*adr;
-	bool				is_free;
 	struct s_garbage	*next;
 }	t_garbage;
 

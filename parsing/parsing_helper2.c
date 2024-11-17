@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/17 14:37:26 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/17 20:05:32 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,33 @@ char	*parse_it(char	*str)
 	return (p.res[p.j] = '\0', p.res);
 }
 
+// int	herdoc(t_cmd *cmd)
+// {
+// 	char	**new;
+// 	int		flag;
+
+// 	flag = 0;
+// 	cmd->tokens++;
+// 	cmd->redin = 1;
+// 	if (cmd->ft_in == 0)
+// 	{
+// 		cmd->herdoc_file = find_name();
+// 		cmd->ft_in = open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+// 	}
+// 	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
+// 	new = cmd->tokens;
+// 	new++;
+// 	if (*new == NULL)
+// 		flag = 1;
+// 	new++;
+// 	if (handle_heredoc(cmd, flag) == -1)
+// 		return (flag = 0, -1);
+// 	cmd->ft_in = open(cmd->herdoc_file, O_RDWR, 0644);
+// 		if(cmd->ft_in == -1)  // i added this
+// 			return (close(cmd->ft_in), flag = 0, -1);  //i added this
+// 		return (flag = 0, 0);
+
+// }
 int	herdoc(t_cmd *cmd)
 {
 	char	**new;
