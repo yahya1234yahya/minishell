@@ -19,10 +19,6 @@
 # include <stdbool.h> 
 # include <fcntl.h>
 # include <unistd.h>
-# include <stdbool.h> 
-# include <unistd.h>
-# include <sys/types.h>
-# include <ctype.h>
 # include <signal.h>
 # include <termios.h>
 # include <readline/readline.h>

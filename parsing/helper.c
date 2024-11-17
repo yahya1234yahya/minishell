@@ -57,7 +57,6 @@ static int	helper2(t_cmd	*cmd, char	*line)
 	if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
 	{
 		setandget(NULL)->exs = 0;
-		free(line);
 		close(cmd->ft_in);
 		return (1);
 	}
@@ -74,11 +73,13 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 		input = readline("> ");
 		line = ft_strdup(input);
 		free(input);
-		if (!line && flag)
-			return (1);
 		if (g_signal == 1)
-			return (signal(SIGINT, funcsign), dup2(tmp_fd, STDIN_FILENO), \
-				g_signal = 0, -1);
+		{
+			signal(SIGINT, funcsign);
+			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), -1);
+		}
+		if (!line && flag)
+			return (1);	
 		if (helper2(cmd, line))
 			break ;
 		if (is_quoted)

@@ -30,7 +30,7 @@ static void	node_add(t_garbage **lst, t_garbage *new)
 	new->next = NULL;
 }
 
-static t_garbage	*create_new(void *addrress)
+static t_garbage	*create_new(void *address)
 {
 	t_garbage	*newnode;
 
@@ -40,7 +40,7 @@ static t_garbage	*create_new(void *addrress)
 		perror("malloc");
 		return (NULL);
 	}
-	newnode->adr = addrress;
+	newnode->adr = address;
 	newnode->next = NULL;
 	return (newnode);
 }
@@ -65,7 +65,7 @@ static void	free_list(t_garbage **head)
 
 void	*safe_malloc(size_t size, int flag)
 {
-	static t_garbage	*gooper;
+	static t_garbage	*garbage;
 	t_garbage			*node;
 	void				*address;
 
@@ -78,15 +78,15 @@ void	*safe_malloc(size_t size, int flag)
 			safe_malloc(0, 'f');
 			exit (0);
 		}
-		if (gooper == NULL)
-			gooper = create_new(address);
+		if (garbage == NULL)
+			garbage = create_new(address);
 		else
 		{
 			node = create_new(address);
-			node_add(&gooper, node);
+			node_add(&garbage, node);
 		}
 	}
 	else if (flag == 'f')
-		free_list(&gooper);
+		free_list(&garbage);
 	return (address);
 }
