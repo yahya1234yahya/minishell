@@ -67,10 +67,13 @@ static int	helper2(t_cmd	*cmd, char	*line)
 int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 {
 	char	*line;
+	char	*input;
 
 	while (1)
 	{
-		line = readline("> ");
+		input = readline("> ");
+		line = ft_strdup(input);
+		free(input);
 		if (!line && flag)
 			return (1);
 		if (g_signal == 1)
@@ -84,7 +87,6 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 		else
 			line = expand_variables(cmd->env, line, 1);
 		ft_putendl_fd(line, cmd->ft_in);
-		free(line);
 	}
 	return (0);
 }

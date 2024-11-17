@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-static void	garb_add(t_garbage **lst, t_garbage *new)
+static void	node_add(t_garbage **lst, t_garbage *new)
 {
 	t_garbage	*lastone;
 
@@ -30,7 +30,7 @@ static void	garb_add(t_garbage **lst, t_garbage *new)
 	new->next = NULL;
 }
 
-static t_garbage	*garb_new(void *addrress)
+static t_garbage	*create_new(void *addrress)
 {
 	t_garbage	*newnode;
 
@@ -45,7 +45,7 @@ static t_garbage	*garb_new(void *addrress)
 	return (newnode);
 }
 
-static void	free_garb_list(t_garbage **head)
+static void	free_list(t_garbage **head)
 {
 	t_garbage	*current;
 	t_garbage	*next;
@@ -79,14 +79,14 @@ void	*safe_malloc(size_t size, int flag)
 			exit (0);
 		}
 		if (gooper == NULL)
-			gooper = garb_new(address);
+			gooper = create_new(address);
 		else
 		{
-			node = garb_new(address);
-			garb_add(&gooper, node);
+			node = create_new(address);
+			node_add(&gooper, node);
 		}
 	}
 	else if (flag == 'f')
-		free_garb_list(&gooper);
+		free_list(&gooper);
 	return (address);
 }
