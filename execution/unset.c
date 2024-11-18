@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 15:49:43 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/18 12:02:06 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:32:39 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,12 @@ static void	remove_env_variable(t_env **env, char *variable)
 	tmp = *env;
 	split = ft_split(variable, '=');
 	if (!ft_strncmp(tmp->key, split[0], ft_strlen(split[0])))
-	{
 		*env = tmp->next;
-		// free(tmp);
-	}
 	while (tmp)
 	{
 		runner = tmp->next;
 		if (runner && !strncmp(runner->key, split[0], ft_strlen(split[0])))
-		{
 			tmp->next = runner->next;
-			// free(runner);
-		}
 		else
 			tmp = tmp->next;
 	}

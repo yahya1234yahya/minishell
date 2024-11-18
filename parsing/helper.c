@@ -39,7 +39,6 @@ void	signalhandlerherdoc(int signum)
 	{
 		g_signal = 1;
 		close(STDIN_FILENO);
-		// rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 		setandget(NULL)->exs = 1;
@@ -53,7 +52,7 @@ static int	helper2(t_cmd	*cmd, char	*line)
 	if (line == NULL)
 	{
 		close(cmd->ft_in);
-		open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		cmd->ft_in = 0;
 		return (1);
 	}
 	if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
@@ -65,7 +64,7 @@ static int	helper2(t_cmd	*cmd, char	*line)
 	return (0);
 }
 
-int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
+int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 {
 	char	*line;
 	char	*input;
@@ -80,7 +79,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 			signal(SIGINT, funcsign);
 			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), -1);
 		}
-		if (!line && flag == 1) //last herdoc ctrl + d
+		if (!line && cmd->count_herdoc == 1)
 			return (close(cmd->ft_in), 5);
 		if (helper2(cmd, line))
 			break ;
@@ -94,7 +93,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 	return (0);
 }
 
-int	handle_heredoc(t_cmd *cmd, int flag)
+int	handle_heredoc(t_cmd *cmd)
 {
 	int	is_quoted;
 	int	i;
@@ -109,10 +108,10 @@ int	handle_heredoc(t_cmd *cmd, int flag)
 		|| ft_strchr(cmd->hdoc_delimiter, '"'))
 		is_quoted = 1;
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
-	ret = read_herdoc(cmd, is_quoted, tmp_fd, flag);
+	ret = read_herdoc(cmd, is_quoted, tmp_fd);
 	if (ret == -1)
 		return (unlink(cmd->herdoc_file), -1);
 	if (ret == 5)
-		return (unlink(cmd->herdoc_file), 0);
+		return (0);
 	return (0);
 }
