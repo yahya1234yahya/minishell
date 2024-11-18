@@ -39,7 +39,7 @@ void	signalhandlerherdoc(int signum)
 	{
 		g_signal = 1;
 		close(STDIN_FILENO);
-		rl_on_new_line();
+		// rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 		setandget(NULL)->exs = 1;
@@ -81,7 +81,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), -1);
 		}
 		if (!line && flag == 1) //last herdoc ctrl + d
-			return (0);
+			return (close(cmd->ft_in), 5);
 		if (helper2(cmd, line))
 			break ;
 		if (is_quoted)
@@ -99,6 +99,7 @@ int	handle_heredoc(t_cmd *cmd, int flag)
 	int	is_quoted;
 	int	i;
 	int	tmp_fd;
+	int	ret;
 
 	i = 0;
 	is_quoted = 0;
@@ -108,7 +109,10 @@ int	handle_heredoc(t_cmd *cmd, int flag)
 		|| ft_strchr(cmd->hdoc_delimiter, '"'))
 		is_quoted = 1;
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
-	if (read_herdoc(cmd, is_quoted, tmp_fd, flag) == -1)
+	ret = read_herdoc(cmd, is_quoted, tmp_fd, flag);
+	if (ret == -1)
 		return (unlink(cmd->herdoc_file), -1);
+	if (ret == 5)
+		return (unlink(cmd->herdoc_file), 0);
 	return (0);
 }

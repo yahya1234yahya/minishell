@@ -24,11 +24,7 @@ static t_env	*thirdmain(t_cmd *cmd)
 	t_env	*env;
 
 	if (cmd->next)
-	{
 		exportlastcommand(cmd, 1);
-	}
-	// printf("cmd->cmd = %s\n", cmd->cmd);
-	// printf("cmd->args = %s\n", cmd->args);
 	decider(cmd);
 	env = cmd->env;
 	return (env);
