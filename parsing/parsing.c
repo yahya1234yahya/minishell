@@ -106,7 +106,7 @@ int	parse(t_cmd *cmd)
 		{
 			if (check_cases(cmd) == -1)
 				return (0);
-			if (((cmd->ft_out == -1) || (cmd->ft_in == -1)) && fd_error(cmd))  //had fd_error hiya li ktktab error dima mnen check_cases makatreturnich -1
+			if (fd_error(cmd))
 			{
 				if (cmd->next)
 					break ;

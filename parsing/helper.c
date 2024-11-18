@@ -81,7 +81,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd, int flag)
 			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), -1);
 		}
 		if (!line && flag == 1) //last herdoc ctrl + d
-			return ( 0);	
+			return (0);
 		if (helper2(cmd, line))
 			break ;
 		if (is_quoted)
@@ -110,6 +110,5 @@ int	handle_heredoc(t_cmd *cmd, int flag)
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
 	if (read_herdoc(cmd, is_quoted, tmp_fd, flag) == -1)
 		return (unlink(cmd->herdoc_file), -1);
-	unlink(cmd->herdoc_file);
 	return (0);
 }

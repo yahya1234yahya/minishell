@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/17 20:05:32 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/18 10:20:56 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 int	fd_error(t_cmd *cmd)
 {
-	handle_redirection_error();
-	cmd->skip = 1;
-	setandget(NULL)->exs = 1;
+	if ((cmd->ft_out == -1) || (cmd->ft_in == -1))
+	{
+		printf("%d %d\n", cmd->ft_out, cmd->ft_in);
+		handle_redirection_error();
+		cmd->skip = 1;
+		setandget(NULL)->exs = 1;
+		return (1);
+	}
 	return (0);
 }
 
@@ -124,5 +129,6 @@ int	herdoc(t_cmd *cmd)
 	if (handle_heredoc(cmd, flag) == -1)
 		return (flag = 0, -1);
 	cmd->ft_in = open(cmd->herdoc_file, O_RDWR, 0644);
+	unlink(cmd->herdoc_file);
 	return (flag = 0, 0);
 }
