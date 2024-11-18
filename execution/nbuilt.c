@@ -46,6 +46,5 @@ char	**convert(t_cmd *cmd)
 		i++;
 		tmp = tmp->next;
 	}
-	free(tmp);
 	return (fill_ret_array(cmd, i));
 }

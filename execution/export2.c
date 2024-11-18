@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 02:05:38 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 17:08:04 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:59:10 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	plusaddpack(t_env **env, char *key, char *value)
 		if (!strncmp(tmp->key, value, ft_strlen(key)))
 		{
 			newvalue = ft_strjoin(tmp->value, key);
-			free(tmp->value);
 			tmp->value = newvalue;
 			return (1);
 		}
