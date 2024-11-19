@@ -80,7 +80,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), close(tmp_fd), -1);
 		}
 		if (!line && cmd->count_herdoc == 1)
-			return (close(cmd->ft_in),close(tmp_fd), 5);
+			return (signal(SIGINT, funcsign), close(cmd->ft_in),close(tmp_fd), 5);
 		if (helper2(cmd, line))
 			break ;
 		if (is_quoted)
@@ -90,7 +90,7 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 			line = expand_variables(cmd->env, line, 1);
 		ft_putendl_fd(line, cmd->ft_in);
 	}
-	return (close(tmp_fd), 0);
+	return (signal(SIGINT, funcsign), close(tmp_fd), 0);
 }
 
 int	handle_heredoc(t_cmd *cmd)

@@ -25,6 +25,8 @@ static t_env	*thirdmain(t_cmd *cmd)
 
 	if (cmd->next)
 		exportlastcommand(cmd, 1);
+	signal(SIGINT, funcsign);
+	signal(SIGQUIT, funcsign2);
 	decider(cmd);
 	env = cmd->env;
 	return (env);
