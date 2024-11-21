@@ -37,7 +37,7 @@ static int	allspace(char *str)
 		ft_putstr_fd("\n", 1);
 		return (1);
 	}
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\'' || str[i] == '\"')
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	if (i == ft_strlen(str))
 	{

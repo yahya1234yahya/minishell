@@ -108,6 +108,7 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 	{
 		if (execve(cmd->splited[0], cmd->splited, envp) < 0)
 		{
+			safe_malloc(0, 'f');
 			perror("execve");
 			exit(1);
 		}
