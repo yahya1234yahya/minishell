@@ -115,7 +115,7 @@ int	execfromsystem(t_cmd *cmd, char **envp)
 	else
 	{
 		waitpid(pid, &s, 0);
-		return (waiter(&s));
+		return (waiter(s));
 	}
 	return (0);
 }

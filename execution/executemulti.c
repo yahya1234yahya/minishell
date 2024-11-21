@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 20:31:17 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/17 19:32:50 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:36:36 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ int	executemultiple(t_cmd *cmd)
 	while (wait(NULL) > 0)
 		;
 	close(pipefd[0]);
-	return (waiter(&status));
+	return (waiter(status));
 }

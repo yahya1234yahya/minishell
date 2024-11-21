@@ -14,9 +14,12 @@
 
 static void	eof(void)
 {
+	int i;
+
+	i = setandget(NULL)->exs;
 	ft_putstr_fd("exit\n", 1);
 	safe_malloc(0, 'f');
-	exit(setandget(NULL)->exs);
+	exit(i);
 }
 
 static t_env	*thirdmain(t_cmd *cmd)

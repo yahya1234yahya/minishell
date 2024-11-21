@@ -6,7 +6,7 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 00:18:59 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/06 23:17:57 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:02:05 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	no_args(char *data)
 {
+	int i;
+
+	i = setandget(NULL)->exs;
 	if (!data)
 	{
 		ft_putstr_fd("exit\n", 1);
 		safe_malloc(0, 'f');
-		exit(setandget(NULL)->exs);
+		exit(i);
 	}
 }
 

@@ -258,7 +258,7 @@ void		printerrorexport(char *str);
 int			checkplus(char *str);
 char		**preparetokens(char *str);
 int			parsename(char *name);
-int			waiter(int *status);
+int			waiter(int status);
 void		perrornb(char *str);
 void		argsprepare(t_cmd *cmd);
 void		reset(t_cmd *cmd);

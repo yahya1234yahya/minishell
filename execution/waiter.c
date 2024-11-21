@@ -6,18 +6,18 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 21:04:58 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/03 21:15:58 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:36:26 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	waiter(int *status)
+int	waiter(int status)
 {
-	if (WIFSIGNALED(*status))
-		return (setandget(NULL)->exs = 128 + WTERMSIG(*status));
-	else if (WIFEXITED(*status))
-		return (setandget(NULL)->exs = WEXITSTATUS(*status));
+	if (WIFSIGNALED(status))
+		return (setandget(NULL)->exs = 128 + WTERMSIG(status));
+	else if (WIFEXITED(status))
+		return (setandget(NULL)->exs = WEXITSTATUS(status));
 	return (0);
 }
 

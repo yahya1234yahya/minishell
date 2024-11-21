@@ -12,7 +12,7 @@ execution/nbuilt3.c parsing/ft_random.c execution/waiter.c main2.c main3.c parsi
 parsing/hdocounter.c
 
 OBJS = $(SRCS:.c=.o)
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 HEADER = minishell.h
 READLINEDIR  =  $(shell brew --prefix readline)
 
