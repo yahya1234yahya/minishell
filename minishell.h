@@ -26,6 +26,7 @@
 # include <sys/stat.h>
 # include <sys/errno.h>
 # include <limits.h>
+# include <string.h>
 
 typedef struct s_garbage
 {

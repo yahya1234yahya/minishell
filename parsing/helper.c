@@ -79,15 +79,15 @@ int	read_herdoc(t_cmd *cmd, int is_quoted, int tmp_fd)
 		if (g_signal == 1)
 		{
 			signal(SIGINT, funcsign);
-			return (g_signal = 0, dup2(tmp_fd, STDIN_FILENO), close(tmp_fd), -1);
+			return (g_signal = 0, dup2(tmp_fd, 0), close(tmp_fd), -1);
 		}
 		if (!line && cmd->count_herdoc == 1)
-			return (signal(SIGINT, funcsign), close(cmd->ft_in),close(tmp_fd), 5);
+			return (signal(2, funcsign), close(cmd->ft_in), close(tmp_fd), 5);
 		if (helper2(cmd, line))
 			break ;
 		if (is_quoted)
-			line = remove_quotes(expand_variables(cmd->env, add_quotes(line), \
-				1));
+			line = remove_quotes(expand_variables(cmd->env, \
+		add_quotes(line), 1));
 		else
 			line = expand_variables(cmd->env, line, 1);
 		ft_putendl_fd(line, cmd->ft_in);
