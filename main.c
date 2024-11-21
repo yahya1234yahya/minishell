@@ -14,12 +14,9 @@
 
 static void	eof(void)
 {
-	int i;
-
-	i = setandget(NULL)->exs;
 	ft_putstr_fd("exit\n", 1);
 	safe_malloc(0, 'f');
-	exit(i);
+	exit(setandget(NULL)->exs);
 }
 
 static t_env	*thirdmain(t_cmd *cmd)
@@ -67,7 +64,10 @@ static void	secondmain(t_cmd *cmd, struct termios ts, t_env *env, char *input)
 		}
 		exportsignal(cmd->exs, cmd);
 		if (parse(cmd) == 0)
+		{
+			reset(cmd);
 			continue ;
+		}
 		env = thirdmain(cmd);
 		tcsetattr(0, TCSANOW, &ts);
 	}

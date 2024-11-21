@@ -112,7 +112,7 @@ int	handle_heredoc(t_cmd *cmd)
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
 	ret = read_herdoc(cmd, is_quoted, tmp_fd);
 	if (ret == -1)
-		return (printf("hello\n"), unlink(cmd->herdoc_file), -1);
+		return (unlink(cmd->herdoc_file), -1);
 	if (ret == 5)
 		return (0);
 	return (0);
