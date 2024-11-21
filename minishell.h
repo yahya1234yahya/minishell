@@ -238,7 +238,7 @@ void		parent(int *input, int *pipefd);
 void		child(t_cmd *cmd, int input, int *pipefd);
 int			executesingle(t_cmd *cmd, char **envp);
 void		exportlastcommand(t_cmd *cmd, int flag);
-void		no_args(char *data);
+void		no_args(char *data, int flag);
 int			too_many_args(char **str, int flag);
 char		**preparexit(char *data);
 long long	ft_atoil(char *str);

@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   exit2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 00:18:59 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/21 19:54:18 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:35:58 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	no_args(char *data)
+void	no_args(char *data, int flag)
 {
 	int	i;
 
 	i = setandget(NULL)->exs;
 	if (!data)
 	{
-		ft_putstr_fd("exit\n", 1);
+		if (flag)
+			ft_putstr_fd("exit\n", 1);
 		safe_malloc(0, 'f');
 		exit(i);
 	}
@@ -32,7 +33,7 @@ void	ft_exit(char *data, int flag)
 	char				**str;
 	int					j;
 
-	no_args(data);
+	no_args(data, flag);
 	str = preparexit(data);
 	i = 0;
 	if (str[0][i] == '-' || str[0][i] == '+')
