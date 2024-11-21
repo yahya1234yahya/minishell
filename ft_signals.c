@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_signals.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 21:04:20 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/17 14:18:07 by ymouigui         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:22:51 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	funcsign(int signum)
 	{
 		reset(setandget(NULL));
 		ft_unlink(setandget(NULL));
-		if (strrstr(holder, "minishell"))
+		if (ft_strrstr(holder, "minishell"))
 			return ;
 		write(1, "\n", 1);
 		return ;
@@ -42,7 +42,7 @@ void	funcsign2(int signum)
 	holder = setandget(NULL)->cmd;
 	if (waitpid(-1, NULL, WNOHANG) != -1)
 	{
-		if (strrstr(holder, "minishell"))
+		if (ft_strrstr(holder, "minishell"))
 			return ;
 		else
 			write(1, "Quit: 3\n", 9);

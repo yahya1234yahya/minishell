@@ -6,13 +6,13 @@
 /*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:29:40 by mboughra          #+#    #+#             */
-/*   Updated: 2024/11/21 17:55:57 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:22:51 by mboughra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_str(char *haystack, char *needle)
+char	*ft_strrstr(char *haystack, char *needle)
 {
 	size_t	needle_len;
 	size_t	haystack_len;

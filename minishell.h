@@ -265,7 +265,7 @@ void		reset(t_cmd *cmd);
 void		ft_signals(void);
 t_env		*noenv(void);
 void		updateshlvl(t_env *env);
-char		*strrstr(char *haystack, char *needle);
+char		*ft_strrstr(char *haystack, char *needle);
 //tools
 char		**ft_split(char *s, char c);
 int			ft_strcmp(const char	*s1, const char	*s2);
