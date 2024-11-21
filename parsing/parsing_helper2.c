@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:27:45 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/18 15:36:35 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:54:09 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,10 @@ int	herdoc(t_cmd *cmd)
 {
 	cmd->tokens++;
 	cmd->redin = 1;
-	if (cmd->ft_in == 0)
-	{
-		cmd->herdoc_file = find_name();
-		cmd->ft_in = open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	}
+	if (cmd->ft_in != 0)
+		close(cmd->ft_in);
+	cmd->herdoc_file = find_name();
+	cmd->ft_in = open(cmd->herdoc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	cmd->hdoc_delimiter = parse_it(*(cmd->tokens));
 	if (handle_heredoc(cmd) == -1)
 		return (-1);

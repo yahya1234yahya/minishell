@@ -1,0 +1,4 @@
+export a='ls -l'
+$a
+"$a"
+ls > $a

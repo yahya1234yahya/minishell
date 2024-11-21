@@ -51,6 +51,7 @@ static int	helper2(t_cmd	*cmd, char	*line)
 {
 	if (line == NULL)
 	{
+		cmd->count_herdoc--;
 		close(cmd->ft_in);
 		cmd->ft_in = 0;
 		return (1);
@@ -58,6 +59,7 @@ static int	helper2(t_cmd	*cmd, char	*line)
 	if (ft_strcmp(line, cmd->hdoc_delimiter) == 0)
 	{
 		setandget(NULL)->exs = 0;
+		cmd->count_herdoc--;
 		close(cmd->ft_in);
 		return (1);
 	}
@@ -110,7 +112,7 @@ int	handle_heredoc(t_cmd *cmd)
 	cmd->hdoc_delimiter = remove_quotes(cmd->hdoc_delimiter);
 	ret = read_herdoc(cmd, is_quoted, tmp_fd);
 	if (ret == -1)
-		return (unlink(cmd->herdoc_file), -1);
+		return (printf("hello\n"), unlink(cmd->herdoc_file), -1);
 	if (ret == 5)
 		return (0);
 	return (0);

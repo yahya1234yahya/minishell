@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mboughra <mboughra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ymouigui <ymouigui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:38:47 by ymouigui          #+#    #+#             */
-/*   Updated: 2024/11/18 15:36:47 by mboughra         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:08:04 by ymouigui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ void	check_cmd(t_cmd *cmd)
 		return ;
 	}
 	is_valid_command(cmd, *(cmd->tokens));
-	cmd->cmd = ft_strdup(*(cmd->tokens));
+	if (*(cmd->tokens)[0] == '\0')
+		cmd->cmd = ft_strdup("/usr/bin/true");
+	else
+		cmd->cmd = ft_strdup(*(cmd->tokens));
 }

@@ -111,7 +111,10 @@ void	decider(t_cmd *cmd)
 	{
 		exportlastcommand(cmd, 0);
 		if (cmd->cmd == NULL)
+		{
+			reset(cmd);
 			return ;
+		}
 		env = convert(cmd);
 		exs = executesingle(cmd, env);
 		if (exs == 0)
